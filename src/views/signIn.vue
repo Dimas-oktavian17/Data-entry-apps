@@ -35,7 +35,7 @@ import { RouterLink } from 'vue-router'
                 input:
                     'border border-black  normal-case text-black text-sm rounded-lg block w-72 p-2.5',
             }" />
-            <button class="pt-2 text-blue-600 transition-all  hover:opacity-50" type="button">
+            <button class="pt-2 text-blue-600 transition-all hover:opacity-50" type="button">
                 Forgot Password?
             </button>
         </FormKit>
