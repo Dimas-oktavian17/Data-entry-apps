@@ -31,6 +31,9 @@ dependencies:
     version: 3.1.22(firebase@10.7.2)(vue@3.4.15)
 
 devDependencies:
+  '@iconify/vue':
+    specifier: ^4.1.1
+    version: 4.1.1(vue@3.4.15)
   '@vitejs/plugin-vue':
     specifier: ^4.5.2
     version: 4.6.2(vite@5.0.12)(vue@3.4.15)
@@ -926,6 +929,19 @@ packages:
 
   /@humanwhocodes/object-schema@2.0.2:
     resolution: {integrity: sha512-6EwiSjwWYP7pTckG6I5eyFANjPhmPjUX9JRLUSfNPC7FX7zK9gyZAfUEaECL6ALTpGX5AjnBq3C9XmVWPitNpw==}
+    dev: true
+
+  /@iconify/types@2.0.0:
+    resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
+    dev: true
+
+  /@iconify/vue@4.1.1(vue@3.4.15):
+    resolution: {integrity: sha512-RL85Bm/DAe8y6rT6pux7D2FJSiUEM/TPfyK7GrbAOfTSwrhvwJW+S5yijdGcmtXouA8MtuH9C7l4hiSE4mLMjg==}
+    peerDependencies:
+      vue: '>=3'
+    dependencies:
+      '@iconify/types': 2.0.0
+      vue: 3.4.15
     dev: true
 
   /@isaacs/cliui@8.0.2:

@@ -1,3 +1,46 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .container {
+        @apply max-w-5xl py-8 mx-auto;
+    }
+}
+
+/* end animation */
+[data-complete] .formkit-input {
+    border-color: green;
+    animation: myAnim 1s ease 0s 1 normal forwards;
+    box-shadow: 0 0 0 1px green;
+}
+
+[data-complete] .formkit-inner::after {
+    display: inline-block;
+    animation: myAnim 1s ease 0s 1 normal forwards;
+    padding: 0.5em;
+    content: "looks good";
+    color: green;
+}
+
+[data-invalid] .formkit-input {
+    animation: myAnim 1s ease 0s 1 normal forwards;
+    padding: 0.5em;
+    border-color: red;
+    box-shadow: 0 0 0 1px red;
+    color: red;
+}
+
+.formkit-message {
+    /* animation: myAnim 1s ease 0s 1 normal forwards;
+    box-shadow: 0 0 0 1px red; */
+    color: red;
+}
+
+#input_3 {
+    @apply mt-4 text-black border-black border rounded w-full py-2.5 hover:bg-black hover:text-white transition-all
+}
+
+/* #input_4 {
+    @apply
+} */
