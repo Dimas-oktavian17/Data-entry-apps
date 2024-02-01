@@ -3,7 +3,7 @@
 </script>
 <template>
   <div class="container flex flex-col items-center justify-center h-screen">
-    <FormKit ref="form" type="form" submit-label="Sign In" :classes="{
+    <FormKit ref="form" type="form" submit-label="Sign Up" :classes="{
       outer: 'mb-2',
       inner: 'w-72 lg:w-1/2 max-w-xs space-y-6 ',
     }">
