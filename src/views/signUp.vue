@@ -2,14 +2,14 @@
 import { ref, } from 'vue'
 import { useRouter } from 'vue-router';
 const router = useRouter();
-import { createUserWithEmailAndPassword, sendEmailVerification, } from 'firebase/auth';
-import { useFirebaseAuth } from 'vuefire';
-
+import { createUserWithEmailAndPassword, sendEmailVerification, signInWithPopup, } from 'firebase/auth';
+import { useFirebaseAuth, } from 'vuefire';
+import { googleAuthProvider } from '@/firebase';
 const email = ref('')
 const password = ref('')
 const notif = ref('')
 const notifStatus = ref(false)
-const auth = useFirebaseAuth();
+const auth = useFirebaseAuth()
 
 const handleSignup = async () => {
  try {
@@ -28,7 +28,7 @@ const handleSignup = async () => {
   console.error(error);
  }
 }
-
+const signInPopup = () => signInWithPopup(auth, googleAuthProvider).catch(error => console.log())
 </script>
 <template>
  <div class="container flex flex-col items-center justify-center h-screen">
@@ -63,7 +63,7 @@ const handleSignup = async () => {
   </FormKit>
   <span class="pt-8 text-base">Or Sign-up With</span>
   <div class="flex flex-col items-center justify-center mt-4">
-   <button class="px-8 py-2 border rounded border-slate-200 group">
+   <button id="btnSing" @click="signInPopup" class="px-8 py-2 border rounded border-slate-200 group">
     <IconVue icon="flat-color-icons:google" class="w-12 h-auto transition-all group-hover:-rotate-45" />
    </button>
    <div class="flex flex-row justify-between pt-4">
