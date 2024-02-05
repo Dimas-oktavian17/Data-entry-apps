@@ -1,10 +1,12 @@
 <script setup>
 import { ref, } from 'vue'
-import { useRouter } from 'vue-router';
+import { useRouter, RouterLink } from 'vue-router';
 const router = useRouter();
 import { createUserWithEmailAndPassword, sendEmailVerification, signInWithPopup, } from 'firebase/auth';
 import { useFirebaseAuth, } from 'vuefire';
 import { googleAuthProvider } from '@/firebase';
+import NotifError from '@/components/base/NotifError.vue';
+
 const email = ref('')
 const password = ref('')
 const notif = ref('')
@@ -16,7 +18,7 @@ const handleSignup = async () => {
   const { user } = await createUserWithEmailAndPassword(auth, email.value, password.value)
   if (user && !user.emailVerified) {
    sendEmailVerification(user)
-   notif.value = `Your email is not ${user.emailVerified}, please check your email for verification`
+   notif.value = 'Please verify your email!'
    notifStatus.value = true
    setTimeout(() => {
     notif.value = ''
@@ -25,17 +27,20 @@ const handleSignup = async () => {
    }, 10000);
   }
  } catch (error) {
-  console.error(error);
+  notif.value = `${error}`
+  notifStatus.value = true
+  setTimeout(() => {
+   notif.value = ''
+   notifStatus.value = false
+   router.push('/')
+  }, 10000);
  }
 }
-const signInPopup = () => signInWithPopup(auth, googleAuthProvider).catch(error => console.log())
+const signInPopup = () => signInWithPopup(auth, googleAuthProvider).then(() => router.push('/')).catch(error => notif.value = error)
 </script>
 <template>
  <div class="container flex flex-col items-center justify-center h-screen">
-  <span class="flex flex-row max-w-xs text-base font-semibold text-red-500">
-   {{ notif }}
-   <IconVue v-if="notifStatus" icon="ion:warning" class="flex flex-row text-red-400 animate-ping" />
-  </span>
+  <NotifError v-if="notifStatus" :notif="notif" />
   <FormKit @submit="handleSignup" ref="form" type="form" submit-label="Sign Up" :classes="{
    outer: 'mb-2',
    inner: 'w-72 lg:w-1/2 max-w-xs space-y-6',
@@ -63,13 +68,13 @@ const signInPopup = () => signInWithPopup(auth, googleAuthProvider).catch(error 
   </FormKit>
   <span class="pt-8 text-base">Or Sign-up With</span>
   <div class="flex flex-col items-center justify-center mt-4">
-   <button id="btnSing" @click="signInPopup" class="px-8 py-2 border rounded border-slate-200 group">
+   <ButtonAuth @handleGoogleAuth="signInPopup">
     <IconVue icon="flat-color-icons:google" class="w-12 h-auto transition-all group-hover:-rotate-45" />
-   </button>
+   </ButtonAuth>
    <div class="flex flex-row justify-between pt-4">
     <p>Do ready have an account?</p>
     <RouterLink class="pl-2 text-blue-600 transition-all hover:opacity-50" to="/">
-     Sign-in Now
+     sign-in
     </RouterLink>
    </div>
   </div>

@@ -6,8 +6,8 @@ export default defineConfig({
   server: {
     // Add headers
     headers: {
-      "Cross-Origin-Opener-Policy": "same-origin",
-      "Cross-Origin-Embedder-Policy": "unsafe-none",
+      // "Cross-Origin-Opener-Policy": "same-origin",
+      // "Cross-Origin-Embedder-Policy": "unsafe-none",
     }
   },
   plugins: [
