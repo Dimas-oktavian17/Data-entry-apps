@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@formkit/vue": "^1.5.2",
+    "@vueuse/core": "^10.7.2",
     "chart.js": "^4.4.1",
     "firebase": "^10.7.2",
     "pinia": "^2.1.7",
