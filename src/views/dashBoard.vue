@@ -4,7 +4,6 @@ import { useRouter, } from 'vue-router';
 import { useCollection, useFirestore, useFirebaseAuth, useCurrentUser } from 'vuefire'
 import { collection, } from 'firebase/firestore'
 import { signOut } from 'firebase/auth';
-import ButtonAuth from '@/components/base/ButtonAuth.vue';
 
 const user = useCurrentUser()
 const router = useRouter()
@@ -24,13 +23,8 @@ const logout = async () => {
  } catch (error) {
   console.error(error)
  }
-
 }
-
-
-onMounted(() => {
- watch(user, curentUser => curentUser === null ? router.push('/') : router.push('/Dashboard'));
-})
+onMounted(() => watch(user, curentUser => curentUser === null ? router.push('/') : router.push('/Dashboard')))
 </script>
 
 <template>
