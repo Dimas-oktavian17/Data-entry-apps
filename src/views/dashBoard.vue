@@ -11,8 +11,6 @@ const db = useFirestore()
 const todos = useCollection(collection(db, 'todos'))
 const auth = useFirebaseAuth()
 
-
-
 const logout = async () => {
  try {
   await signOut(auth)

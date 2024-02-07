@@ -18,7 +18,7 @@ const submitHandler = async () => {
  try {
   await signInWithEmailAndPassword(auth, email.value, pw.value);
   if (user.emailVerified === true) {
-   router.push('/Dashboard')
+   router.push('/eCommerce')
   }
  } catch (error) {
   console.log(error);
@@ -31,8 +31,8 @@ const submitHandler = async () => {
   }, 10000);
  }
 };
-onMounted(() => watch(user, user => user == null ? router.push('/register') : user.emailVerified === true ? router.push('/Dashboard') : router.push('/register')))
-const signInPopup = () => signInWithPopup(auth, googleAuthProvider).then(() => router.push('/Dashboard')).catch(error => notif.value = error)
+onMounted(() => watch(user, user => user == null ? router.push('/register') : user.emailVerified === true ? router.push('/eCommerce') : router.push('/register')))
+const signInPopup = () => signInWithPopup(auth, googleAuthProvider).then(() => router.push('/eCommerce')).catch(error => notif.value = error)
 </script>
 
 

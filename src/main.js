@@ -1,4 +1,9 @@
 import '@/style.css'
+import './assets/css/satoshi.css'
+import './assets/css/style.css'
+import 'jsvectormap/dist/css/jsvectormap.min.css'
+import 'flatpickr/dist/flatpickr.min.css'
+
 
 import { createApp } from 'vue'
 // Library dependencies
@@ -7,6 +12,8 @@ import { createPinia } from 'pinia'
 import { Icon } from '@iconify/vue'
 import router from './router'
 import { plugin, defaultConfig } from '@formkit/vue'
+import VueApexCharts from 'vue3-apexcharts'
+
 // end library dependencies
 // firebase configuration
 import { firebaseApp } from './firebase/index.js'
@@ -30,4 +37,5 @@ app.component('IconVue', Icon)
       VueFireAuth(),
     ],
   })
+  .use(VueApexCharts)
   .mount('#app')
