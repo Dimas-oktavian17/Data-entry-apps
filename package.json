@@ -12,12 +12,18 @@
   },
   "dependencies": {
     "@formkit/vue": "^1.5.2",
+    "@vueuse/core": "^10.7.2",
+    "apexcharts": "^3.45.2",
     "chart.js": "^4.4.1",
     "firebase": "^10.7.2",
+    "flatpickr": "^4.6.13",
+    "jsvectormap": "^1.5.3",
     "pinia": "^2.1.7",
+    "trusted-types": "^2.0.0",
     "vue": "^3.3.11",
     "vue-chart-3": "^3.1.8",
     "vue-router": "^4.2.5",
+    "vue3-apexcharts": "^1.4.4",
     "vuefire": "^3.1.22"
   },
   "devDependencies": {
