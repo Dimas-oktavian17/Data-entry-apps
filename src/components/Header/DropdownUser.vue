@@ -1,18 +1,16 @@
 <script setup>
 import { onClickOutside } from '@vueuse/core'
-import { ref, onMounted, watch } from 'vue';
-import { useRouter } from 'vue-router';
-import { useCollection, useFirestore, useFirebaseAuth, useCurrentUser } from 'vuefire'
-import { collection } from 'firebase/firestore'
-import { signOut } from 'firebase/auth';
-
-
+import { onMounted, watch, ref } from 'vue';
 const target = ref(null)
 const dropdownOpen = ref(false)
-
 onClickOutside(target, () => {
  dropdownOpen.value = false
 })
+
+import { useRouter, } from 'vue-router';
+import { useCollection, useFirestore, useFirebaseAuth, useCurrentUser } from 'vuefire'
+import { collection, } from 'firebase/firestore'
+import { signOut } from 'firebase/auth';
 
 const user = useCurrentUser()
 const router = useRouter()
@@ -31,7 +29,7 @@ const logout = async () => {
   console.error(error)
  }
 }
-onMounted(() => watch(user, curentUser => curentUser === null ? router.push('/') : router.push('/eCommerce')))
+onMounted(() => watch(user, curentUser => curentUser === null ? router.push('/') : router.push('/Dashboard')))
 </script>
 
 <template>

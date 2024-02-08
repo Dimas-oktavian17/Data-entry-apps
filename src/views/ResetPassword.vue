@@ -1,33 +1,17 @@
 <script setup>
 import { ref, } from 'vue'
-import { useRouter, } from 'vue-router';
-import { sendPasswordResetEmail } from 'firebase/auth';
 import NotifError from '@/components/base/NotifError.vue';
-import { useFirebaseAuth } from 'vuefire';
-const auth = useFirebaseAuth()
-const router = useRouter()
+import { authPinia } from '@/stores/auth/authReset'
+
+const authResetPassword = authPinia()
 const notif = ref('')
 const notifStatus = ref(false)
 const email = ref('')
-const submitHandler = async () => {
- try {
-  sendPasswordResetEmail(auth, email.value)
-  notif.value = 'Check your email address'
-  notifStatus.value = true
-  setTimeout(() => {
-   notif.value = ''
-   notifStatus.value = false
-   router.push('/')
-  }, 10000);
 
- } catch (error) {
-  notif.value = 'Email is not found'
-  notifStatus.value = true
-  setTimeout(() => {
-   notif.value = ''
-   notifStatus.value = false
-  }, 10000);
- }
+const submitHandler = async () => {
+ const { notif: newNotif, notifStatus: newNotifStatus } = await authResetPassword.submitHandler(email.value)
+ notif.value = `${newNotif}`
+ notifStatus.value = newNotifStatus
 }
 </script>
 
@@ -48,6 +32,7 @@ const submitHandler = async () => {
      input:
       'border border-black  normal-case text-black text-sm rounded-lg block w-72 p-2.5',
     }" />
+
   </FormKit>
  </div>
 </template>

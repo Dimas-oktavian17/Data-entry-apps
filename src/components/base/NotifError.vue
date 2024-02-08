@@ -2,7 +2,6 @@
 defineProps({
  notif: {
   type: String,
-  required: true,
  }
 })
 </script>

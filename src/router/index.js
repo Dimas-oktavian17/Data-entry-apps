@@ -22,11 +22,11 @@ const router = createRouter({
       name: 'about',
       component: () => import('@/views/AboutView.vue')
     },
-    {
-      path: '/Dashboard',
-      name: 'dashboard',
-      component: () => import('@/views/dashBoard.vue')
-    },
+    // {
+    //   path: '/Dashboard',
+    //   name: 'dashboard',
+    //   component: () => import('@/views/dashBoard.vue')
+    // },
     {
       path: '/forgot-password',
       name: 'reset-password',
@@ -34,11 +34,11 @@ const router = createRouter({
     },
     // tailwind
     {
-      path: '/eCommerce',
-      name: 'eCommerce',
+      path: '/Dashboard',
+      name: 'Dashboard',
       component: () => import('@/views/Dashboard/ECommerceView.vue'),
       meta: {
-        title: 'eCommerce Dashboard'
+        title: 'Dashboard'
       }
     },
     {

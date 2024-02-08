@@ -1,42 +1,25 @@
 <script setup>
 import { ref, } from 'vue'
-import { useRouter, RouterLink } from 'vue-router';
-const router = useRouter();
-import { createUserWithEmailAndPassword, sendEmailVerification, signInWithPopup, } from 'firebase/auth';
-import { useFirebaseAuth, } from 'vuefire';
-import { googleAuthProvider } from '@/firebase';
+import { RouterLink } from 'vue-router';
+import { authPinia } from '@/stores/auth/authSignup'
 import NotifError from '@/components/base/NotifError.vue';
 
 const email = ref('')
 const password = ref('')
 const notif = ref('')
 const notifStatus = ref(false)
-const auth = useFirebaseAuth()
+const authSignup = authPinia()
 
 const handleSignup = async () => {
- try {
-  const { user } = await createUserWithEmailAndPassword(auth, email.value, password.value)
-  if (user && !user.emailVerified) {
-   sendEmailVerification(user)
-   notif.value = 'Please verify your email!'
-   notifStatus.value = true
-   setTimeout(() => {
-    notif.value = ''
-    notifStatus.value = false
-    router.push('/')
-   }, 10000);
-  }
- } catch (error) {
-  notif.value = `${error}`
-  notifStatus.value = true
-  setTimeout(() => {
-   notif.value = ''
-   notifStatus.value = false
-   router.push('/')
-  }, 10000);
- }
+ const { notif: newNotif, notifStatus: newNotifStatus } = await authSignup.submitHandler(email.value, password.value)
+ notif.value = `${newNotif}`
+ notifStatus.value = newNotifStatus
+ // 
 }
-const signInPopup = () => signInWithPopup(auth, googleAuthProvider).then(() => router.push('/')).catch(error => notif.value = error)
+const signInPopup = async () => {
+ const { notif: newNotif } = await authSignup.signInPopu()
+ notif.value = newNotif
+}
 </script>
 <template>
  <div class="container flex flex-col items-center justify-center h-screen">
