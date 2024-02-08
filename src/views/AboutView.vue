@@ -1,4 +1,4 @@
-<script setup>
+<!-- <script setup>
 import { ref, onMounted } from 'vue'
 import {
  signInWithCredential,
@@ -40,4 +40,4 @@ function signinRedirect(response) {
   <ErrorBox v-if="error" :error="error" />
   <button @click="signinRedirect()">SignIn with Google</button>
  </main>
-</template>
+</template> -->

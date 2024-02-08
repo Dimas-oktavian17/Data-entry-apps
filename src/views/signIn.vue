@@ -1,43 +1,35 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue'
-import { useRouter, RouterLink } from 'vue-router';
-import { signInWithPopup, signInWithEmailAndPassword } from 'firebase/auth';
-import { useFirebaseAuth, useCurrentUser } from 'vuefire';
-import { googleAuthProvider } from '@/firebase';
+import { RouterLink } from 'vue-router';
+import { authPinia } from '@/stores/auth/authSignin'
 import NotifError from '@/components/base/NotifError.vue';
 
-const auth = useFirebaseAuth();
-const user = useCurrentUser();
-const router = useRouter();
 const email = ref('');
 const pw = ref('');
 const notif = ref('')
 const notifStatus = ref(false)
-console.log(auth);
+const authSignin = authPinia()
+
 const submitHandler = async () => {
- try {
-  await signInWithEmailAndPassword(auth, email.value, pw.value);
-  if (user.emailVerified === true) {
-   router.push('/eCommerce')
-  }
- } catch (error) {
-  console.log(error);
-  notif.value = `${error}`
-  notifStatus.value = true
-  setTimeout(() => {
-   notif.value = ''
-   notifStatus.value = false
-   router.push('/register')
-  }, 10000);
- }
+ const { notif: newNotif, notifStatus: newNotifStatus } = await authSignin.submitHandler(email.value, pw.value)
+ notif.value = `${newNotif}`
+
+ notifStatus.value = newNotifStatus
 };
-onMounted(() => watch(user, user => user == null ? router.push('/register') : user.emailVerified === true ? router.push('/eCommerce') : router.push('/register')))
-const signInPopup = () => signInWithPopup(auth, googleAuthProvider).then(() => router.push('/eCommerce')).catch(error => notif.value = error)
+
+const signInPopup = async () => {
+ const { notif: newNotif } = await authSignin.signInPopu()
+ notif.value = newNotif
+}
+
+onMounted(() => {
+ watch(() => authSignin.user && authSignin.user.value !== null, () => authSignin.checkUser())
+})
 </script>
 
 
 <template>
- <div class="container flex flex-col items-center justify-center h-screen">
+ <div class="container flex flex-col items-center justify-center h-screen mt-8">
   <NotifError v-if="notifStatus" :notif="notif" />
   <FormKit type="form" @submit="submitHandler" submit-label="Sign In" :classes="{
    outer: 'mb-2',
