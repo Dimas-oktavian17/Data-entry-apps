@@ -16,7 +16,7 @@ Merupakan sebuah project data entry yang dapat di visualisasikan melalui diagram
 	- [vue-3-chart](https://vue-chart-3.netlify.app/)
 	- [vue-router](https://router.vuejs.org/)
 	- [Pinia](https://pinia.vuejs.org/)
-
+	- [Axios](https://axios-http.com/)
 4) Tools & Unit Test
 	- [Vite](https://vitejs.dev/)
 	- [Vitest](https://vitest.dev/)
