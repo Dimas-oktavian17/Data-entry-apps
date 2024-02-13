@@ -121,5 +121,23 @@
    </form>
   </DefaultCard>
   <!-- Sign Up End -->
+  <!-- select -->
+  <!-- <label for="status" class="mb-2.5 block text-black dark:text-white">
+        Status 
+        <select name="status"
+         class="w-full rounded border-[1.5px] text-black border-stroke bg-transparent py-3 px-5 font-normal outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:text-white dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary flex flex-row items-center justify-start mt-2">
+         <option value="kontrak">Kontrak</option>
+         <option value="saab">Kartap</option>
+         <option value="kontrak">Magang</option>
+        </select>
+       </label> -->
+
+  <!-- text area -->
+  <!-- <div class="mb-6">
+        <label class="mb-2.5 block text-black dark:text-white"> Message </label>
+        <textarea rows="6" placeholder="Type your message"
+         class="w-full rounded border-[1.5px] text-black border-stroke bg-transparent py-3 px-5 font-normal outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:text-white dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"></textarea>
+       </div> -->
+
  </div>
 </template>
