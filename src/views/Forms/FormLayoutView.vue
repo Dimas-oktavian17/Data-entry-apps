@@ -1,5 +1,5 @@
 <script setup >
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref, watch, watchEffect } from 'vue'
 import axios from 'axios'
 import BreadcrumbDefault from '@/components/Breadcrumbs/BreadcrumbDefault.vue'
 import DefaultCard from '@/components/Forms/DefaultCard.vue'
@@ -8,12 +8,13 @@ import SelectGroup from '@/components/Forms/SelectGroup.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 
 
+
 // import locationAPI from '@/services/locationAPI'
 
 const provinces = ref([])
-const cities = ref([])
-const kecamatan = ref([])
-const kelurahan = ref([])
+const cities = ref(null)
+const kecamatan = ref(null)
+const kelurahan = ref(null)
 
 const selectedProvince = ref(null)
 const selectedCity = ref(null)
@@ -36,49 +37,84 @@ onMounted(async () => {
  }
 })
 
-watch(selectedProvince, async (pronvinceID, oldID) => {
- // if (oldID === null) {
- //  return ''
- // }
+watch(selectedProvince, async (pronvinceID) => {
  try {
-  const { data } = await axios.get(`https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${pronvinceID}.json`)
-  cities.value = data
-  console.log(data);
- } catch (error) {
-  console.error(error);
- }
-})
+  if (pronvinceID === null) {
+   selectedCity.value = null
+   selectedDistrict.value = null
 
-
-watch(selectedCity, async (cityID, oldID) => {
- // if (oldID === null) {
- //  return ''
- // }
- console.log(`${cityID} ok`);
- try {
-  const { data } = await axios.get(`https://www.emsifa.com/api-wilayah-indonesia/api/districts/${cityID}.json`)
-  kecamatan.value = data
-  console.log(data);
+   cities.value = null
+   kecamatan.value = null
+   kelurahan.value = null
+  } else {
+   const { data } = await axios.get(`https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${pronvinceID}.json`)
+   cities.value = data
+   console.log(data);
+  }
  } catch (error) {
   console.error(error);
  }
 }
+ , { immediate: true }
+
 )
 
-watch(selectedDistrict, async (districtID, oldID) => {
- // if (oldID === null) {
- //  return ''
- // }
- console.log(districtID);
+
+watch(selectedCity, async (cityID) => {
  try {
-  const { data } = await axios.get(`https://www.emsifa.com/api-wilayah-indonesia/api/villages/${districtID}.json`)
-  kelurahan.value = data
-  console.log(data);
+  if (cityID === null) {
+   selectedDistrict.value = null
+
+   kecamatan.value = null
+   kelurahan.value = null
+  }
+  else {
+   const { data } = await axios.get(`https://www.emsifa.com/api-wilayah-indonesia/api/districts/${cityID}.json`)
+   kecamatan.value = data
+   console.log(data);
+  }
  } catch (error) {
   console.error(error);
  }
-})
+}
+ , { immediate: true }
+)
 
+watch(selectedDistrict, async (districtID) => {
+ try {
+  if (districtID === null) {
+   kelurahan.value = null
+  }
+  else {
+   const { data } = await axios.get(`https://www.emsifa.com/api-wilayah-indonesia/api/villages/${districtID}.json`)
+   kelurahan.value = data
+   console.log(data);
+  }
+ } catch (error) {
+  console.error(error);
+ }
+}
+ , { immediate: true }
+)
+watchEffect(() => {
+ if (selectedProvince.value !== null) {
+  selectedCity.value = null
+  selectedDistrict.value = null
+  cities.value = null
+  kecamatan.value = null
+  kelurahan.value = null
+ }
+ else {
+  kelurahan.value = null
+ }
+})
+watchEffect(() => {
+ if (selectedCity.value !== null) {
+  selectedDistrict.value = null
+  kecamatan.value = null
+  kelurahan.value = null
+ }
+})
 </script>
 
 <template>
@@ -127,7 +163,7 @@ watch(selectedDistrict, async (districtID, oldID) => {
         <!-- City -->
         <label class="mb-2.5 block text-black dark:text-white mt-2.5">City</label>
         <div class="relative z-20 bg-transparent dark:bg-form-input">
-         <select :disabled="selectedProvince === null" v-model="selectedCity"
+         <select :disabled="cities === null" v-model="selectedCity"
           class="relative z-20 w-full px-5 py-3 transition bg-transparent border rounded outline-none appearance-none border-stroke focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
           :class="{ 'text-black dark:text-white': isOptionSelected }" @change="changeTextColor">
           <option value="" disabled selected>Type your subject</option>
