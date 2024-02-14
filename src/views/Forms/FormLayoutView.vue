@@ -1,11 +1,12 @@
 <script setup >
-import { onMounted, ref, watch, } from 'vue'
+import { onMounted, ref, watch, watchEffect } from 'vue'
 import axios from 'axios'
 import BreadcrumbDefault from '@/components/Breadcrumbs/BreadcrumbDefault.vue'
 import DefaultCard from '@/components/Forms/DefaultCard.vue'
 import InputGroup from '@/components/Forms/InputGroup.vue'
 import SelectGroup from '@/components/Forms/SelectGroup.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
+
 
 
 // import locationAPI from '@/services/locationAPI'
@@ -80,7 +81,6 @@ watch(selectedCity, async (cityID) => {
 )
 
 watch(selectedDistrict, async (districtID) => {
-
  try {
   if (districtID === null) {
    kelurahan.value = null
@@ -96,7 +96,25 @@ watch(selectedDistrict, async (districtID) => {
 }
  , { immediate: true }
 )
-
+watchEffect(() => {
+ if (selectedProvince.value !== null) {
+  selectedCity.value = null
+  selectedDistrict.value = null
+  cities.value = null
+  kecamatan.value = null
+  kelurahan.value = null
+ }
+ else {
+  kelurahan.value = null
+ }
+})
+watchEffect(() => {
+ if (selectedCity.value !== null) {
+  selectedDistrict.value = null
+  kecamatan.value = null
+  kelurahan.value = null
+ }
+})
 </script>
 
 <template>
@@ -145,7 +163,7 @@ watch(selectedDistrict, async (districtID) => {
         <!-- City -->
         <label class="mb-2.5 block text-black dark:text-white mt-2.5">City</label>
         <div class="relative z-20 bg-transparent dark:bg-form-input">
-         <select :disabled="!provinces" v-model="selectedCity"
+         <select :disabled="cities === null" v-model="selectedCity"
           class="relative z-20 w-full px-5 py-3 transition bg-transparent border rounded outline-none appearance-none border-stroke focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
           :class="{ 'text-black dark:text-white': isOptionSelected }" @change="changeTextColor">
           <option value="" disabled selected>Type your subject</option>
