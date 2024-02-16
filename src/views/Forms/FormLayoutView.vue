@@ -8,10 +8,10 @@ import SelectGroup from '@/components/Forms/SelectGroup.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 
 // Data source for the input group
-const provinces = ref([])
-const cities = ref(null)
-const kecamatan = ref(null)
-const kelurahan = ref(null)
+// const provinces = ref([])
+// const cities = ref(null)
+// const kecamatan = ref(null)
+// const kelurahan = ref(null)
 const names = ref('')
 const age = ref(null)
 const position = ref('')
@@ -28,65 +28,65 @@ const changeTextColor = () => isOptionSelected.value = true
 
 const pageTitle = ref('Form Layout')
 onMounted(async () => {
- try {
-  const { data } = await axios.get(`https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json`)
-  provinces.value = data
-  console.log(provinces.value);
- } catch (error) {
-  console.error(error)
- }
+ // try {
+ //  const { data } = await axios.get(`https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json`)
+ //  provinces.value = data
+ //  console.log(provinces.value);
+ // } catch (error) {
+ //  console.error(error)
+ // }
 })
 // Fetching data 
-const fetchProvinces = async ({ id, }) => {
- try {
-  if (id === null) {
-   selectedCity.value = null
-   selectedDistrict.value = null
-   cities.value = null
-   kecamatan.value = null
-   kelurahan.value = null
-  } else {
-   const { data } = await axios.get(`https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${id}.json`)
-   cities.value = data
-   console.log(data);
-  }
- } catch (error) {
-  console.error(error);
- }
-}
+// const fetchProvinces = async ({ id, }) => {
+//  try {
+//   if (id === null) {
+//    selectedCity.value = null
+//    selectedDistrict.value = null
+//    cities.value = null
+//    kecamatan.value = null
+//    kelurahan.value = null
+//   } else {
+//    const { data } = await axios.get(`https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${id}.json`)
+//    cities.value = data
+//    console.log(data);
+//   }
+//  } catch (error) {
+//   console.error(error);
+//  }
+// }
 
-const fecthCity = async ({ id, }) => {
- try {
-  if (id === null) {
-   selectedDistrict.value = null
+// const fecthCity = async ({ id, }) => {
+//  try {
+//   if (id === null) {
+//    selectedDistrict.value = null
 
-   kecamatan.value = null
-   kelurahan.value = null
-  }
-  else {
-   const { data } = await axios.get(`https://www.emsifa.com/api-wilayah-indonesia/api/districts/${id}.json`)
-   kecamatan.value = data
-   console.log(data);
-  }
- } catch (error) {
-  console.error(error);
- }
-}
+//    kecamatan.value = null
+//    kelurahan.value = null
+//   }
+//   else {
+//    const { data } = await axios.get(`https://www.emsifa.com/api-wilayah-indonesia/api/districts/${id}.json`)
+//    kecamatan.value = data
+//    console.log(data);
+//   }
+//  } catch (error) {
+//   console.error(error);
+//  }
+// }
 
-const fetchDistrict = async ({ id, }) => {
- try {
-  if (id === null) {
-   kelurahan.value = null
-  }
-  else {
-   const { data } = await axios.get(`https://www.emsifa.com/api-wilayah-indonesia/api/villages/${id}.json`)
-   kelurahan.value = data
-   console.log(data);
-  }
- } catch (error) {
-  console.error(error);
- }
-}
+// const fetchDistrict = async ({ id, }) => {
+//  try {
+//   if (id === null) {
+//    kelurahan.value = null
+//   }
+//   else {
+//    const { data } = await axios.get(`https://www.emsifa.com/api-wilayah-indonesia/api/villages/${id}.json`)
+//    kelurahan.value = data
+//    console.log(data);
+//   }
+//  } catch (error) {
+//   console.error(error);
+//  }
+// }
 // Watch effect for data form
 watch(selectedProvince, fetchProvinces, { immediate: true })
 watch(selectedCity, fecthCity, { immediate: true })
