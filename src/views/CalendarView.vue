@@ -8,12 +8,12 @@ const pageTitle = ref('Calender')
 </script>
 
 <template>
-  <DefaultLayout>
-    <div class="mx-auto max-w-7xl">
-      <!-- Breadcrumb Start -->
-      <BreadcrumbDefault :pageTitle="pageTitle" />
-      <!-- Breadcrumb End -->
-      <CalendarCard />
-    </div>
-  </DefaultLayout>
+ <DefaultLayout>
+  <div class="mx-auto max-w-7xl">
+   <!-- Breadcrumb Start -->
+   <BreadcrumbDefault :pageTitle="pageTitle" />
+   <!-- Breadcrumb End -->
+   <CalendarCard />
+  </div>
+ </DefaultLayout>
 </template>
