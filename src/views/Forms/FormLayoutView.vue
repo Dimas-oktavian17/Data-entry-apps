@@ -7,25 +7,25 @@ import InputGroup from '@/components/Forms/InputGroup.vue'
 import SelectGroup from '@/components/Forms/SelectGroup.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 
-
-
-// import locationAPI from '@/services/locationAPI'
-
+// Data source for the input group
 const provinces = ref([])
 const cities = ref(null)
 const kecamatan = ref(null)
 const kelurahan = ref(null)
-
-const selectedProvince = ref(null)
-const selectedCity = ref(null)
-const selectedDistrict = ref(null)
+const names = ref('')
+const age = ref(null)
+const position = ref('')
+const statusKaryawan = ref(null)
+const selectedProvince = ref([])
+const selectedCity = ref([])
+const selectedDistrict = ref([])
+const selectedVillages = ref(null)
 
 const isOptionSelected = ref(false)
 
-const changeTextColor = () => {
- isOptionSelected.value = true
-}
-``
+const changeTextColor = () => isOptionSelected.value = true
+
+
 const pageTitle = ref('Form Layout')
 onMounted(async () => {
  try {
@@ -36,18 +36,17 @@ onMounted(async () => {
   console.error(error)
  }
 })
-
-watch(selectedProvince, async (pronvinceID) => {
+// Fetching data 
+const fetchProvinces = async ({ id, }) => {
  try {
-  if (pronvinceID === null) {
+  if (id === null) {
    selectedCity.value = null
    selectedDistrict.value = null
-
    cities.value = null
    kecamatan.value = null
    kelurahan.value = null
   } else {
-   const { data } = await axios.get(`https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${pronvinceID}.json`)
+   const { data } = await axios.get(`https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${id}.json`)
    cities.value = data
    console.log(data);
   }
@@ -55,21 +54,17 @@ watch(selectedProvince, async (pronvinceID) => {
   console.error(error);
  }
 }
- , { immediate: true }
 
-)
-
-
-watch(selectedCity, async (cityID) => {
+const fecthCity = async ({ id, }) => {
  try {
-  if (cityID === null) {
+  if (id === null) {
    selectedDistrict.value = null
 
    kecamatan.value = null
    kelurahan.value = null
   }
   else {
-   const { data } = await axios.get(`https://www.emsifa.com/api-wilayah-indonesia/api/districts/${cityID}.json`)
+   const { data } = await axios.get(`https://www.emsifa.com/api-wilayah-indonesia/api/districts/${id}.json`)
    kecamatan.value = data
    console.log(data);
   }
@@ -77,16 +72,14 @@ watch(selectedCity, async (cityID) => {
   console.error(error);
  }
 }
- , { immediate: true }
-)
 
-watch(selectedDistrict, async (districtID) => {
+const fetchDistrict = async ({ id, }) => {
  try {
-  if (districtID === null) {
+  if (id === null) {
    kelurahan.value = null
   }
   else {
-   const { data } = await axios.get(`https://www.emsifa.com/api-wilayah-indonesia/api/villages/${districtID}.json`)
+   const { data } = await axios.get(`https://www.emsifa.com/api-wilayah-indonesia/api/villages/${id}.json`)
    kelurahan.value = data
    console.log(data);
   }
@@ -94,12 +87,15 @@ watch(selectedDistrict, async (districtID) => {
   console.error(error);
  }
 }
- , { immediate: true }
-)
+// Watch effect for data form
+watch(selectedProvince, fetchProvinces, { immediate: true })
+watch(selectedCity, fecthCity, { immediate: true })
+watch(selectedDistrict, fetchDistrict, { immediate: true })
 watchEffect(() => {
  if (selectedProvince.value !== null) {
   selectedCity.value = null
   selectedDistrict.value = null
+  selectedVillages.value = null
   cities.value = null
   kecamatan.value = null
   kelurahan.value = null
@@ -113,8 +109,11 @@ watchEffect(() => {
   selectedDistrict.value = null
   kecamatan.value = null
   kelurahan.value = null
+  selectedVillages.value = null
  }
 })
+
+
 </script>
 
 <template>
@@ -128,14 +127,19 @@ watchEffect(() => {
    <div class="flex flex-col gap-9">
     <!-- Contact Form Start -->
     <DefaultCard cardTitle="Contact Form">
-     <form action="#">
+     <form @submit.prevent="">
       <div class="p-6.5">
        <div class="mb-4.5 flex flex-col gap-6 xl:flex-row">
-        <InputGroup label="Your name" type="text" placeholder="Your name" customClasses="w-full xl:w-1/2" />
-        <InputGroup label="Your age" type="number" placeholder="Your age" customClasses="w-full xl:w-1/2" />
+        <InputGroup v-model="names" label="Your name" type="text" placeholder="Your name"
+         customClasses="w-full xl:w-1/2" />
+        <InputGroup v-model="age" label="Your age" type="number" placeholder="Your age"
+         customClasses="w-full xl:w-1/2" />
        </div>
-       <InputGroup label="Position" type="text" placeholder="Your position" customClasses="mb-4.5" required />
-       <SelectGroup />
+       <InputGroup v-model="position" label="Position" type="text" placeholder="Your position" customClasses="mb-4.5"
+        required />
+       {{ position }} {{ age }} {{ names }}
+       <SelectGroup v-model="statusKaryawan" />
+       {{ statusKaryawan }}
        <!-- location api -->
        <div class="mb-4.5">
         <label class="mb-2.5 block text-black dark:text-white mt-2.5">Province</label>
@@ -145,10 +149,11 @@ watchEffect(() => {
           class="relative z-20 w-full px-5 py-3 transition bg-transparent border rounded outline-none appearance-none border-stroke focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
           :class="{ 'text-black dark:text-white': isOptionSelected }" @change="changeTextColor">
           <option value="" disabled selected>Type your subject</option>
-          <option v-for="({ name, id, index }) in provinces" :key="index" :value="id">{{ name }}</option>
+          <option v-for="( item, index ) in provinces" :key="index" :value="item">
+           {{ item.name }}
+          </option>
          </select>
-         <!-- {{ getProvince }} -->
-         {{ selectedProvince }}
+         {{ selectedProvince.name }}
          <span class="absolute z-30 -translate-y-1/2 top-1/2 right-4">
           <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24" fill="none"
            xmlns="http://www.w3.org/2000/svg">
@@ -167,9 +172,9 @@ watchEffect(() => {
           class="relative z-20 w-full px-5 py-3 transition bg-transparent border rounded outline-none appearance-none border-stroke focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
           :class="{ 'text-black dark:text-white': isOptionSelected }" @change="changeTextColor">
           <option value="" disabled selected>Type your subject</option>
-          <option v-for="({ name, id, index }) in cities" :key="index" :value="id">{{ name }}</option>
+          <option v-for="( item, index ) in cities" :key="index" :value="item">{{ item.name }}</option>
          </select>
-         <!-- {{ getProvince }} -->
+         {{ selectedCity }}
          <span class="absolute z-30 -translate-y-1/2 top-1/2 right-4">
           <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24" fill="none"
            xmlns="http://www.w3.org/2000/svg">
@@ -189,9 +194,9 @@ watchEffect(() => {
           class="relative z-20 w-full px-5 py-3 transition bg-transparent border rounded outline-none appearance-none border-stroke focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
           :class="{ 'text-black dark:text-white': isOptionSelected }" @change="changeTextColor">
           <option value="" disabled selected>Type your subject</option>
-          <option v-for="({ name, id, index }) in kecamatan" :key="index" :value="id">{{ name }}</option>
+          <option v-for="(item, index) in kecamatan" :key="index" :value="item">{{ item.name }}</option>
          </select>
-         <!-- {{ getProvince }} -->
+         {{ selectedDistrict }}
          <span class="absolute z-30 -translate-y-1/2 top-1/2 right-4">
           <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24" fill="none"
            xmlns="http://www.w3.org/2000/svg">
@@ -207,13 +212,13 @@ watchEffect(() => {
         <!-- kelurahan -->
         <label class="mb-2.5 block text-black dark:text-white mt-2.5">Kelurahan</label>
         <div class="relative z-20 bg-transparent dark:bg-form-input">
-         <select :disabled="selectedDistrict === null"
+         <select :disabled="selectedDistrict === null" v-model="selectedVillages"
           class="relative z-20 w-full px-5 py-3 transition bg-transparent border rounded outline-none appearance-none border-stroke focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
           :class="{ 'text-black dark:text-white': isOptionSelected }" @change="changeTextColor">
           <option value="" disabled selected>Type your subject</option>
-          <option v-for="({ name, id, index }) in kelurahan" :key="index" :value="id">{{ name }}</option>
+          <option v-for="(item, index) in kelurahan" :key="index" :value="item">{{ item.name }}</option>
          </select>
-         <!-- {{ getProvince }} -->
+         {{ selectedVillages }}
          <span class="absolute z-30 -translate-y-1/2 top-1/2 right-4">
           <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24" fill="none"
            xmlns="http://www.w3.org/2000/svg">
@@ -227,75 +232,6 @@ watchEffect(() => {
         </div>
         <!-- end kelurahan -->
        </div>
-       <!-- <div class="mb-4.5">
-        <label class="mb-2.5 block text-black dark:text-white"> Status </label>
-
-        <div class="relative z-20 bg-transparent dark:bg-form-input">
-         <select v-model="selectedOption"
-          class="relative z-20 w-full px-5 py-3 transition bg-transparent border rounded outline-none appearance-none border-stroke focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-          :class="{ 'text-black dark:text-white': isOptionSelected }" @change="changeTextColor">
-          <option value="" disabled selected>Type your subject</option>
-          <option v-for="({ name, id, index }) in provinces" :key="index" :value="id">{{ name }}</option>
-         </select>
-
-         <span class="absolute z-30 -translate-y-1/2 top-1/2 right-4">
-          <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24" fill="none"
-           xmlns="http://www.w3.org/2000/svg">
-           <g opacity="0.8">
-            <path fill-rule="evenodd" clip-rule="evenodd"
-             d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z"
-             fill=""></path>
-           </g>
-          </svg>
-         </span>
-        </div>
-       </div> -->
-       <!-- <div class="mb-4.5">
-        <label class="mb-2.5 block text-black dark:text-white"> Status </label>
-
-        <div class="relative z-20 bg-transparent dark:bg-form-input">
-         <select v-model="selectedOption"
-          class="relative z-20 w-full px-5 py-3 transition bg-transparent border rounded outline-none appearance-none border-stroke focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-          :class="{ 'text-black dark:text-white': isOptionSelected }" @change="changeTextColor">
-          <option value="" disabled selected>Type your subject</option>
-          <option v-for="({ name, id, index }) in provinces" :key="index" :value="id">{{ name }}</option>
-         </select>
-
-         <span class="absolute z-30 -translate-y-1/2 top-1/2 right-4">
-          <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24" fill="none"
-           xmlns="http://www.w3.org/2000/svg">
-           <g opacity="0.8">
-            <path fill-rule="evenodd" clip-rule="evenodd"
-             d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z"
-             fill=""></path>
-           </g>
-          </svg>
-         </span>
-        </div>
-       </div>
-       <div class="mb-4.5">
-        <label class="mb-2.5 block text-black dark:text-white"> Status </label>
-
-        <div class="relative z-20 bg-transparent dark:bg-form-input">
-         <select v-model="selectedOption"
-          class="relative z-20 w-full px-5 py-3 transition bg-transparent border rounded outline-none appearance-none border-stroke focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-          :class="{ 'text-black dark:text-white': isOptionSelected }" @change="changeTextColor">
-          <option value="" disabled selected>Type your subject</option>
-          <option v-for="({ name, id, index }) in provinces" :key="index" :value="id">{{ name }}</option>
-         </select>
-
-         <span class="absolute z-30 -translate-y-1/2 top-1/2 right-4">
-          <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24" fill="none"
-           xmlns="http://www.w3.org/2000/svg">
-           <g opacity="0.8">
-            <path fill-rule="evenodd" clip-rule="evenodd"
-             d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z"
-             fill=""></path>
-           </g>
-          </svg>
-         </span>
-        </div>
-       </div> -->
 
        <!-- end location api -->
        <button class="flex justify-center w-full p-3 font-medium rounded bg-primary text-gray hover:bg-opacity-90">

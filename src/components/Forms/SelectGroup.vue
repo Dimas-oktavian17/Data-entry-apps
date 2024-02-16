@@ -7,6 +7,7 @@ const isOptionSelected = ref<boolean>(false)
 const changeTextColor = () => {
  isOptionSelected.value = true
 }
+defineProps(['modelValue'])
 </script>
 
 <template>
@@ -14,13 +15,13 @@ const changeTextColor = () => {
   <label class="mb-2.5 block text-black dark:text-white"> Status </label>
 
   <div class="relative z-20 bg-transparent dark:bg-form-input">
-   <select v-model="selectedOption"
+   <select :value="modelValue" @input="$emit('update:modelValue', $event.target.value)"
     class="relative z-20 w-full px-5 py-3 transition bg-transparent border rounded outline-none appearance-none border-stroke focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
     :class="{ 'text-black dark:text-white': isOptionSelected }" @change="changeTextColor">
     <option value="" disabled selected>Type your subject</option>
     <option value="kontrak">Kontrak</option>
-    <option value="saab">Kartap</option>
-    <option value="kontrak">Magang</option>
+    <option value="kartap">Kartap</option>
+    <option value="magang">Magang</option>
    </select>
 
    <span class="absolute z-30 -translate-y-1/2 top-1/2 right-4">
