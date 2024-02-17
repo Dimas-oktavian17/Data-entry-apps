@@ -11,27 +11,26 @@ const pageTitle = ref('Alerts')
 </script>
 
 <template>
-  <DefaultLayout>
-    <!-- Breadcrumb Start -->
-    <BreadcrumbDefault :pageTitle="pageTitle" />
-    <!-- Breadcrumb End -->
+ <DefaultLayout>
+  <!-- Breadcrumb Start -->
+  <BreadcrumbDefault :pageTitle="pageTitle" />
+  <!-- Breadcrumb End -->
 
-    <div
-      class="rounded-sm border border-stroke bg-white p-4 shadow-default dark:border-strokedark dark:bg-boxdark md:p-6 xl:p-9"
-    >
-      <div class="flex flex-col gap-7.5">
-        <!-- ====== AlertWarning Start -->
-        <AlertWarning />
-        <!-- ====== AlertWarning End -->
+  <div
+   class="p-4 bg-white border rounded-sm border-stroke shadow-default dark:border-strokedark dark:bg-boxdark md:p-6 xl:p-9">
+   <div class="flex flex-col gap-7.5">
+    <!-- ====== AlertWarning Start -->
+    <AlertWarning />
+    <!-- ====== AlertWarning End -->
 
-        <!-- ====== AlertSuccess Start -->
-        <AlertSuccess />
-        <!-- ====== AlertSuccess End -->
+    <!-- ====== AlertSuccess Start -->
+    <AlertSuccess />
+    <!-- ====== AlertSuccess End -->
 
-        <!-- ====== AlertError Start -->
-        <AlertError />
-        <!-- ====== AlertError End -->
-      </div>
-    </div>
-  </DefaultLayout>
+    <!-- ====== AlertError Start -->
+    <AlertError />
+    <!-- ====== AlertError End -->
+   </div>
+  </div>
+ </DefaultLayout>
 </template>
