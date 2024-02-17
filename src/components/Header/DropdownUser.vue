@@ -1,48 +1,68 @@
+<!-- eslint-disable no-unused-vars -->
 <script setup>
-import { onClickOutside } from '@vueuse/core'
-import { onMounted, watch, ref } from 'vue';
-const target = ref(null)
-const dropdownOpen = ref(false)
-onClickOutside(target, () => {
- dropdownOpen.value = false
-})
-
-import { useRouter, } from 'vue-router';
-import { useCollection, useFirestore, useFirebaseAuth, useCurrentUser } from 'vuefire'
-import { collection, } from 'firebase/firestore'
+import { ref, computed, onMounted, watch } from 'vue';
+import { onClickOutside } from '@vueuse/core';
+import { useRouter } from 'vue-router';
+import { useFirebaseAuth, useCurrentUser } from 'vuefire';
 import { signOut } from 'firebase/auth';
+import { authPinia } from '@/stores/auth/authSignout';
+import { storeToRefs } from 'pinia';
 
-const user = useCurrentUser()
-const router = useRouter()
-const db = useFirestore()
-const todos = useCollection(collection(db, 'todos'))
+const authSignout = authPinia();
+const { userName, email, metaData, phoneNumber, profilPicture, id } = storeToRefs(authSignout);
+const user = useCurrentUser();
+const router = useRouter();
 const auth = useFirebaseAuth()
+const target = ref(null);
+const dropdownOpen = ref(false);
+
+onClickOutside(target, () => (dropdownOpen.value = false));
 
 const logout = async () => {
  try {
-  await signOut(auth)
-  if (user === null) {
-   router.push('/')
-  }
-  console.log(auth);
+  user === null && router.push('/');
+  await signOut(auth);
  } catch (error) {
-  console.error(error)
+  console.error(error);
  }
-}
-onMounted(() => watch(user, curentUser => curentUser === null ? router.push('/') : router.push('/Dashboard')))
+};
+
+const UserInformations = computed(() => {
+ return {
+  //  ?=> is optiona chaining, read docs mozila for more information
+  userName: user.value?.displayName || 'N/A',
+  email: user.value?.email || 'N/A',
+  metaData: user.value?.metadata || null,
+  phoneNumber: user.value?.phoneNumber || 'N/A',
+  profilPicture: user.value?.photoURL || 'N/A',
+  id: user.value?.uid || 'N/A',
+ };
+});
+
+onMounted(() => user.value === null && router.push('/'));
+
+// Watch for changes in user and update UserInformations accordingly
+watch(user, (newUser) => {
+ newUser === null && router.push('/');
+ UserInformations.value;
+});
 </script>
 
 <template>
  <div class="relative" ref="target">
   <router-link class="flex items-center gap-4" to="#" @click.prevent="dropdownOpen = !dropdownOpen">
    <span class="hidden text-right lg:block">
-    <span class="block text-sm font-medium text-black dark:text-white">Thomas Anree</span>
-    <span class="block text-xs font-medium">UX Designer</span>
+    <span class="block text-sm font-medium text-black dark:text-white">
+     {{ UserInformations.email }}
+    </span>
+    <span class="block text-xs font-medium">
+     {{ UserInformations.userName }}
+    </span>
    </span>
 
-   <span class="w-12 h-12 rounded-full">
-    <img src="@/assets/images/user/user-01.png" alt="User" />
-   </span>
+   <figure class="w-12 h-auto">
+    <img :src="UserInformations.profilPicture" class="rounded-full" :alt="UserInformations.userName" />
+   </figure>
 
    <svg :class="dropdownOpen && 'rotate-180'" class="hidden fill-current sm:block" width="12" height="8"
     viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
