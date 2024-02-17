@@ -4,6 +4,7 @@ import { RouterLink } from 'vue-router';
 import { authPinia } from '@/stores/auth/authSignin'
 import NotifError from '@/components/base/NotifError.vue';
 
+
 const email = ref('');
 const pw = ref('');
 const notif = ref('')
@@ -22,9 +23,7 @@ const signInPopup = async () => {
  notif.value = newNotif
 }
 
-onMounted(() => {
- watch(() => authSignin.user && authSignin.user.value !== null, () => authSignin.checkUser())
-})
+onMounted(() => watch(() => authSignin.user && authSignin.user.value !== null, () => authSignin.checkUser()))
 </script>
 
 
