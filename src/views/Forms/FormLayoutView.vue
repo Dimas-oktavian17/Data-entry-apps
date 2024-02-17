@@ -1,17 +1,22 @@
 <script setup >
-import { onMounted, ref, watch, watchEffect } from 'vue'
-import axios from 'axios'
+import { onMounted, ref, watchEffect, watch } from 'vue'
+import { storeToRefs } from 'pinia'
+import { formPinia } from '@/stores/formAPI/index'
+// import axios from 'axios'
 import BreadcrumbDefault from '@/components/Breadcrumbs/BreadcrumbDefault.vue'
 import DefaultCard from '@/components/Forms/DefaultCard.vue'
 import InputGroup from '@/components/Forms/InputGroup.vue'
 import SelectGroup from '@/components/Forms/SelectGroup.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 
+const formStore = formPinia()
+const {
+ provinces,
+ cities,
+ kecamatan,
+ kelurahan,
+} = storeToRefs(formStore)
 // Data source for the input group
-// const provinces = ref([])
-// const cities = ref(null)
-// const kecamatan = ref(null)
-// const kelurahan = ref(null)
 const names = ref('')
 const age = ref(null)
 const position = ref('')
@@ -22,98 +27,39 @@ const selectedDistrict = ref([])
 const selectedVillages = ref(null)
 
 const isOptionSelected = ref(false)
-
 const changeTextColor = () => isOptionSelected.value = true
-
-
 const pageTitle = ref('Form Layout')
-onMounted(async () => {
- // try {
- //  const { data } = await axios.get(`https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json`)
- //  provinces.value = data
- //  console.log(provinces.value);
- // } catch (error) {
- //  console.error(error)
- // }
-})
+onMounted(async () => formStore.LoadProvinces())
 // Fetching data 
-// const fetchProvinces = async ({ id, }) => {
-//  try {
-//   if (id === null) {
-//    selectedCity.value = null
-//    selectedDistrict.value = null
-//    cities.value = null
-//    kecamatan.value = null
-//    kelurahan.value = null
-//   } else {
-//    const { data } = await axios.get(`https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${id}.json`)
-//    cities.value = data
-//    console.log(data);
-//   }
-//  } catch (error) {
-//   console.error(error);
-//  }
-// }
+const fetchProvinces = async ({ id, }) => formStore.fetchProvinces({ id }, selectedCity.value, selectedDistrict.value)
+const fecthCity = async ({ id, }) => formStore.fecthCity({ id }, selectedDistrict.value)
+const fetchDistrict = async ({ id }) => formStore.fetchDistrict({ id }, selectedVillages.value)
 
-// const fecthCity = async ({ id, }) => {
-//  try {
-//   if (id === null) {
-//    selectedDistrict.value = null
-
-//    kecamatan.value = null
-//    kelurahan.value = null
-//   }
-//   else {
-//    const { data } = await axios.get(`https://www.emsifa.com/api-wilayah-indonesia/api/districts/${id}.json`)
-//    kecamatan.value = data
-//    console.log(data);
-//   }
-//  } catch (error) {
-//   console.error(error);
-//  }
-// }
-
-// const fetchDistrict = async ({ id, }) => {
-//  try {
-//   if (id === null) {
-//    kelurahan.value = null
-//   }
-//   else {
-//    const { data } = await axios.get(`https://www.emsifa.com/api-wilayah-indonesia/api/villages/${id}.json`)
-//    kelurahan.value = data
-//    console.log(data);
-//   }
-//  } catch (error) {
-//   console.error(error);
-//  }
-// }
 // Watch effect for data form
 watch(selectedProvince, fetchProvinces, { immediate: true })
 watch(selectedCity, fecthCity, { immediate: true })
 watch(selectedDistrict, fetchDistrict, { immediate: true })
-watchEffect(() => {
- if (selectedProvince.value !== null) {
-  selectedCity.value = null
-  selectedDistrict.value = null
-  selectedVillages.value = null
-  cities.value = null
-  kecamatan.value = null
-  kelurahan.value = null
- }
- else {
-  kelurahan.value = null
- }
-})
-watchEffect(() => {
- if (selectedCity.value !== null) {
-  selectedDistrict.value = null
-  kecamatan.value = null
-  kelurahan.value = null
-  selectedVillages.value = null
- }
-})
-
-
+const handleProvince = () => {
+ selectedCity.value = null
+ selectedDistrict.value = null
+ selectedVillages.value = null
+ cities.value = null
+ kecamatan.value = null
+ kelurahan.value = null
+}
+const handleCity = () => {
+ selectedDistrict.value = null
+ kecamatan.value = null
+ kelurahan.value = null
+ selectedVillages.value = null
+}
+const handleDistrict = () => {
+ kelurahan.value = null
+ selectedVillages.value = null
+}
+watchEffect(() => selectedProvince.value !== null && handleProvince())
+watchEffect(() => selectedCity.value !== null && handleCity())
+watchEffect(() => selectedDistrict.value !== null && handleDistrict())
 </script>
 
 <template>
