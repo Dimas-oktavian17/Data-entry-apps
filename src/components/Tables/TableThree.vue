@@ -1,7 +1,20 @@
 <script setup>
+import { ref } from 'vue'
 import { useCollection } from 'vuefire'
 import { karyawanRef } from '@/firebase'
+import { deleteDoc, doc } from "firebase/firestore";
 const dataKaryawan = useCollection(karyawanRef)
+const dataView = ref([])
+const open = ref(false)
+const handleView = (name) => {
+ const viewKaryawan = dataKaryawan.value.find(item => item.name === name)
+ open.value = true
+ dataView.value = viewKaryawan
+}
+const handleDelete = (index) => {
+ deleteDoc(doc(karyawanRef, index))
+ console.log(index);
+}
 </script>
 
 <template>
@@ -22,9 +35,15 @@ const dataKaryawan = useCollection(karyawanRef)
      </tr>
     </thead>
     <tbody>
-     <tr v-for="({ name, jabatan, status_karyawan, umur, provinsi, kota, kecamatan, kelurahan, index }) in dataKaryawan"
-      :key="index">
+     <tr v-for="({ name, jabatan, status_karyawan, umur, index }) in dataKaryawan" :key="index">
       <td class="px-4 py-5 pl-9 xl:pl-11">
+       <div v-if="open" class="absolute -translate-x-1/2 -translate-y-1/2 z-999999 top-1/2 left-1/2">
+        <button @click="open = false">
+         <IconVue icon="maki:cross"
+          class="flex flex-row items-end justify-end w-6 h-auto font-medium text-black dark:text-white" />
+        </button>
+        <AlertSuccess :data="dataView" />
+       </div>
        <h5 class="font-medium text-black dark:text-white">{{ name }}</h5>
        <p class="text-sm">{{ umur }}</p>
       </td>
@@ -42,11 +61,11 @@ const dataKaryawan = useCollection(karyawanRef)
       </td>
       <td class="px-4 py-5">
        <div class="flex items-center space-x-3.5">
-        <button>
+        <button @click="handleView(name, index)">
          <IconVue icon="ph:eye-bold" class="hover:text-primary w-[18px] h-auto" />
         </button>
 
-        <button class="hover:text-primary">
+        <button @click="handleDelete(name, index)" class="hover:text-primary">
          <IconVue icon="ion:trash-outline" class="hover:text-primary w-[18px] h-auto" />
         </button>
 
