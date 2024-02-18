@@ -29,6 +29,7 @@ const selectedDistrict = ref([])
 const selectedVillages = ref(null)
 
 const isOptionSelected = ref(false)
+const AlertsStatus = ref(false)
 const changeTextColor = () => isOptionSelected.value = true
 const pageTitle = ref('Form Layout')
 onMounted(async () => formStore.LoadProvinces())
@@ -84,6 +85,8 @@ const handleSubmit = async () => {
   selectedCity.value = null,
   selectedDistrict.value = null,
   selectedVillages.value = null
+ AlertsStatus.value = true
+ setTimeout(() => AlertsStatus.value = false, 3000);
 }
 </script>
 
@@ -98,6 +101,7 @@ const handleSubmit = async () => {
    <div class="flex flex-col gap-9">
     <!-- Contact Form Start -->
     <DefaultCard cardTitle="Contact Form">
+     <AlertSuccess v-if="AlertsStatus" :title="names" />
      <form @submit.prevent="handleSubmit">
       <div class="p-6.5">
        <div class="mb-4.5 flex flex-col gap-6 xl:flex-row">
@@ -108,13 +112,10 @@ const handleSubmit = async () => {
        </div>
        <InputGroup v-model="position" label="Position" type="text" placeholder="Your position" customClasses="mb-4.5"
         required />
-       {{ position }} {{ age }} {{ names }}
        <SelectGroup v-model="statusKaryawan" />
-       {{ statusKaryawan }}
        <!-- location api -->
        <div class="mb-4.5">
         <label class="mb-2.5 block text-black dark:text-white mt-2.5">Province</label>
-
         <div class="relative z-20 bg-transparent dark:bg-form-input">
          <select v-model="selectedProvince"
           class="relative z-20 w-full px-5 py-3 transition bg-transparent border rounded outline-none appearance-none border-stroke focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
@@ -124,7 +125,6 @@ const handleSubmit = async () => {
            {{ item.name }}
           </option>
          </select>
-         <!-- {{ selectedProvince.name }} -->
          <span class="absolute z-30 -translate-y-1/2 top-1/2 right-4">
           <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24" fill="none"
            xmlns="http://www.w3.org/2000/svg">
@@ -145,10 +145,6 @@ const handleSubmit = async () => {
           <option value="" disabled selected>Type your subject</option>
           <option v-for="( item, index ) in cities" :key="index" :value="item">{{ item.name }}</option>
          </select>
-         <span v-if="selectedCity !== null">
-          {{ selectedCity.name }}
-         </span>
-
          <span class="absolute z-30 -translate-y-1/2 top-1/2 right-4">
           <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24" fill="none"
            xmlns="http://www.w3.org/2000/svg">
@@ -170,9 +166,6 @@ const handleSubmit = async () => {
           <option value="" disabled selected>Type your subject</option>
           <option v-for="(item, index) in kecamatan" :key="index" :value="item">{{ item.name }}</option>
          </select>
-         <span v-if="selectedDistrict !== null">
-          {{ selectedDistrict.name }}
-         </span>
          <span class="absolute z-30 -translate-y-1/2 top-1/2 right-4">
           <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24" fill="none"
            xmlns="http://www.w3.org/2000/svg">
@@ -194,9 +187,6 @@ const handleSubmit = async () => {
           <option value="" disabled selected>Type your subject</option>
           <option v-for="(item, index) in kelurahan" :key="index" :value="item">{{ item.name }}</option>
          </select>
-         <span v-if="selectedVillages !== null">
-          {{ selectedVillages.name }}
-         </span>
          <span class="absolute z-30 -translate-y-1/2 top-1/2 right-4">
           <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24" fill="none"
            xmlns="http://www.w3.org/2000/svg">
@@ -210,7 +200,6 @@ const handleSubmit = async () => {
         </div>
         <!-- end kelurahan -->
        </div>
-
        <!-- end location api -->
        <button class="flex justify-center w-full p-3 font-medium rounded bg-primary text-gray hover:bg-opacity-90">
         Send Message
