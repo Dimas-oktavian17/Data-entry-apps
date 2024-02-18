@@ -2,7 +2,8 @@
 import { onMounted, ref, watchEffect, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { formPinia } from '@/stores/formAPI/index'
-// import axios from 'axios'
+import { karyawanRef } from '@/firebase'
+import { addDoc } from "firebase/firestore";
 import BreadcrumbDefault from '@/components/Breadcrumbs/BreadcrumbDefault.vue'
 import DefaultCard from '@/components/Forms/DefaultCard.vue'
 import InputGroup from '@/components/Forms/InputGroup.vue'
@@ -10,6 +11,7 @@ import SelectGroup from '@/components/Forms/SelectGroup.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 
 const formStore = formPinia()
+
 const {
  provinces,
  cities,
@@ -31,8 +33,8 @@ const changeTextColor = () => isOptionSelected.value = true
 const pageTitle = ref('Form Layout')
 onMounted(async () => formStore.LoadProvinces())
 // Fetching data 
-const fetchProvinces = async ({ id, }) => formStore.fetchProvinces({ id }, selectedCity.value, selectedDistrict.value)
-const fecthCity = async ({ id, }) => formStore.fecthCity({ id }, selectedDistrict.value)
+const fetchProvinces = async ({ id }) => formStore.fetchProvinces({ id }, selectedCity.value, selectedDistrict.value)
+const fecthCity = async ({ id }) => formStore.fecthCity({ id }, selectedDistrict.value)
 const fetchDistrict = async ({ id }) => formStore.fetchDistrict({ id }, selectedVillages.value)
 
 // Watch effect for data form
@@ -57,9 +59,32 @@ const handleDistrict = () => {
  kelurahan.value = null
  selectedVillages.value = null
 }
+
 watchEffect(() => selectedProvince.value !== null && handleProvince())
 watchEffect(() => selectedCity.value !== null && handleCity())
 watchEffect(() => selectedDistrict.value !== null && handleDistrict())
+// actions
+const handleSubmit = async () => {
+ // try {
+ addDoc(karyawanRef, {
+  name: names.value,
+  umur: age.value,
+  jabatan: position.value,
+  status_karyawan: statusKaryawan.value,
+  provinsi: selectedProvince.value,
+  kota: selectedCity.value,
+  kecamatan: selectedDistrict.value,
+  kelurahan: selectedVillages.value,
+ })
+ names.value = '',
+  age.value = null,
+  position.value = '',
+  statusKaryawan.value = null,
+  selectedProvince.value = null,
+  selectedCity.value = null,
+  selectedDistrict.value = null,
+  selectedVillages.value = null
+}
 </script>
 
 <template>
@@ -73,7 +98,7 @@ watchEffect(() => selectedDistrict.value !== null && handleDistrict())
    <div class="flex flex-col gap-9">
     <!-- Contact Form Start -->
     <DefaultCard cardTitle="Contact Form">
-     <form @submit.prevent="">
+     <form @submit.prevent="handleSubmit">
       <div class="p-6.5">
        <div class="mb-4.5 flex flex-col gap-6 xl:flex-row">
         <InputGroup v-model="names" label="Your name" type="text" placeholder="Your name"
@@ -99,7 +124,7 @@ watchEffect(() => selectedDistrict.value !== null && handleDistrict())
            {{ item.name }}
           </option>
          </select>
-         {{ selectedProvince.name }}
+         <!-- {{ selectedProvince.name }} -->
          <span class="absolute z-30 -translate-y-1/2 top-1/2 right-4">
           <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24" fill="none"
            xmlns="http://www.w3.org/2000/svg">
@@ -120,7 +145,10 @@ watchEffect(() => selectedDistrict.value !== null && handleDistrict())
           <option value="" disabled selected>Type your subject</option>
           <option v-for="( item, index ) in cities" :key="index" :value="item">{{ item.name }}</option>
          </select>
-         {{ selectedCity }}
+         <span v-if="selectedCity !== null">
+          {{ selectedCity.name }}
+         </span>
+
          <span class="absolute z-30 -translate-y-1/2 top-1/2 right-4">
           <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24" fill="none"
            xmlns="http://www.w3.org/2000/svg">
@@ -142,7 +170,9 @@ watchEffect(() => selectedDistrict.value !== null && handleDistrict())
           <option value="" disabled selected>Type your subject</option>
           <option v-for="(item, index) in kecamatan" :key="index" :value="item">{{ item.name }}</option>
          </select>
-         {{ selectedDistrict }}
+         <span v-if="selectedDistrict !== null">
+          {{ selectedDistrict.name }}
+         </span>
          <span class="absolute z-30 -translate-y-1/2 top-1/2 right-4">
           <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24" fill="none"
            xmlns="http://www.w3.org/2000/svg">
@@ -164,7 +194,9 @@ watchEffect(() => selectedDistrict.value !== null && handleDistrict())
           <option value="" disabled selected>Type your subject</option>
           <option v-for="(item, index) in kelurahan" :key="index" :value="item">{{ item.name }}</option>
          </select>
-         {{ selectedVillages }}
+         <span v-if="selectedVillages !== null">
+          {{ selectedVillages.name }}
+         </span>
          <span class="absolute z-30 -translate-y-1/2 top-1/2 right-4">
           <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24" fill="none"
            xmlns="http://www.w3.org/2000/svg">
