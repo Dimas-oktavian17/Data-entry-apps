@@ -11,10 +11,8 @@ const handleView = (name) => {
  open.value = true
  dataView.value = viewKaryawan
 }
-const handleDelete = (index) => {
- deleteDoc(doc(karyawanRef, index))
- console.log(index);
-}
+const handleDelete = (index) => deleteDoc(doc(karyawanRef, index))
+
 </script>
 
 <template>
@@ -35,7 +33,7 @@ const handleDelete = (index) => {
      </tr>
     </thead>
     <tbody>
-     <tr v-for="({ name, jabatan, status_karyawan, umur, index }) in dataKaryawan" :key="index">
+     <tr v-for="({ name, jabatan, status_karyawan, umur, id }) in dataKaryawan" :key="id">
       <td class="px-4 py-5 pl-9 xl:pl-11">
        <div v-if="open" class="absolute -translate-x-1/2 -translate-y-1/2 z-999999 top-1/2 left-1/2">
         <button @click="open = false">
@@ -65,7 +63,7 @@ const handleDelete = (index) => {
          <IconVue icon="ph:eye-bold" class="hover:text-primary w-[18px] h-auto" />
         </button>
 
-        <button @click="handleDelete(name, index)" class="hover:text-primary">
+        <button @click="handleDelete(id)" class="hover:text-primary">
          <IconVue icon="ion:trash-outline" class="hover:text-primary w-[18px] h-auto" />
         </button>
 
