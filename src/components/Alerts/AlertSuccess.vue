@@ -1,5 +1,14 @@
 <script setup>
-defineProps(['title'])
+defineProps({
+ title: {
+  type: String,
+  required: false
+ },
+ data: {
+  type: [Array, Object],
+  required: false
+ }
+})
 </script>
 <template>
  <div
@@ -12,12 +21,29 @@ defineProps(['title'])
    </svg>
   </div>
   <div class="w-full">
-   <h5 class="mb-3 text-lg font-bold text-black dark:text-[#34D399]">
+   <h5 v-if="title === null" class="mb-3 text-lg font-bold text-black dark:text-[#34D399]">
     Data Create Successfully
    </h5>
-   <p class="text-base leading-relaxed text-body">
+   <h5 v-if="data !== null" class="mb-3 text-lg font-bold text-black dark:text-[#34D399]">
+    Employe Information
+   </h5>
+   <p class="text-base leading-relaxed text-body" v-if="title === null">
     {{ title }} now store in database
    </p>
+   <div class="flex flex-col items-start justify-start text-2xl leading-relaxed text-body" v-if="data !== null">
+    <p class="pb-1 leading-relaxed text-body">
+     Name: {{ data.name }} - Age: {{ data.umur }}
+    </p>
+    <p class="pb-1 leading-relaxed text-body">
+     Position: {{ data.jabatan }} - Status: {{ data.status_karyawan }}
+    </p>
+    <ul class="pb-1 leading-relaxed text-body">
+     <li>Provinsi: {{ data.provinsi.name }}</li>
+     <li>City: {{ data.kota.name }}</li>
+     <li>District: {{ data.kecamatan.name }}</li>
+     <li>Villages: {{ data.kelurahan.name }}</li>
+    </ul>
+   </div>
   </div>
  </div>
 </template>
