@@ -68,6 +68,7 @@ watchEffect(() => selectedDistrict.value !== null && handleDistrict())
 const handleSubmit = async () => {
  // try {
  addDoc(karyawanRef, {
+  id: karyawanRef.id,
   name: names.value,
   umur: age.value,
   jabatan: position.value,
