@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { useCollection } from 'vuefire'
 import { karyawanRef } from '@/firebase'
+import { deleteDoc, doc } from "firebase/firestore";
 const dataKaryawan = useCollection(karyawanRef)
 const dataView = ref([])
 const open = ref(false)
@@ -9,6 +10,10 @@ const handleView = (name) => {
  const viewKaryawan = dataKaryawan.value.find(item => item.name === name)
  open.value = true
  dataView.value = viewKaryawan
+}
+const handleDelete = (index) => {
+ deleteDoc(doc(karyawanRef, index))
+ console.log(index);
 }
 </script>
 
@@ -60,7 +65,7 @@ const handleView = (name) => {
          <IconVue icon="ph:eye-bold" class="hover:text-primary w-[18px] h-auto" />
         </button>
 
-        <button class="hover:text-primary">
+        <button @click="handleDelete(name, index)" class="hover:text-primary">
          <IconVue icon="ion:trash-outline" class="hover:text-primary w-[18px] h-auto" />
         </button>
 
