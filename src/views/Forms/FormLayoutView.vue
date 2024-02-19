@@ -68,7 +68,7 @@ watchEffect(() => selectedDistrict.value !== null && handleDistrict())
 const handleSubmit = async () => {
  // try {
  addDoc(karyawanRef, {
-  id: karyawanRef.id,
+  id: karyawanRef.id.length + 1,
   name: names.value,
   umur: age.value,
   jabatan: position.value,
@@ -102,7 +102,7 @@ const handleSubmit = async () => {
    <div class="flex flex-col gap-9">
     <!-- Contact Form Start -->
     <DefaultCard cardTitle="Contact Form">
-     <AlertSuccess v-if="AlertsStatus" :title="names" />
+     <!-- <AlertSuccess v-if="AlertsStatus" :title="names" /> -->
      <form @submit.prevent="handleSubmit">
       <div class="p-6.5">
        <div class="mb-4.5 flex flex-col gap-6 xl:flex-row">
