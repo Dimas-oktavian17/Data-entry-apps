@@ -34,8 +34,10 @@ Merupakan sebuah project data entry yang dapat di visualisasikan melalui diagram
 - Terdapat form validation ketika register, dan vertifikasi dari email yang di daftarkan agar bisa mengakses & mengurangi bot/spam
 - User dapat Login secara langsung ketika sudah register
 - Terdapat fiture forgot password dan show password  
+### Form 
+- Admin/User dapat melakukan penginputan data karyawan berdasarkan name, age, and more. 
+- WIP: Terdapat alerts ketika sukses melakukan input adata karyawan 
 ### Dashboard || Soon
-...
 
 ## Recommended IDE Setup
 
