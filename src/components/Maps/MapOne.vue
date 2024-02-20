@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 // @ts-ignore
 import jsVectorMap from 'jsvectormap'
 import '@/assets/js/us-aea-en'
@@ -29,14 +29,6 @@ onMounted(() => {
     cursor: 'pointer'
    }
   },
-
-  labels: {
-   regions: {
-    render(code: any) {
-     return code.split('-')[1]
-    }
-   }
-  }
  })
 })
 </script>

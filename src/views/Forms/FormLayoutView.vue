@@ -4,11 +4,6 @@ import { storeToRefs } from 'pinia'
 import { formPinia } from '@/stores/formAPI/index'
 import { karyawanRef } from '@/firebase'
 import { addDoc } from "firebase/firestore";
-import BreadcrumbDefault from '@/components/Breadcrumbs/BreadcrumbDefault.vue'
-import DefaultCard from '@/components/Forms/DefaultCard.vue'
-import InputGroup from '@/components/Forms/InputGroup.vue'
-import SelectGroup from '@/components/Forms/SelectGroup.vue'
-import DefaultLayout from '@/layouts/DefaultLayout.vue'
 
 const formStore = formPinia()
 
