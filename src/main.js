@@ -21,6 +21,7 @@ import { firebaseApp } from './firebase/index.js'
 import NotifError from "@/components/base/NotifError.vue"
 import buttonAuth from "@/components/base/ButtonAuth.vue"
 import AlertSuccess from '@/components/Alerts/AlertSuccess.vue'
+import AlertView from '@/components/Alerts/AlertView.vue'
 import App from './App.vue'
 
 const app = createApp(App)
@@ -28,6 +29,7 @@ app.component('IconVue', Icon)
   .component('NotifError', NotifError)
   .component('ButtonAuth', buttonAuth)
   .component('AlertSuccess', AlertSuccess)
+  .component('AlertView', AlertView)
   .use(createPinia())
   .use(plugin, defaultConfig)
   .use(router)
