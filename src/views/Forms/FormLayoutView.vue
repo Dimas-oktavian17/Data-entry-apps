@@ -1,12 +1,14 @@
-<script setup >
+<script setup>
 import { onMounted, ref, watchEffect, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { formPinia } from '@/stores/formAPI/index'
 import { karyawanRef } from '@/firebase'
 import { addDoc } from "firebase/firestore";
+import { useCurrentUser } from 'vuefire';
 
 const formStore = formPinia()
-
+const user = useCurrentUser();
+console.log(user.value.uid);
 const {
  provinces,
  cities,
@@ -63,6 +65,7 @@ watchEffect(() => selectedDistrict.value !== null && handleDistrict())
 const handleSubmit = async () => {
  // try {
  addDoc(karyawanRef, {
+  author: [{ name: user.value.displayName, email: user.value.email, uid: user.value.uid, picture: user.value.photoURL }],
   id: karyawanRef.id.length + 1,
   name: names.value,
   umur: age.value,
