@@ -22,6 +22,7 @@ import NotifError from "@/components/base/NotifError.vue"
 import buttonAuth from "@/components/base/ButtonAuth.vue"
 import AlertSuccess from '@/components/Alerts/AlertSuccess.vue'
 import AlertView from '@/components/Alerts/AlertView.vue'
+import ChartThree from '@/components/Charts/ChartThree.vue'
 import App from './App.vue'
 
 const app = createApp(App)
@@ -30,6 +31,7 @@ app.component('IconVue', Icon)
   .component('ButtonAuth', buttonAuth)
   .component('AlertSuccess', AlertSuccess)
   .component('AlertView', AlertView)
+  .component('ChartThree', ChartThree)
   .use(createPinia())
   .use(plugin, defaultConfig)
   .use(router)
