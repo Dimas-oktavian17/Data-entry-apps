@@ -11,7 +11,13 @@ export default defineConfig({
     }
   },
   plugins: [
-    vue(),
+    vue({
+      template: {
+        compilerOptions: {
+          isCustomElement: (tag) => ['AlertSucces'].includes(tag),
+        }
+      }
+    })
   ],
   resolve: {
     alias: {

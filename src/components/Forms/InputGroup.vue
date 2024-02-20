@@ -1,5 +1,4 @@
 <script lang="ts">
-import { update } from 'firebase/database';
 import { defineComponent } from 'vue'
 
 export default defineComponent({
