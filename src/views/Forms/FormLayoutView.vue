@@ -8,7 +8,6 @@ import { useCurrentUser } from 'vuefire';
 
 const formStore = formPinia()
 const user = useCurrentUser();
-console.log(user.value.uid);
 const {
  provinces,
  cities,
@@ -101,16 +100,44 @@ const handleSubmit = async () => {
     <!-- Contact Form Start -->
     <DefaultCard cardTitle="Contact Form">
      <AlertSuccess v-if="AlertsStatus" :title="names" />
-     <form @submit.prevent="handleSubmit">
+
+     <FormKit type="form" @submit="handleSubmit">
       <div class="p-6.5">
        <div class="mb-4.5 flex flex-col gap-6 xl:flex-row">
-        <InputGroup v-model="names" label="Your name" type="text" placeholder="Your name"
-         customClasses="w-full xl:w-1/2" />
-        <InputGroup v-model="age" label="Your age" type="number" placeholder="Your age"
-         customClasses="w-full xl:w-1/2" />
+        <FormKit v-model="names" type="text" name="name" label="Your name" placeholder="Abu Na'im"
+         validation="required|length:5,15" :classes="{
+          outer: 'mb-4.5 w-full xl:w-1/2',
+          label:
+           'mb-2.5 block text-black dark:text-white',
+          inner: ' focus:outline-1',
+          input:
+           'w-full rounded border-[1.5px] text-black border-stroke bg-transparent py-3 px-5 font-normal outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:text-white dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary',
+         }" />
+        <!-- <InputGroup v-model="names" label="Your name" type="text" placeholder="Your name"
+         customClasses="w-full xl:w-1/2" /> -->
+        <!-- <InputGroup v-model="age" label="Your age" type="number" placeholder="Your age"
+         customClasses="w-full xl:w-1/2" /> -->
+        <FormKit v-model="age" type="number" name="age" label="Your age" placeholder="Your age" validation="required"
+         :classes="{
+          outer: 'mb-4.5 w-full xl:w-1/2',
+          label:
+           'mb-2.5 block text-black dark:text-white',
+          inner: ' focus:outline-1',
+          input:
+           'w-full rounded border-[1.5px] text-black border-stroke bg-transparent py-3 px-5 font-normal outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:text-white dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary',
+         }" />
        </div>
-       <InputGroup v-model="position" label="Position" type="text" placeholder="Your position" customClasses="mb-4.5"
-        required />
+       <!-- <InputGroup v-model="position" label="Position" type="text" placeholder="Your position" customClasses="mb-4.5"
+        required /> -->
+       <FormKit v-model="position" type="text" name="Position" label="Your position" placeholder="IT Staff"
+        validation="required|length:5,15" :classes="{
+         outer: 'mb-4.5 w-full',
+         label:
+          'mb-2.5 block text-black dark:text-white',
+         inner: ' focus:outline-1',
+         input:
+          'w-full rounded border-[1.5px] text-black border-stroke bg-transparent py-3 px-5 font-normal outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:text-white dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary',
+        }" />
        <SelectGroup v-model="statusKaryawan" />
        <!-- location api -->
        <div class="mb-4.5">
@@ -203,8 +230,9 @@ const handleSubmit = async () => {
        <button class="flex justify-center w-full p-3 font-medium rounded bg-primary text-gray hover:bg-opacity-90">
         Send Message
        </button>
+
       </div>
-     </form>
+     </FormKit>
     </DefaultCard>
     <!-- Contact Form End -->
    </div>
@@ -214,3 +242,9 @@ const handleSubmit = async () => {
   <!-- ====== Form Layout Section End -->
  </DefaultLayout>
 </template>
+<style scoped>
+.formkit-wrapper {
+ display: none !important;
+
+}
+</style>
