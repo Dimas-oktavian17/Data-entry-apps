@@ -133,7 +133,7 @@ watchEffect(() => selectedDistrict.value !== null && handleDistrict())
        </div>
        <AlertSucces :title="name" />
        <h5 class="font-medium text-black dark:text-white">{{ name }}</h5>
-       <p class="text-sm">{{ umur }}</p>
+       <p class="text-sm">{{ umur }} Thn</p>
       </td>
       <td class="px-4 py-5">
        <p class="text-black dark:text-white">{{ jabatan }}</p>

@@ -39,6 +39,7 @@ import DarkModeSwitcher from '@/components/Header/DarkModeSwitcher.vue'
 import DropdownMessage from '@/components/Header/DropdownMessage.vue'
 import DropdownNotification from '@/components/Header/DropdownNotification.vue'
 import DropdownUser from '@/components/Header/DropdownUser.vue'
+import ProfileCard from '@/components/ProfileCard.vue'
 
 
 import App from './App.vue'
@@ -66,6 +67,7 @@ app.component('IconVue', Icon)
   .component('DropdownMessage', DropdownMessage)
   .component('DropdownNotification', DropdownNotification)
   .component('DropdownUser', DropdownUser)
+  .component('ProfileCard', ProfileCard)
   .use(createPinia())
   .use(plugin, defaultConfig)
   .use(router)
