@@ -34,15 +34,14 @@ const { UsersInput } = storeToRefs(Users)
      <div class="flex-shrink-0">
       <img :src="photo" :alt="name" class="rounded-full size-16" />
      </div>
-     <!-- <p class="hidden text-black dark:text-white sm:block">{{ name }}</p> -->
     </div>
 
-    <div class="flex items-center justify-center p-2.5 xl:p-5">
+    <div class="flex items-center justify-start p-2.5 xl:p-5">
      <p class="text-black dark:text-white">{{ name }}</p>
     </div>
 
-    <div class="flex items-center justify-center p-2.5 xl:p-5">
-     <p class="text-meta-3">{{ email }}</p>
+    <div class="flex items-center justify-start  p-2.5 xl:p-5">
+     <p class="break-all text-meta-3">{{ email }}</p>
     </div>
 
     <div class="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
