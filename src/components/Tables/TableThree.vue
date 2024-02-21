@@ -1,11 +1,12 @@
 <script setup>
 import { ref, onMounted, watchEffect, watch } from 'vue'
-import { useCollection } from 'vuefire'
+import { useCollection, useCurrentUser } from 'vuefire'
 import { karyawanRef } from '@/firebase'
 import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 const dataKaryawan = useCollection(karyawanRef)
 const dataView = ref([])
 const open = ref(false)
+const user = useCurrentUser();
 const handleView = (name) => {
  const viewKaryawan = dataKaryawan.value.find(item => item.name === name)
  open.value = true
@@ -19,6 +20,7 @@ const handleEdit = async (id) => {
 }
 const handleSubmit = async () => {
  updateDoc(doc(karyawanRef, formID.value), {
+  author: [{ name: user.value.displayName, email: user.value.email, uid: user.value.uid, picture: user.value.photoURL }],
   id: karyawanRef.id.length + 1,
   name: names.value,
   umur: age.value,
@@ -131,7 +133,7 @@ watchEffect(() => selectedDistrict.value !== null && handleDistrict())
        </div>
        <AlertSucces :title="name" />
        <h5 class="font-medium text-black dark:text-white">{{ name }}</h5>
-       <p class="text-sm">{{ umur }}</p>
+       <p class="text-sm">{{ umur }} Thn</p>
       </td>
       <td class="px-4 py-5">
        <p class="text-black dark:text-white">{{ jabatan }}</p>

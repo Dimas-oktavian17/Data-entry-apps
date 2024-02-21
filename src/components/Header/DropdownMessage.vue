@@ -66,12 +66,12 @@ const messagesList = ref([
         class="absolute -top-0.5 -right-0.5 z-1 h-2 w-2 rounded-full bg-meta-1"
       >
         <span
-          class="absolute -z-1 inline-flex h-full w-full animate-ping rounded-full bg-meta-1 opacity-75"
+          class="absolute inline-flex w-full h-full rounded-full opacity-75 -z-1 animate-ping bg-meta-1"
         ></span>
       </span>
 
       <svg
-        class="fill-current duration-300 ease-in-out"
+        class="duration-300 ease-in-out fill-current"
         width="18"
         height="18"
         viewBox="0 0 18 18"
@@ -106,7 +106,7 @@ const messagesList = ref([
         <h5 class="text-sm font-medium text-bodydark2">Messages</h5>
       </div>
 
-      <ul class="flex h-auto flex-col overflow-y-auto">
+      <ul class="flex flex-col h-auto overflow-y-auto">
         <template v-for="(item, index) in messagesList" :key="index">
           <li>
             <router-link
