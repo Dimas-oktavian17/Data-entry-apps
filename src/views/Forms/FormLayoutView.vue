@@ -93,7 +93,6 @@ const handleSubmit = async () => {
     <!-- Breadcrumb Start -->
     <BreadcrumbDefault :pageTitle="pageTitle" />
     <!-- Breadcrumb End -->
-
     <!-- ====== Form Layout Section Start -->
     <div class="grid grid-cols-1 gap-9 ">
       <div class="flex flex-col gap-9">
@@ -236,15 +235,7 @@ const handleSubmit = async () => {
         </DefaultCard>
         <!-- Contact Form End -->
       </div>
-
-
     </div>
     <!-- ====== Form Layout Section End -->
   </DefaultLayout>
 </template>
-<style scoped>
-.formkit-wrapper {
-  display: none !important;
-
-}
-</style>
