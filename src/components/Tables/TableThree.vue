@@ -75,7 +75,7 @@ onMounted(async () => formStore.LoadProvinces())
 const fetchProvinces = async ({ id }) => formStore.fetchProvinces({ id }, selectedCity.value, selectedDistrict.value)
 const fecthCity = async ({ id }) => formStore.fecthCity({ id }, selectedDistrict.value)
 const fetchDistrict = async ({ id }) => formStore.fetchDistrict({ id }, selectedVillages.value)
-
+ 
 // Watch effect for data form
 watch(selectedProvince, fetchProvinces, { immediate: true })
 watch(selectedCity, fecthCity, { immediate: true })
@@ -107,6 +107,7 @@ watchEffect(() => selectedDistrict.value !== null && handleDistrict())
 <template>
   <div v-if="AlertsStatus === false"
     class="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+    <TableFilterLocation/>
     <div class="max-w-full overflow-x-auto">
       <table class="w-full table-auto">
         <thead>
