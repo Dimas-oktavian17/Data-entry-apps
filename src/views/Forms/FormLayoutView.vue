@@ -100,7 +100,6 @@ const handleSubmit = async () => {
     <!-- Contact Form Start -->
     <DefaultCard cardTitle="Contact Form">
      <AlertSuccess v-if="AlertsStatus" :title="names" />
-
      <FormKit type="form" @submit="handleSubmit">
       <div class="p-6.5">
        <div class="mb-4.5 flex flex-col gap-6 xl:flex-row">
@@ -224,21 +223,8 @@ const handleSubmit = async () => {
        <button class="flex justify-center w-full p-3 font-medium rounded bg-primary text-gray hover:bg-opacity-90">
         Send Message
        </button>
-
       </div>
-     </FormKit>
-    </DefaultCard>
-    <!-- Contact Form End -->
-   </div>
-
-
-  </div>
-  <!-- ====== Form Layout Section End -->
- </DefaultLayout>
+    </div>
+    <!-- ====== Form Layout Section End -->
+  </DefaultLayout>
 </template>
-<style scoped>
-.formkit-wrapper {
- display: none !important;
-
-}
-</style>
