@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import { useCollection, useCurrentUser } from 'vuefire'
 import { karyawanRef } from '@/firebase'
 import { defineStore } from 'pinia'
@@ -8,16 +8,18 @@ export const UsersPinia = defineStore('UsersPinia', () => {
   // state
   const dataKaryawan = useCollection(karyawanRef)
   const users = useCurrentUser()
-  const name = ref(users.value.displayName)
-  const email = ref(users.value.email)
-  const photo = ref(users.value.photoURL)
-  const uid = ref(users.value.uid)
-  const dateSingin = new Date(users.value.metadata.lastSignInTime)
-  const dateCreate = new Date(users.value.metadata.creationTime)
-  const LoginDate = dateSingin.toDateString()
-  const CreateDate = dateCreate.toDateString()
-
   // getters
+  const currentCountUsers = computed(() => {
+    const CurrentUser = UsersInput.value.find(({ name }) => name === users.value.displayName)
+    return CurrentUser ? CurrentUser.count : 0
+  })
+  const LoginDate = computed(() => new Date(users.value.metadata.lastSignInTime).toDateString())
+  const CreateDate = computed(() => new Date(users.value.metadata.creationTime).toDateString())
+  const name = computed(() => users.value.displayName)
+  const email = computed(() => users.value.email)
+  const photo = computed(() => users.value.photoURL)
+  const uid = computed(() => users.value.uid)
+  const TotalEmploye = computed(() => dataKaryawan.value.length)
   const StatusMagang = computed(() => dataKaryawan.value.filter(({ status_karyawan }) => status_karyawan === 'magang').length)
   const StatusKontrak = computed(() => dataKaryawan.value.filter(({ status_karyawan }) => status_karyawan === 'kontrak').length)
   const StatusKartap = computed(() => dataKaryawan.value.filter(({ status_karyawan }) => status_karyawan === 'kartap').length)
@@ -42,6 +44,8 @@ export const UsersPinia = defineStore('UsersPinia', () => {
     photo,
     uid,
     LoginDate,
-    CreateDate
+    CreateDate,
+    TotalEmploye,
+    currentCountUsers
   }
 })

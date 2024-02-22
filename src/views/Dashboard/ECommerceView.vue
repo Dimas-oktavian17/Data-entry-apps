@@ -3,7 +3,7 @@
 
 <template>
  <DefaultLayout>
-  <div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
+  <div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
    <DataStatsOne />
   </div>
 
@@ -25,13 +25,13 @@
    <!-- ====== Map One End -->
 
    <!-- ====== Table One Start -->
-   <div class="col-span-12 xl:col-span-8">
+   <div class="col-span-12 ">
     <TableOne />
    </div>
    <!-- ====== Table One End -->
 
    <!-- ====== Chat Card Start -->
-   <ChatCard />
+   <!-- <ChatCard /> -->
    <!-- ====== Chat Card End -->
   </div>
  </DefaultLayout>
