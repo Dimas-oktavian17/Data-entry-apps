@@ -224,7 +224,10 @@ const handleSubmit = async () => {
         Send Message
        </button>
       </div>
-    </div>
-    <!-- ====== Form Layout Section End -->
-  </DefaultLayout>
+     </FormKit>
+    </DefaultCard>
+   </div>
+  </div>
+  <!-- ====== Form Layout Section End -->
+ </DefaultLayout>
 </template>
