@@ -44,10 +44,9 @@
 /* .formkit-wrapper #input_15 {
  @apply hidden
 } */
-#input_0-incomplete ,  #input_4{
+.formkit-actions{
 @apply hidden
 }
-
 /* #input_4 {
     @apply
 } */
