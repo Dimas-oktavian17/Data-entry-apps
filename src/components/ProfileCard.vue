@@ -54,7 +54,7 @@ const { name, email, uid, photo, } = storeToRefs(Users)
     <h3 class="mb-1.5 text-2xl font-medium text-black dark:text-white">{{ name }}</h3>
     <p class="font-medium">{{ uid }} - {{ email }}</p>
     <div
-     class="mx-auto mt-4.5 mb-5.5 grid max-w-94 grid-cols-3 rounded-md border border-stroke py-2.5 shadow-1 dark:border-strokedark dark:bg-[#37404F]">
+     class="mx-auto mt-4.5 mb-5.5 grid max-w-94 lg:grid-cols-3 rounded-md border border-stroke py-2.5 shadow-1 dark:border-strokedark dark:bg-[#37404F]">
      <div class="flex flex-col items-center justify-center gap-1 px-4 border-r border-stroke dark:border-strokedark">
       <span class="font-semibold text-black dark:text-white">{{ Users.LoginDate }}</span>
       <span class="text-sm">Last Login</span>
