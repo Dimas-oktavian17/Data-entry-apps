@@ -1,14 +1,33 @@
 /* eslint-disable no-unused-vars */
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import axios from 'axios';
 import { defineStore } from 'pinia';
+import { UsersPinia } from '@/stores/users/users'
+import { storeToRefs } from 'pinia'
 
 export const formPinia = defineStore('formPinia', () => {
   //  State
+  const Users = UsersPinia()
+  const { dataKaryawan } = storeToRefs(Users)
   const provinces = ref([])
   const cities = ref(null)
   const kecamatan = ref(null)
   const kelurahan = ref(null)
+  const provincesID = ref(null)
+  const citiesID = ref('')
+  const kecamatanID = ref('')
+  const kelurahanID = ref('')
+  // getters
+  const filterUsers = computed(() => {
+    return dataKaryawan.value.filter(item => {
+      const provinsi = provincesID.value ? item.provinsi.id === provincesID.value : true;
+      const city = citiesID.value ? item.kota.id === citiesID.value : true;
+      const district = kecamatanID.value ? item.kecamatan.id === kecamatanID.value : true;
+      return (provincesID.value ? provinsi : true) &&
+        (citiesID.value ? city : true) &&
+        (kecamatanID.value ? district : true);
+    })
+  })
   // actions function delegations
   const handleProvinces = (selectedDistrict, selectedCity) => {
     selectedDistrict = null
@@ -36,11 +55,14 @@ export const formPinia = defineStore('formPinia', () => {
       // console.error(error)
     }
   }
-  const fetchProvinces = async ({ id }, selectedCity, selectedDistrict) => {
+  const fetchProvinces = async ({ id, name }, selectedCity, selectedDistrict) => {
     try {
       console.log(id);
+      console.log(typeof (provincesID.value));
       id === null && handleProvinces(selectedCity, selectedDistrict)
       const { data } = await axios.get(`https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${id}.json`)
+      provincesID.value = id
+      console.log(provincesID.value, 'ok');
       cities.value = data
     } catch (error) {
       // console.warn(error);
@@ -50,6 +72,7 @@ export const formPinia = defineStore('formPinia', () => {
   const fecthCity = async ({ id }, selectedDistrict) => {
     try {
       console.log(id);
+      citiesID.value = id
       id === null && handleCity(selectedDistrict)
       const { data } = await axios.get(`https://www.emsifa.com/api-wilayah-indonesia/api/districts/${id}.json`)
       kecamatan.value = data
@@ -61,6 +84,7 @@ export const formPinia = defineStore('formPinia', () => {
   const fetchDistrict = async ({ id }, selectedVillages) => {
     try {
       console.log(id);
+      kecamatanID.value = id
       id === null && handleDistrict(selectedVillages)
       const { data } = await axios.get(`https://www.emsifa.com/api-wilayah-indonesia/api/villages/${id}.json`)
       kelurahan.value = data
@@ -79,6 +103,7 @@ export const formPinia = defineStore('formPinia', () => {
     fetchDistrict,
     handleProvinces,
     handleCity,
-    handleDistrict
+    handleDistrict,
+    filterUsers
   }
 })
