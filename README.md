@@ -36,9 +36,11 @@ Merupakan sebuah project data entry yang dapat di visualisasikan melalui diagram
 - Terdapat fiture forgot password dan show password  
 ### Form 
 - Admin/User dapat melakukan penginputan data karyawan berdasarkan name, age, and more. 
-- WIP: Terdapat alerts ketika sukses melakukan input adata karyawan 
-### Dashboard || Soon
-
+- Terdapat alerts ketika sukses melakukan input adata karyawan 
+### Dashboard 
+- Menampilkan total input admin
+- Menampilkan total input all admin
+- Visualisasi data donuts, berdasarkan status_karyawan
 ## Recommended IDE Setup
 
 [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
