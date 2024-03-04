@@ -3,6 +3,8 @@ import { ref, onMounted, watchEffect, watch } from 'vue'
 import { useCollection, useCurrentUser } from 'vuefire'
 import { karyawanRef } from '@/firebase'
 import { deleteDoc, doc, updateDoc } from "firebase/firestore";
+import { storeToRefs } from 'pinia';
+
 const dataKaryawan = useCollection(karyawanRef)
 const dataView = ref([])
 const open = ref(false)
@@ -12,7 +14,6 @@ const handleView = (name) => {
  open.value = true
  dataView.value = viewKaryawan
 }
-
 // data form
 const handleEdit = async (id) => {
  formID.value = id
@@ -34,7 +35,7 @@ const handleSubmit = async () => {
  AlertsStatus.value = false
 }
 // form edit function 
-import { storeToRefs } from 'pinia'
+
 import { formPinia } from '@/stores/formAPI/index'
 import BreadcrumbDefault from '@/components/Breadcrumbs/BreadcrumbDefault.vue'
 import DefaultCard from '@/components/Forms/DefaultCard.vue'
@@ -48,6 +49,7 @@ const {
  cities,
  kecamatan,
  kelurahan,
+ filterUsers
 } = storeToRefs(formStore)
 // Data source for the input group
 const names = ref('')
@@ -77,9 +79,10 @@ const fecthCity = async ({ id }) => formStore.fecthCity({ id }, selectedDistrict
 const fetchDistrict = async ({ id }) => formStore.fetchDistrict({ id }, selectedVillages.value)
 
 // Watch effect for data form
-watch(selectedProvince, fetchProvinces, { immediate: true })
-watch(selectedCity, fecthCity, { immediate: true })
-watch(selectedDistrict, fetchDistrict, { immediate: true })
+watch(selectedProvince.value, fetchProvinces, { immediate: true })
+watch(selectedCity.value, fecthCity, { immediate: true })
+watch(selectedDistrict.value, fetchDistrict, { immediate: true })
+
 const handleProvince = () => {
  selectedCity.value = null
  selectedDistrict.value = null
@@ -107,6 +110,7 @@ watchEffect(() => selectedDistrict.value !== null && handleDistrict())
 <template>
  <div v-if="AlertsStatus === false"
   class="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+  <TableFilterLocation />
   <div class="max-w-full overflow-x-auto">
    <table class="w-full table-auto">
     <thead>
@@ -114,15 +118,15 @@ watchEffect(() => selectedDistrict.value !== null && handleDistrict())
       <th class="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
        Employe name
       </th>
-      <th class=" min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
+      <th class="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
        Position
       </th>
-      <th class=" min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">Status</th>
+      <th class="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">Status</th>
       <th class="px-4 py-4 font-medium text-black dark:text-white">Actions</th>
      </tr>
     </thead>
     <tbody>
-     <tr v-for="({ name, jabatan, status_karyawan, umur, id }) in dataKaryawan" :key="id">
+     <tr v-for="({ name, jabatan, status_karyawan, umur, id }) in filterUsers" :key="id">
       <td class="px-4 py-5 pl-9 xl:pl-11">
        <div v-if="open" class="absolute -translate-x-1/2 -translate-y-1/2 z-999999 top-1/2 left-1/2">
         <button @click="open = false">
@@ -135,10 +139,10 @@ watchEffect(() => selectedDistrict.value !== null && handleDistrict())
        <h5 class="font-medium text-black dark:text-white">{{ name }}</h5>
        <p class="text-sm">{{ umur }} Thn</p>
       </td>
-      <td class="px-4 py-5 ">
+      <td class="px-4 py-5">
        <p class="text-black dark:text-white">{{ jabatan }}</p>
       </td>
-      <td class="px-4 py-5 ">
+      <td class="px-4 py-5">
        <p class="inline-flex px-3 py-1 text-sm font-medium rounded-full bg-opacity-10" :class="{
         'bg-warning text-warning': status_karyawan === 'kontrak',
         'bg-danger text-danger': status_karyawan === 'magang',

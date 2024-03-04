@@ -35,12 +35,13 @@ import InputGroup from '@/components/Forms/InputGroup.vue'
 import SelectGroup from '@/components/Forms/SelectGroup.vue'
 import TableTwo from '@/components/Tables/TableTwo.vue'
 import TableThree from '@/components/Tables/TableThree.vue'
+import TableFilterLocation from '@/components/Tables/TableFilterLocation.vue'
 import DarkModeSwitcher from '@/components/Header/DarkModeSwitcher.vue'
 import DropdownMessage from '@/components/Header/DropdownMessage.vue'
 import DropdownNotification from '@/components/Header/DropdownNotification.vue'
 import DropdownUser from '@/components/Header/DropdownUser.vue'
 import ProfileCard from '@/components/ProfileCard.vue'
-
+import DefaultAuthCard from '@/components/Auths/DefaultAuthCard.vue'
 
 import App from './App.vue'
 const app = createApp(App)
@@ -67,7 +68,9 @@ app.component('IconVue', Icon)
   .component('DropdownMessage', DropdownMessage)
   .component('DropdownNotification', DropdownNotification)
   .component('DropdownUser', DropdownUser)
+  .component('DefaultAuthCard', DefaultAuthCard)
   .component('ProfileCard', ProfileCard)
+  .component('TableFilterLocation', TableFilterLocation)
   .use(createPinia())
   .use(plugin, defaultConfig)
   .use(router)

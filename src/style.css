@@ -37,10 +37,10 @@
  color: red;
 }
 
-#input_3 {
+/* #input_3 {
  @apply mt-4 text-black border-black border rounded w-full py-2.5 hover:bg-black hover:text-white transition-all
-}
+} */
 
-.formkit-actions{
-@apply hidden
+.formkit-actions {
+ @apply hidden
 }
