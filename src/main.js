@@ -41,7 +41,7 @@ import DropdownMessage from '@/components/Header/DropdownMessage.vue'
 import DropdownNotification from '@/components/Header/DropdownNotification.vue'
 import DropdownUser from '@/components/Header/DropdownUser.vue'
 import ProfileCard from '@/components/ProfileCard.vue'
-
+import DefaultAuthCard from '@/components/Auths/DefaultAuthCard.vue'
 
 import App from './App.vue'
 const app = createApp(App)
@@ -68,6 +68,7 @@ app.component('IconVue', Icon)
   .component('DropdownMessage', DropdownMessage)
   .component('DropdownNotification', DropdownNotification)
   .component('DropdownUser', DropdownUser)
+  .component('DefaultAuthCard', DefaultAuthCard)
   .component('ProfileCard', ProfileCard)
   .component('TableFilterLocation', TableFilterLocation)
   .use(createPinia())
