@@ -53,6 +53,7 @@ watchEffect(() => selectedCity.value !== null && handleCity())
 watchEffect(() => selectedDistrict.value !== null && handleDistrict())
 
 </script>
+
 <template>
  <div class="max-w-full overflow-x-auto">
   <table class="w-full table-auto">
