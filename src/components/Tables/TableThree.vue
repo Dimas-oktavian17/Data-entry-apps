@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, watchEffect, watch } from 'vue'
+import { ref, onMounted, watchEffect, watch, } from 'vue'
 import { useCollection, useCurrentUser } from 'vuefire'
 import { karyawanRef } from '@/firebase'
 import { deleteDoc, doc, updateDoc } from "firebase/firestore";
@@ -41,7 +41,7 @@ import BreadcrumbDefault from '@/components/Breadcrumbs/BreadcrumbDefault.vue'
 import DefaultCard from '@/components/Forms/DefaultCard.vue'
 import InputGroup from '@/components/Forms/InputGroup.vue'
 import SelectGroup from '@/components/Forms/SelectGroup.vue'
-
+import { excelStore } from '@/stores/excel/excelStore';
 const formStore = formPinia()
 
 const {
@@ -110,6 +110,15 @@ watchEffect(() => selectedDistrict.value !== null && handleDistrict())
 <template>
  <div v-if="AlertsStatus === false"
   class="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+  <header class="grid grid-cols-1 place-items-end">
+   <download-excel
+    class="flex flex-row-reverse justify-center px-6 py-2 my-4 transition-all rounded-md cursor-pointer hover:transition-all align-items-center bg-primary hover:opacity-80"
+    @click="excelStore().generateFlattenedData" :data="excelStore().flattenedData"
+    :fields="excelStore().flattenedFields" worksheet="Data Karyawan" name="Data_Karyawan.xls">
+    Download
+    <IconVue icon="material-symbols:download" class="w-6 h-auto" />
+   </download-excel>
+  </header>
   <TableFilterLocation />
   <div class="max-w-full overflow-x-auto">
    <table class="w-full table-auto">
@@ -144,10 +153,10 @@ watchEffect(() => selectedDistrict.value !== null && handleDistrict())
       </td>
       <td class="px-4 py-5">
        <p class="inline-flex px-3 py-1 text-sm font-medium rounded-full bg-opacity-10" :class="{
-        'bg-warning text-warning': status_karyawan === 'kontrak',
-        'bg-danger text-danger': status_karyawan === 'magang',
-        'bg-success text-success': status_karyawan === 'kartap'
-       }">
+  'bg-warning text-warning': status_karyawan === 'kontrak',
+  'bg-danger text-danger': status_karyawan === 'magang',
+  'bg-success text-success': status_karyawan === 'kartap'
+ }">
         {{ status_karyawan }}
        </p>
       </td>
