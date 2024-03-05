@@ -1,15 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+// import { ref } from 'vue'
+import { updateUsers } from '@/stores/users/updateUsers';
+import { storeToRefs } from 'pinia';
+const UpdateUsers = updateUsers()
+const { name, email, phone, photo } = storeToRefs(UpdateUsers)
 
-const formData = ref({
- fullName: 'Devid Jhon',
- phoneNumber: '+990 3343 7865',
- emailAddress: 'devidjond45@gmail.com',
- username: 'devidjhon24',
- bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque posuere fermentum urna, eu condimentum mauris tempus ut. Donec fermentum blandit aliquet.'
-})
-
-import userPhoto from '@/assets/images/user/user-03.png'
+// import userPhoto from '@/assets/images/user/user-03.png'
 
 const handleSubmit = () => {
  // Handle form submission for personal information
@@ -68,7 +64,7 @@ const updatePhoto = () => {
            </g>
           </svg>
          </span>
-         <input v-model="formData.fullName"
+         <input v-model="name"
           class="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 font-normal text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
           type="text" name="fullName" id="fullName" placeholder="Devid Jhon" />
         </div>
@@ -77,7 +73,7 @@ const updatePhoto = () => {
        <!-- Phone Number Section -->
        <div class="w-full sm:w-1/2">
         <label class="block mb-3 text-sm font-medium text-black dark:text-white" for="phoneNumber">Phone Number</label>
-        <input v-model="formData.phoneNumber"
+        <input v-model="phone"
          class="w-full rounded border border-stroke bg-gray py-3 px-4.5 font-normal text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
          type="text" name="phoneNumber" id="phoneNumber" placeholder="+990 3343 7865" />
        </div>
@@ -100,22 +96,22 @@ const updatePhoto = () => {
           </g>
          </svg>
         </span>
-        <input v-model="formData.emailAddress"
+        <input v-model="email"
          class="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 font-normal text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
          type="email" name="emailAddress" id="emailAddress" placeholder="devidjond45@gmail.com" />
        </div>
       </div>
 
       <!-- Username Section -->
-      <div class="mb-5.5">
+      <!-- <div class="mb-5.5">
        <label class="block mb-3 text-sm font-medium text-black dark:text-white" for="Username">Username</label>
        <input v-model="formData.username"
         class="w-full rounded border border-stroke bg-gray py-3 px-4.5 font-normal text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
         type="text" name="Username" id="Username" placeholder="devidjhon24" />
-      </div>
+      </div> -->
 
       <!-- Bio Section -->
-      <div class="mb-5.5">
+      <!-- <div class="mb-5.5">
        <label class="block mb-3 text-sm font-medium text-black dark:text-white" for="bio">BIO</label>
        <div class="relative">
         <span class="absolute left-4.5 top-4">
@@ -140,7 +136,7 @@ const updatePhoto = () => {
          class="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 font-normal text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
          name="bio" id="bio" rows="6" placeholder="Write your bio here"></textarea>
        </div>
-      </div>
+      </div> -->
 
       <!-- Save and Cancel Buttons -->
       <div class="flex justify-end gap-4.5">
@@ -169,9 +165,9 @@ const updatePhoto = () => {
      <form @submit.prevent="handlePhotoSubmit">
       <!-- User Photo Section -->
       <div class="flex items-center gap-3 mb-4">
-       <div class="rounded-full h-14 w-14">
-        <img :src="userPhoto" alt="User" />
-       </div>
+       <figure>
+        <img class="rounded-full h-14 w-14" :src="photo" :alt="name" />
+       </figure>
        <div>
         <span class="mb-1.5 font-medium text-black dark:text-white">Edit your photo</span>
         <span class="flex gap-2.5">
