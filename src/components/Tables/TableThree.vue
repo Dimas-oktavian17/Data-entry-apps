@@ -111,7 +111,6 @@ watchEffect(() => selectedDistrict.value !== null && handleDistrict())
  <div v-if="AlertsStatus === false"
   class="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
   <header class="grid grid-cols-1 place-items-end">
-   <button @click="excelStore().data()">ok</button>
    <download-excel
     class="flex flex-row-reverse justify-center px-6 py-2 my-4 transition-all rounded-md cursor-pointer hover:transition-all align-items-center bg-primary hover:opacity-80"
     @click="excelStore().generateFlattenedData" :data="excelStore().flattenedData"

@@ -1,16 +1,7 @@
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
 import { excelStore } from '@/stores/users/updateUsers.js';
-import { storeToRefs } from 'pinia';
 const UpdateUsers = excelStore()
-const { name, email, phone, photo } = storeToRefs(UpdateUsers)
-
 // import userPhoto from '@/assets/images/user/user-03.png'
-const nameUser = ref(name)
-const emailUser = ref(email)
-const phoneUser = ref(phone)
-const photoUrl = ref(photo)
-
 
 // Handle form submission for personal information
 async function handleSubmit() {
@@ -177,7 +168,8 @@ const updatePhoto = () => {
       <!-- User Photo Section -->
       <div class="flex items-center gap-3 mb-4">
        <figure>
-        <img class="rounded-full h-14 w-14" :src="photoUrl" :alt="name" />
+        <img class="rounded-full h-14 w-14" :src="UpdateUsers.formData.photoUsers"
+         :alt="UpdateUsers.formData.fullName" />
        </figure>
        <div>
         <span class="mb-1.5 font-medium text-black dark:text-white">Edit your photo</span>
