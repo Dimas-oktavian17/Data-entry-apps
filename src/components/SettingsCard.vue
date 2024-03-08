@@ -1,14 +1,13 @@
 <script setup lang="ts">
-// import { ref } from 'vue'
-import { updateUsers } from '@/stores/users/updateUsers';
-import { storeToRefs } from 'pinia';
-const UpdateUsers = updateUsers()
-const { name, email, phone, photo } = storeToRefs(UpdateUsers)
-
+import { excelStore } from '@/stores/users/updateUsers.js';
+const UpdateUsers = excelStore()
 // import userPhoto from '@/assets/images/user/user-03.png'
 
-const handleSubmit = () => {
- // Handle form submission for personal information
+// Handle form submission for personal information
+async function handleSubmit() {
+ await UpdateUsers.HandleSubmit(UpdateUsers.formData.fullName, UpdateUsers.formData.phoneNumber, UpdateUsers.formData.emailAddress, UpdateUsers.formData.photoUsers)
+ // HandleSubmit(nameUser.value, emailUser.value, phoneUser.value)
+ console.log(UpdateUsers.users);
 }
 
 const handleCancel = () => {
@@ -49,7 +48,8 @@ const updatePhoto = () => {
       <!-- Full Name Section -->
       <div class="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
        <div class="w-full sm:w-1/2">
-        <label class="block mb-3 text-sm font-medium text-black dark:text-white" for="fullName">Full Name</label>
+        <label class="block mb-3 text-sm font-medium text-black dark:text-white" for="fullName">Full
+         Name</label>
         <div class="relative">
          <span class="absolute left-4.5 top-4">
           <svg class="fill-current" width="20" height="20" viewBox="0 0 20 20" fill="none"
@@ -64,7 +64,7 @@ const updatePhoto = () => {
            </g>
           </svg>
          </span>
-         <input v-model="name"
+         <input v-model="UpdateUsers.formData.fullName"
           class="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 font-normal text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
           type="text" name="fullName" id="fullName" placeholder="Devid Jhon" />
         </div>
@@ -72,8 +72,9 @@ const updatePhoto = () => {
 
        <!-- Phone Number Section -->
        <div class="w-full sm:w-1/2">
-        <label class="block mb-3 text-sm font-medium text-black dark:text-white" for="phoneNumber">Phone Number</label>
-        <input v-model="phone"
+        <label class="block mb-3 text-sm font-medium text-black dark:text-white" for="phoneNumber">Phone
+         Number</label>
+        <input v-model="UpdateUsers.formData.phoneNumber"
          class="w-full rounded border border-stroke bg-gray py-3 px-4.5 font-normal text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
          type="text" name="phoneNumber" id="phoneNumber" placeholder="+990 3343 7865" />
        </div>
@@ -81,7 +82,8 @@ const updatePhoto = () => {
 
       <!-- Email Address Section -->
       <div class="mb-5.5">
-       <label class="block mb-3 text-sm font-medium text-black dark:text-white" for="emailAddress">Email Address</label>
+       <label class="block mb-3 text-sm font-medium text-black dark:text-white" for="emailAddress">Email
+        Address</label>
        <div class="relative">
         <span class="absolute left-4.5 top-4">
          <svg class="fill-current" width="20" height="20" viewBox="0 0 20 20" fill="none"
@@ -96,7 +98,7 @@ const updatePhoto = () => {
           </g>
          </svg>
         </span>
-        <input v-model="email"
+        <input v-model="UpdateUsers.formData.emailAddress"
          class="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 font-normal text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
          type="email" name="emailAddress" id="emailAddress" placeholder="devidjond45@gmail.com" />
        </div>
@@ -166,7 +168,8 @@ const updatePhoto = () => {
       <!-- User Photo Section -->
       <div class="flex items-center gap-3 mb-4">
        <figure>
-        <img class="rounded-full h-14 w-14" :src="photo" :alt="name" />
+        <img class="rounded-full h-14 w-14" :src="UpdateUsers.formData.photoUsers"
+         :alt="UpdateUsers.formData.fullName" />
        </figure>
        <div>
         <span class="mb-1.5 font-medium text-black dark:text-white">Edit your photo</span>

@@ -35,8 +35,11 @@ export const excelStore = defineStore('excelStore', () => {
       umur: item.umur
     }));
   };
-
+  const data = () => {
+    console.log('200 ok');
+  }
   return {
+    data,
     flattenedData,
     flattenedFields,
     generateFlattenedData
