@@ -1,9 +1,10 @@
-<script setup >
+<script setup>
 import { UsersPinia } from '@/stores/users/users';
 import { storeToRefs } from 'pinia';
 const Users = UsersPinia()
 const { name, email, uid, photo, } = storeToRefs(Users)
 </script>
+
 <template>
  <!-- ====== Profile Section Start -->
  <div

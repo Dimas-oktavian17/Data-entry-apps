@@ -1,4 +1,5 @@
 <!-- eslint-disable no-unused-vars -->
+
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue';
 import { onClickOutside } from '@vueuse/core';
@@ -7,7 +8,10 @@ import { useFirebaseAuth, useCurrentUser } from 'vuefire';
 import { signOut } from 'firebase/auth';
 import { authPinia } from '@/stores/auth/authSignout';
 import { storeToRefs } from 'pinia';
+import { UsersPinia } from '@/stores/users/users';
 
+const usersProfile = UsersPinia()
+const { photo } = storeToRefs(usersProfile)
 const authSignout = authPinia();
 const { userName, email, metaData, phoneNumber, profilPicture, id } = storeToRefs(authSignout);
 const user = useCurrentUser();
