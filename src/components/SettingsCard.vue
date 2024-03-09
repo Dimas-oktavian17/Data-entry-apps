@@ -1,26 +1,18 @@
-<script setup lang="ts">
+<script setup>
 import { excelStore } from '@/stores/users/updateUsers.js';
+import { storeToRefs } from 'pinia';
 const UpdateUsers = excelStore()
+const { phoneUser, emailUser } = storeToRefs(UpdateUsers);
 // import userPhoto from '@/assets/images/user/user-03.png'
 
 // Handle form submission for personal information
-async function handleSubmit() {
- await UpdateUsers.HandleSubmit(UpdateUsers.formData.fullName, UpdateUsers.formData.phoneNumber, UpdateUsers.formData.emailAddress, UpdateUsers.formData.photoUsers)
- // HandleSubmit(nameUser.value, emailUser.value, phoneUser.value)
- console.log(UpdateUsers.users);
-}
-
-const handleCancel = () => {
- // Handle cancel action for personal information
-}
-
-const handlePhotoSubmit = () => {
- // Handle form submission for user photo
-}
-
-const handleFileChange = () => {
- // Handle file change for user photo
-}
+const handleSubmit = async () => await UpdateUsers.HandleSubmit(UpdateUsers.formData.fullName)
+// Handle cancel action for personal information
+const handleCancel = async () => await UpdateUsers.HandleCancel(UpdateUsers.formData.fullName)
+// Handle form submission for user photo
+const handlePhotoSubmit = async () => await UpdateUsers.HandlePhotoSubmit(UpdateUsers.formData.photoUsers)
+// Handle file change for user photo
+const handleFileChange = (event) => UpdateUsers.HandleFileChange(event.target.files[0])
 
 const handlePhotoCancel = () => {
  // Handle cancel action for user photo
@@ -47,7 +39,7 @@ const updatePhoto = () => {
      <form @submit.prevent="handleSubmit">
       <!-- Full Name Section -->
       <div class="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
-       <div class="w-full sm:w-1/2">
+       <div class="w-full">
         <label class="block mb-3 text-sm font-medium text-black dark:text-white" for="fullName">Full
          Name</label>
         <div class="relative">
@@ -65,23 +57,23 @@ const updatePhoto = () => {
           </svg>
          </span>
          <input v-model="UpdateUsers.formData.fullName"
-          class="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 font-normal text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+          class="rounded border border-stroke bg-gray py-3 pl-11.5 w-full pr-4.5 font-normal text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
           type="text" name="fullName" id="fullName" placeholder="Devid Jhon" />
         </div>
        </div>
 
        <!-- Phone Number Section -->
-       <div class="w-full sm:w-1/2">
+       <div class="hidden w-full sm:w-1/2">
         <label class="block mb-3 text-sm font-medium text-black dark:text-white" for="phoneNumber">Phone
          Number</label>
-        <input v-model="UpdateUsers.formData.phoneNumber"
+        <input v-model="phoneUser"
          class="w-full rounded border border-stroke bg-gray py-3 px-4.5 font-normal text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
          type="text" name="phoneNumber" id="phoneNumber" placeholder="+990 3343 7865" />
        </div>
       </div>
 
       <!-- Email Address Section -->
-      <div class="mb-5.5">
+      <div class="mb-5.5 ">
        <label class="block mb-3 text-sm font-medium text-black dark:text-white" for="emailAddress">Email
         Address</label>
        <div class="relative">
@@ -98,7 +90,7 @@ const updatePhoto = () => {
           </g>
          </svg>
         </span>
-        <input v-model="UpdateUsers.formData.emailAddress"
+        <input readonly v-model="emailUser"
          class="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 font-normal text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
          type="email" name="emailAddress" id="emailAddress" placeholder="devidjond45@gmail.com" />
        </div>
@@ -183,7 +175,6 @@ const updatePhoto = () => {
         </span>
        </div>
       </div>
-
       <!-- File Upload Section -->
       <div id="FileUpload"
        class="relative mb-5.5 block w-full cursor-pointer appearance-none rounded border-2 border-dashed border-primary bg-gray py-4 px-4 dark:bg-meta-4 sm:py-7.5">
@@ -191,6 +182,7 @@ const updatePhoto = () => {
         class="absolute inset-0 z-50 w-full h-full p-0 m-0 outline-none opacity-0 cursor-pointer"
         @change="handleFileChange" />
        <div class="flex flex-col items-center justify-center space-y-3">
+        <img v-if="UpdateUsers.imagePreview" :src="UpdateUsers.imagePreview" alt="Uploaded Image" />
         <span
          class="flex items-center justify-center w-10 h-10 bg-white border rounded-full border-stroke dark:border-strokedark dark:bg-boxdark">
          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
