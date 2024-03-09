@@ -5,24 +5,14 @@ const UpdateUsers = excelStore()
 const { phoneUser, emailUser } = storeToRefs(UpdateUsers);
 // import userPhoto from '@/assets/images/user/user-03.png'
 
-
-async function handleSubmit() {
- // Handle form submission for personal information
- await UpdateUsers.HandleSubmit(UpdateUsers.formData.fullName)
-}
-
-const handleCancel = async () => {
- // Handle cancel action for personal information
- await UpdateUsers.HandleCancel(UpdateUsers.formData.fullName)
-}
-
-const handlePhotoSubmit = () => {
- // Handle form submission for user photo
-}
-
-const handleFileChange = () => {
- // Handle file change for user photo
-}
+// Handle form submission for personal information
+const handleSubmit = async () => await UpdateUsers.HandleSubmit(UpdateUsers.formData.fullName)
+// Handle cancel action for personal information
+const handleCancel = async () => await UpdateUsers.HandleCancel(UpdateUsers.formData.fullName)
+// Handle form submission for user photo
+const handlePhotoSubmit = async () => await UpdateUsers.HandlePhotoSubmit(UpdateUsers.formData.photoUsers)
+// Handle file change for user photo
+const handleFileChange = (event) => UpdateUsers.HandleFileChange(event.target.files[0])
 
 const handlePhotoCancel = () => {
  // Handle cancel action for user photo
@@ -170,7 +160,8 @@ const updatePhoto = () => {
       <!-- User Photo Section -->
       <div class="flex items-center gap-3 mb-4">
        <figure>
-        <img class="rounded-full h-14 w-14" :src="UpdateUsers.formData.photoUsers" :alt="emailUser" />
+        <img class="rounded-full h-14 w-14" :src="UpdateUsers.formData.photoUsers"
+         :alt="UpdateUsers.formData.fullName" />
        </figure>
        <div>
         <span class="mb-1.5 font-medium text-black dark:text-white">Edit your photo</span>
@@ -184,7 +175,6 @@ const updatePhoto = () => {
         </span>
        </div>
       </div>
-
       <!-- File Upload Section -->
       <div id="FileUpload"
        class="relative mb-5.5 block w-full cursor-pointer appearance-none rounded border-2 border-dashed border-primary bg-gray py-4 px-4 dark:bg-meta-4 sm:py-7.5">
@@ -192,6 +182,7 @@ const updatePhoto = () => {
         class="absolute inset-0 z-50 w-full h-full p-0 m-0 outline-none opacity-0 cursor-pointer"
         @change="handleFileChange" />
        <div class="flex flex-col items-center justify-center space-y-3">
+        <img v-if="UpdateUsers.imagePreview" :src="UpdateUsers.imagePreview" alt="Uploaded Image" />
         <span
          class="flex items-center justify-center w-10 h-10 bg-white border rounded-full border-stroke dark:border-strokedark dark:bg-boxdark">
          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
