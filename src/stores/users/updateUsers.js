@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { defineStore } from 'pinia';
 import { useCollection, useCurrentUser, updateCurrentUserProfile } from 'vuefire'
 import { karyawanRef } from '@/firebase'
@@ -7,7 +7,7 @@ import { karyawanRef } from '@/firebase'
 export const excelStore = defineStore('excelStore', () => {
   // state
   const dataKaryawan = useCollection(karyawanRef)
-  const users = useCurrentUser()
+  const users = ref(useCurrentUser())
   const formData = ref({
     fullName: users.value.displayName,
     phoneNumber: users.value.phoneNumber,
@@ -16,30 +16,37 @@ export const excelStore = defineStore('excelStore', () => {
     // username: UpdateUsers.uid,
     // bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque posuere fermentum urna, eu condimentum mauris tempus ut. Donec fermentum blandit aliquet.'
   })
+  // getters
+  const emailUser = computed(() => users.value.email)
+  const phoneUser = computed(() => users.value.phoneNumber)
   // actions
-  const HandleSubmit = async (name, phone, email, photo) => {
+  const HandleSubmit = async (name) => {
     try {
       updateCurrentUserProfile({
-        displayName: name,
-        phoneNumber: phone,
-        // E: photo,
-        // phoneNumber: phone,
+        displayName: name
       })
-      console.log(users.value.phoneNumber);
+      console.log(users.value.displayName);
     } catch (error) {
       console.error(error);
     }
   }
-  // getters
-  // const name = computed(() => formData.value.fullName)
-  // const email = computed(() => formData.value.emailAddress)
-  // const phone = computed(() => formData.value.phoneNumber)
-  // const photo = computed(() => formData.value.photoUsers)
+  const HandleCancel = async (nameUser) => {
+    try {
+      users.value.displayName !== nameUser ? formData.value.fullName = users.value.displayName : formData.value.fullName = users.value.displayName
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  watch(users, (newVal) => formData.value.fullName = newVal.displayName, { immediate: true });
 
   return {
-    // name, email, phone, photo,
-    users, formData, dataKaryawan,
-    HandleSubmit
-
+    emailUser,
+    phoneUser,
+    users,
+    formData,
+    dataKaryawan,
+    HandleSubmit,
+    HandleCancel
   };
 });

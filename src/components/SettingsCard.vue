@@ -1,17 +1,19 @@
-<script setup lang="ts">
+<script setup>
 import { excelStore } from '@/stores/users/updateUsers.js';
+import { storeToRefs } from 'pinia';
 const UpdateUsers = excelStore()
+const { phoneUser, emailUser } = storeToRefs(UpdateUsers);
 // import userPhoto from '@/assets/images/user/user-03.png'
 
-// Handle form submission for personal information
+
 async function handleSubmit() {
- await UpdateUsers.HandleSubmit(UpdateUsers.formData.fullName, UpdateUsers.formData.phoneNumber, UpdateUsers.formData.emailAddress, UpdateUsers.formData.photoUsers)
- // HandleSubmit(nameUser.value, emailUser.value, phoneUser.value)
- console.log(UpdateUsers.users);
+ // Handle form submission for personal information
+ await UpdateUsers.HandleSubmit(UpdateUsers.formData.fullName)
 }
 
-const handleCancel = () => {
+const handleCancel = async () => {
  // Handle cancel action for personal information
+ await UpdateUsers.HandleCancel(UpdateUsers.formData.fullName)
 }
 
 const handlePhotoSubmit = () => {
@@ -47,7 +49,7 @@ const updatePhoto = () => {
      <form @submit.prevent="handleSubmit">
       <!-- Full Name Section -->
       <div class="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
-       <div class="w-full sm:w-1/2">
+       <div class="w-full">
         <label class="block mb-3 text-sm font-medium text-black dark:text-white" for="fullName">Full
          Name</label>
         <div class="relative">
@@ -65,23 +67,23 @@ const updatePhoto = () => {
           </svg>
          </span>
          <input v-model="UpdateUsers.formData.fullName"
-          class="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 font-normal text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+          class="rounded border border-stroke bg-gray py-3 pl-11.5 w-full pr-4.5 font-normal text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
           type="text" name="fullName" id="fullName" placeholder="Devid Jhon" />
         </div>
        </div>
 
        <!-- Phone Number Section -->
-       <div class="w-full sm:w-1/2">
+       <div class="hidden w-full sm:w-1/2">
         <label class="block mb-3 text-sm font-medium text-black dark:text-white" for="phoneNumber">Phone
          Number</label>
-        <input v-model="UpdateUsers.formData.phoneNumber"
+        <input v-model="phoneUser"
          class="w-full rounded border border-stroke bg-gray py-3 px-4.5 font-normal text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
          type="text" name="phoneNumber" id="phoneNumber" placeholder="+990 3343 7865" />
        </div>
       </div>
 
       <!-- Email Address Section -->
-      <div class="mb-5.5">
+      <div class="mb-5.5 ">
        <label class="block mb-3 text-sm font-medium text-black dark:text-white" for="emailAddress">Email
         Address</label>
        <div class="relative">
@@ -98,7 +100,7 @@ const updatePhoto = () => {
           </g>
          </svg>
         </span>
-        <input v-model="UpdateUsers.formData.emailAddress"
+        <input readonly v-model="emailUser"
          class="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 font-normal text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
          type="email" name="emailAddress" id="emailAddress" placeholder="devidjond45@gmail.com" />
        </div>
@@ -168,8 +170,7 @@ const updatePhoto = () => {
       <!-- User Photo Section -->
       <div class="flex items-center gap-3 mb-4">
        <figure>
-        <img class="rounded-full h-14 w-14" :src="UpdateUsers.formData.photoUsers"
-         :alt="UpdateUsers.formData.fullName" />
+        <img class="rounded-full h-14 w-14" :src="UpdateUsers.formData.photoUsers" :alt="emailUser" />
        </figure>
        <div>
         <span class="mb-1.5 font-medium text-black dark:text-white">Edit your photo</span>
