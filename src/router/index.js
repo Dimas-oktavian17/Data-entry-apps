@@ -23,6 +23,11 @@ const router = createRouter({
       component: () => import('@/views/AboutView.vue')
     },
     {
+      path: '/learn',
+      name: 'learn',
+      component: () => import('@/views/learn/uploud.vue')
+    },
+    {
       path: '/forgot-password',
       name: 'reset-password',
       component: () => import('@/views/ResetPassword.vue')

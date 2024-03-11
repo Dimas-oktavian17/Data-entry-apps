@@ -22,3 +22,4 @@ export const karyawanRef = collection(db, 'karyawan')
 // Import & export references google auth provider
 import { GoogleAuthProvider } from 'firebase/auth'
 export const googleAuthProvider = new GoogleAuthProvider()
+export const storage = fire

@@ -1,11 +1,12 @@
 import { ref, computed, watch } from 'vue';
 import { defineStore } from 'pinia';
-import { useCollection, useCurrentUser, updateCurrentUserProfile } from 'vuefire'
+import { useFirebaseStorage, useStorageFile, useCollection, useCurrentUser, updateCurrentUserProfile } from 'vuefire'
 import { karyawanRef } from '@/firebase'
+import { ref as storageRef } from 'firebase/storage'
 
 export const excelStore = defineStore('excelStore', () => {
   // state
-  const imagePreview = ref('')
+  const imagePreview = ref(null)
   const dataKaryawan = useCollection(karyawanRef)
   const users = ref(useCurrentUser())
   const formData = ref({
@@ -14,9 +15,12 @@ export const excelStore = defineStore('excelStore', () => {
     emailAddress: users.value.email,
     photoUsers: users.value.photoURL,
   })
+  // State photo
+  const filename = ref('')
   // getters
   const emailUser = computed(() => users.value.email)
   const phoneUser = computed(() => users.value.phoneNumber)
+  const photoChange = computed(() => filename.value._value)
   // actions
   const HandleSubmit = async (name) => {
     try {
@@ -50,16 +54,21 @@ export const excelStore = defineStore('excelStore', () => {
     reader.readAsDataURL(file); // Read the file content as a data URL
     console.log(imagePreview.value);
   }
-  const HandlePhotoSubmit = async (photo) => {
-    try {
-      updateCurrentUserProfile({
-        photoURL: imagePreview.value
-      })
-    } catch (error) {
-      console.error(error);
+  const HandlePhotoSubmit = async (files) => {
+    const data = files?.item(0)
+    const storage = useFirebaseStorage()
+    const mountainFileRef = storageRef(storage, data.name)
+    const { url, upload } = useStorageFile(mountainFileRef)
+    filename.value = url
+    if (data) {
+      upload(data)
+      console.log(data);
+      console.table(filename)
+
     }
   }
   watch(users, (newVal) => formData.value.fullName = newVal.displayName, { immediate: true });
+  watch(filename, (newVal) => filename.value._value = newVal, { immediate: true });
 
   return {
     emailUser,
@@ -73,5 +82,7 @@ export const excelStore = defineStore('excelStore', () => {
     HandleFileChange,
     ReadFileContents,
     HandlePhotoSubmit,
+    filename,
+    photoChange
   };
 });
