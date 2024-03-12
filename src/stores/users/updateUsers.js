@@ -2,15 +2,15 @@ import { ref, computed, watchEffect } from 'vue';
 import { defineStore } from 'pinia';
 import { useFirebaseStorage, useStorageFile, useCollection, useCurrentUser, updateCurrentUserProfile } from 'vuefire'
 import { karyawanRef } from '@/firebase'
-import { ref as storageRef } from 'firebase/storage'
+import { ref as storageRef, deleteObject } from 'firebase/storage'
 
 export const excelStore = defineStore('excelStore', () => {
   // state
-  const imagePreview = ref(null)
+  const imagePreview = ref('')
   const dataKaryawan = useCollection(karyawanRef)
   const users = ref(useCurrentUser())
   const formData = ref({
-    fullName: users.value?.displayName || 'N/A',
+    fullName: users.value?.displayName || users.value.displayName,
     phoneNumber: users.value?.phoneNumber || 'N/A',
     emailAddress: users.value?.email || 'N/A',
     photoUsers: users.value?.photoURL || 'N/A',
@@ -18,9 +18,9 @@ export const excelStore = defineStore('excelStore', () => {
   // State photo
   const filename = ref('')
   // getters
-  const emailUser = computed(() => users.value?.email || 'N/A',)
-  const phoneUser = computed(() => users.value?.phoneNumber || 'N/A',)
-  const photoUser = computed(() => users.value?.photoURL || 'N/A',)
+  const emailUser = computed(() => users.value?.email || 'N/A')
+  const phoneUser = computed(() => users.value?.phoneNumber || 'N/A')
+  const photoUser = computed(() => users.value?.photoURL || 'N/A')
   // actions
   const HandleSubmit = async (name) => {
     try {
@@ -37,7 +37,6 @@ export const excelStore = defineStore('excelStore', () => {
       updateCurrentUserProfile({
         photoURL: name
       })
-      console.log(users.value.photoURL);
     } catch (error) {
       console.error(error);
     }
@@ -64,30 +63,31 @@ export const excelStore = defineStore('excelStore', () => {
     reader.readAsDataURL(file); // Read the file content as a data URL
     console.log(imagePreview.value);
   }
-  const HandlePhotoSubmit = async (files, photo) => {
+  const HandlePhotoSubmit = async (files) => {
     try {
       const data = files?.item(0)
       const storage = useFirebaseStorage()
-      const mountainFileRef = storageRef(storage, data.name)
+      const mountainFileRef = storageRef(storage, data?.name || data.name)
       const { url, upload } = useStorageFile(mountainFileRef)
       watchEffect(() => filename.value = url)
-      if (data) {
-        upload(data)
-        console.log(data);
-        console.table(filename)
-        // updateCurrentUserProfile({
-        //   photoURL: filename.value.value
-        //   // filename.value.value
-        // })
-      }
-      console.log(filename.value.value, photo, formData.value.photoUsers);
+      data && upload(data)
     } catch (error) {
       console.error(error);
     }
   }
-  // watch(users, (newVal) => formData.value.fullName = newVal.displayName, { immediate: true });
-  // watch(users, (newVal) => formData.value.photoUsers = newVal.photoURL, { immediate: true });
-
+  const DeletePhoto = async () => {
+    try {
+      const storage = useFirebaseStorage()
+      const mountainFileRef = storageRef(storage, photoUser.value)
+      deleteObject(mountainFileRef)
+      // watchEffect(() => photoUser.value)
+      // updateCurrentUserProfile({
+      //   photoURL: null
+      // })
+    } catch (error) {
+      console.error(error);
+    }
+  }
   return {
     emailUser,
     phoneUser,
@@ -95,13 +95,14 @@ export const excelStore = defineStore('excelStore', () => {
     formData,
     dataKaryawan,
     imagePreview,
+    filename,
+    photoUser,
     HandleSubmit,
     HandleCancel,
     HandleFileChange,
     ReadFileContents,
     HandlePhotoSubmit,
-    filename,
-    photoUser,
-    UpdatePhoto
+    UpdatePhoto,
+    DeletePhoto,
   };
 });
