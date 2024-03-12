@@ -1,4 +1,4 @@
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, watchEffect } from 'vue';
 import { defineStore } from 'pinia';
 import { useFirebaseStorage, useStorageFile, useCollection, useCurrentUser, updateCurrentUserProfile } from 'vuefire'
 import { karyawanRef } from '@/firebase'
@@ -20,7 +20,6 @@ export const excelStore = defineStore('excelStore', () => {
   // getters
   const emailUser = computed(() => users.value.email)
   const phoneUser = computed(() => users.value.phoneNumber)
-  const photoChange = computed(() => filename.value._value)
   // actions
   const HandleSubmit = async (name) => {
     try {
@@ -59,16 +58,14 @@ export const excelStore = defineStore('excelStore', () => {
     const storage = useFirebaseStorage()
     const mountainFileRef = storageRef(storage, data.name)
     const { url, upload } = useStorageFile(mountainFileRef)
-    filename.value = url
+    watchEffect(() => filename.value = url)
     if (data) {
       upload(data)
       console.log(data);
       console.table(filename)
-
     }
   }
   watch(users, (newVal) => formData.value.fullName = newVal.displayName, { immediate: true });
-  watch(filename, (newVal) => filename.value._value = newVal, { immediate: true });
 
   return {
     emailUser,
@@ -83,6 +80,5 @@ export const excelStore = defineStore('excelStore', () => {
     ReadFileContents,
     HandlePhotoSubmit,
     filename,
-    photoChange
   };
 });
