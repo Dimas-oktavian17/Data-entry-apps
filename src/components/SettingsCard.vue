@@ -1,5 +1,5 @@
 <script setup>
-// import { ref, computed } from 'vue';
+// import { ref, computed, watchEffect, watch } from 'vue';
 // firebase
 import { useFileDialog } from '@vueuse/core'
 // pinia
@@ -7,7 +7,6 @@ import { excelStore } from '@/stores/users/updateUsers.js';
 import { storeToRefs } from 'pinia';
 const UpdateUsers = excelStore()
 const { phoneUser, emailUser } = storeToRefs(UpdateUsers);
-
 // import userPhoto from '@/assets/images/user/user-03.png'
 
 // Handle form submission for personal information
@@ -15,20 +14,7 @@ const handleSubmit = async () => await UpdateUsers.HandleSubmit(UpdateUsers.form
 // Handle cancel action for personal information
 const handleCancel = async () => await UpdateUsers.HandleCancel(UpdateUsers.formData.fullName)
 // Handle form submission for user photo
-const handlePhotoSubmit = () => {
- UpdateUsers.HandlePhotoSubmit(files.value)
- // const data = files.value?.item(0)
- // const storage = useFirebaseStorage()
- // const mountainFileRef = storageRef(storage, data.name)
- // const { url, upload, } = useStorageFile(mountainFileRef)
-
- // filename.value = url
- // if (data) {
- //  upload(data)
- //  console.log(data);
- //  console.table(url)
- // }
-}
+const handlePhotoSubmit = () => UpdateUsers.HandlePhotoSubmit(files.value)
 // const filename = ref('')
 const { files, open } = useFileDialog()
 // Handle file change for user photo
@@ -45,6 +31,7 @@ const { files, open } = useFileDialog()
 // const updatePhoto = () => {
 //  // Handle update action for user photo
 // }
+
 </script>
 
 <template>
@@ -160,7 +147,8 @@ const { files, open } = useFileDialog()
       </div>
       <!-- File Upload Section -->
       <figure>
-       <img :src="UpdateUsers.filename._value" />
+       <!-- {{ UpdateUsers.photoChange }} -->
+       <img :src="UpdateUsers.filename.value" />
       </figure>
       <button
        class="block  relative mb-5.5  w-full cursor-pointer appearance-none rounded border-2 border-dashed border-primary bg-gray py-4 px-4 dark:bg-meta-4 sm:py-7.5 "
