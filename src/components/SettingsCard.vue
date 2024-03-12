@@ -8,7 +8,6 @@ import { storeToRefs } from 'pinia';
 const UpdateUsers = excelStore()
 const { phoneUser, emailUser, photoUser } = storeToRefs(UpdateUsers);
 // import userPhoto from '@/assets/images/user/user-03.png'
-
 // Handle form submission for personal information
 const handleSubmit = async () => await UpdateUsers.HandleSubmit(UpdateUsers.formData.fullName)
 // Handle cancel action for personal information
@@ -28,9 +27,9 @@ const { files, open } = useFileDialog()
 //  // Handle delete action for user photo
 // }
 
-// const updatePhoto = () => {
-//  // Handle update action for user photo
-// }
+// Handle update action for user photo
+const updatePhoto = async () => await UpdateUsers.UpdatePhoto(UpdateUsers.filename.value)
+
 </script>
 
 <template>
@@ -144,6 +143,7 @@ const { files, open } = useFileDialog()
        </div>
       </div>
       <!-- File Upload Section -->
+
       <figure>
        <img :src="UpdateUsers.filename.value" />
       </figure>

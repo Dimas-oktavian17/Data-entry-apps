@@ -1,19 +1,15 @@
-<!-- eslint-disable no-unused-vars -->
-
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { onClickOutside } from '@vueuse/core';
 import { useRouter } from 'vue-router';
 import { useFirebaseAuth, useCurrentUser } from 'vuefire';
 import { signOut } from 'firebase/auth';
-import { authPinia } from '@/stores/auth/authSignout';
 import { storeToRefs } from 'pinia';
 import { UsersPinia } from '@/stores/users/users';
 
-const usersProfile = UsersPinia()
-const { photo } = storeToRefs(usersProfile)
-const authSignout = authPinia();
-const { userName, email, metaData, phoneNumber, profilPicture, id } = storeToRefs(authSignout);
+
+const Users = UsersPinia()
+const { name, Email, photo, } = storeToRefs(Users)
 const user = useCurrentUser();
 const router = useRouter();
 const auth = useFirebaseAuth()
@@ -31,25 +27,9 @@ const logout = async () => {
  }
 };
 
-const UserInformations = computed(() => {
- return {
-  //  ?=> is optiona chaining, read docs mozila for more information
-  userName: user.value?.displayName || 'N/A',
-  email: user.value?.email || 'N/A',
-  metaData: user.value?.metadata || null,
-  phoneNumber: user.value?.phoneNumber || 'N/A',
-  profilPicture: user.value?.photoURL || 'N/A',
-  id: user.value?.uid || 'N/A',
- };
-});
-
 onMounted(() => user.value === null && router.push('/'));
-
 // Watch for changes in user and update UserInformations accordingly
-watch(user, (newUser) => {
- newUser === null && router.push('/');
- UserInformations.value;
-});
+watch(user, (newUser) => newUser === null && router.push('/'));
 </script>
 
 <template>
@@ -57,15 +37,15 @@ watch(user, (newUser) => {
   <router-link class="flex items-center gap-4" to="#" @click.prevent="dropdownOpen = !dropdownOpen">
    <span class="hidden text-right lg:block">
     <span class="block text-sm font-medium text-black dark:text-white">
-     {{ UserInformations.email }}
+     {{ Email }}
     </span>
     <span class="block text-xs font-medium">
-     {{ UserInformations.userName }}
+     {{ name }}
     </span>
    </span>
 
    <figure class="w-12 h-auto">
-    <img :src="UserInformations.profilPicture" class="rounded-full" :alt="UserInformations.userName" />
+    <img :src="photo" class="rounded-full" :alt="name" />
    </figure>
 
    <svg :class="dropdownOpen && 'rotate-180'" class="hidden fill-current sm:block" width="12" height="8"

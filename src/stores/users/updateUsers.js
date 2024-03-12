@@ -1,4 +1,4 @@
-import { ref, computed, watch, watchEffect } from 'vue';
+import { ref, computed, watchEffect } from 'vue';
 import { defineStore } from 'pinia';
 import { useFirebaseStorage, useStorageFile, useCollection, useCurrentUser, updateCurrentUserProfile } from 'vuefire'
 import { karyawanRef } from '@/firebase'
@@ -10,17 +10,17 @@ export const excelStore = defineStore('excelStore', () => {
   const dataKaryawan = useCollection(karyawanRef)
   const users = ref(useCurrentUser())
   const formData = ref({
-    fullName: users.value.displayName,
-    phoneNumber: users.value.phoneNumber,
-    emailAddress: users.value.email,
-    photoUsers: users.value.photoURL,
+    fullName: users.value?.displayName || 'N/A',
+    phoneNumber: users.value?.phoneNumber || 'N/A',
+    emailAddress: users.value?.email || 'N/A',
+    photoUsers: users.value?.photoURL || 'N/A',
   })
   // State photo
   const filename = ref('')
   // getters
-  const emailUser = computed(() => users.value.email)
-  const phoneUser = computed(() => users.value.phoneNumber)
-  const photoUser = computed(() => users.value.photoURL)
+  const emailUser = computed(() => users.value?.email || 'N/A',)
+  const phoneUser = computed(() => users.value?.phoneNumber || 'N/A',)
+  const photoUser = computed(() => users.value?.photoURL || 'N/A',)
   // actions
   const HandleSubmit = async (name) => {
     try {
@@ -28,6 +28,16 @@ export const excelStore = defineStore('excelStore', () => {
         displayName: name
       })
       console.log(users.value.displayName);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  const UpdatePhoto = async (name) => {
+    try {
+      updateCurrentUserProfile({
+        photoURL: name
+      })
+      console.log(users.value.photoURL);
     } catch (error) {
       console.error(error);
     }
@@ -65,18 +75,18 @@ export const excelStore = defineStore('excelStore', () => {
         upload(data)
         console.log(data);
         console.table(filename)
-        updateCurrentUserProfile({
-          photoURL: filename.value.value
-        })
+        // updateCurrentUserProfile({
+        //   photoURL: filename.value.value
+        //   // filename.value.value
+        // })
       }
       console.log(filename.value.value, photo, formData.value.photoUsers);
     } catch (error) {
       console.error(error);
     }
-
   }
-  watch(users, (newVal) => formData.value.fullName = newVal.displayName, { immediate: true });
-  watch(users, (newVal) => formData.value.photoUsers = newVal.photoURL, { immediate: true });
+  // watch(users, (newVal) => formData.value.fullName = newVal.displayName, { immediate: true });
+  // watch(users, (newVal) => formData.value.photoUsers = newVal.photoURL, { immediate: true });
 
   return {
     emailUser,
@@ -91,6 +101,7 @@ export const excelStore = defineStore('excelStore', () => {
     ReadFileContents,
     HandlePhotoSubmit,
     filename,
-    photoUser
+    photoUser,
+    UpdatePhoto
   };
 });
