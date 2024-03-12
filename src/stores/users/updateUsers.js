@@ -20,6 +20,7 @@ export const excelStore = defineStore('excelStore', () => {
   // getters
   const emailUser = computed(() => users.value.email)
   const phoneUser = computed(() => users.value.phoneNumber)
+  const photoUser = computed(() => users.value.photoURL)
   // actions
   const HandleSubmit = async (name) => {
     try {
@@ -53,19 +54,29 @@ export const excelStore = defineStore('excelStore', () => {
     reader.readAsDataURL(file); // Read the file content as a data URL
     console.log(imagePreview.value);
   }
-  const HandlePhotoSubmit = async (files) => {
-    const data = files?.item(0)
-    const storage = useFirebaseStorage()
-    const mountainFileRef = storageRef(storage, data.name)
-    const { url, upload } = useStorageFile(mountainFileRef)
-    watchEffect(() => filename.value = url)
-    if (data) {
-      upload(data)
-      console.log(data);
-      console.table(filename)
+  const HandlePhotoSubmit = async (files, photo) => {
+    try {
+      const data = files?.item(0)
+      const storage = useFirebaseStorage()
+      const mountainFileRef = storageRef(storage, data.name)
+      const { url, upload } = useStorageFile(mountainFileRef)
+      watchEffect(() => filename.value = url)
+      if (data) {
+        upload(data)
+        console.log(data);
+        console.table(filename)
+        updateCurrentUserProfile({
+          photoURL: filename.value.value
+        })
+      }
+      console.log(filename.value.value, photo, formData.value.photoUsers);
+    } catch (error) {
+      console.error(error);
     }
+
   }
   watch(users, (newVal) => formData.value.fullName = newVal.displayName, { immediate: true });
+  watch(users, (newVal) => formData.value.photoUsers = newVal.photoURL, { immediate: true });
 
   return {
     emailUser,
@@ -80,5 +91,6 @@ export const excelStore = defineStore('excelStore', () => {
     ReadFileContents,
     HandlePhotoSubmit,
     filename,
+    photoUser
   };
 });

@@ -1,12 +1,12 @@
 <script setup>
-// import { ref, computed, watchEffect, watch } from 'vue';
+// import { ref, computed, watchEffect, watch, onMounted } from 'vue';
 // firebase
 import { useFileDialog } from '@vueuse/core'
 // pinia
 import { excelStore } from '@/stores/users/updateUsers.js';
 import { storeToRefs } from 'pinia';
 const UpdateUsers = excelStore()
-const { phoneUser, emailUser } = storeToRefs(UpdateUsers);
+const { phoneUser, emailUser, photoUser } = storeToRefs(UpdateUsers);
 // import userPhoto from '@/assets/images/user/user-03.png'
 
 // Handle form submission for personal information
@@ -14,7 +14,7 @@ const handleSubmit = async () => await UpdateUsers.HandleSubmit(UpdateUsers.form
 // Handle cancel action for personal information
 const handleCancel = async () => await UpdateUsers.HandleCancel(UpdateUsers.formData.fullName)
 // Handle form submission for user photo
-const handlePhotoSubmit = () => UpdateUsers.HandlePhotoSubmit(files.value)
+const handlePhotoSubmit = async () => await UpdateUsers.HandlePhotoSubmit(files.value, UpdateUsers.filename.value)
 // const filename = ref('')
 const { files, open } = useFileDialog()
 // Handle file change for user photo
@@ -31,7 +31,6 @@ const { files, open } = useFileDialog()
 // const updatePhoto = () => {
 //  // Handle update action for user photo
 // }
-
 </script>
 
 <template>
@@ -130,8 +129,7 @@ const { files, open } = useFileDialog()
       <!-- User Photo Section -->
       <div class="flex items-center gap-3 mb-4">
        <figure>
-        <img class="rounded-full h-14 w-14" :src="UpdateUsers.formData.photoUsers"
-         :alt="UpdateUsers.formData.fullName" />
+        <img class="rounded-full h-14 w-14" :src="photoUser" :alt="UpdateUsers.formData.fullName" />
        </figure>
        <div>
         <span class="mb-1.5 font-medium text-black dark:text-white">Edit your photo</span>
@@ -147,7 +145,6 @@ const { files, open } = useFileDialog()
       </div>
       <!-- File Upload Section -->
       <figure>
-       <!-- {{ UpdateUsers.photoChange }} -->
        <img :src="UpdateUsers.filename.value" />
       </figure>
       <button
