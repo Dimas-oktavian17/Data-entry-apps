@@ -8,29 +8,24 @@ import { storeToRefs } from 'pinia';
 const UpdateUsers = excelStore()
 const { phoneUser, emailUser, photoUser } = storeToRefs(UpdateUsers);
 // import userPhoto from '@/assets/images/user/user-03.png'
-
 // Handle form submission for personal information
 const handleSubmit = async () => await UpdateUsers.HandleSubmit(UpdateUsers.formData.fullName)
 // Handle cancel action for personal information
 const handleCancel = async () => await UpdateUsers.HandleCancel(UpdateUsers.formData.fullName)
 // Handle form submission for user photo
-const handlePhotoSubmit = async () => await UpdateUsers.HandlePhotoSubmit(files.value, UpdateUsers.filename.value)
+const handlePhotoSubmit = async () => await UpdateUsers.HandlePhotoSubmit(files.value)
 // const filename = ref('')
 const { files, open } = useFileDialog()
-// Handle file change for user photo
-// const handleFileChange = (event) => UpdateUsers.HandleFileChange(event.target.files[0])
 
 // const handlePhotoCancel = () => {
 //  // Handle cancel action for user photo
 // }
 
-// const deletePhoto = () => {
-//  // Handle delete action for user photo
-// }
+// Handle delete action for user photo
+const deletePhoto = async () => await UpdateUsers.DeletePhoto()
+// Handle update action for user photo
+const updatePhoto = async () => await UpdateUsers.UpdatePhoto(UpdateUsers.filename.value)
 
-// const updatePhoto = () => {
-//  // Handle update action for user photo
-// }
 </script>
 
 <template>
@@ -144,6 +139,7 @@ const { files, open } = useFileDialog()
        </div>
       </div>
       <!-- File Upload Section -->
+
       <figure>
        <img :src="UpdateUsers.filename.value" />
       </figure>
