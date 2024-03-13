@@ -9,7 +9,7 @@ const UpdateUsers = excelStore()
 const { phoneUser, emailUser, photoUser } = storeToRefs(UpdateUsers);
 // import userPhoto from '@/assets/images/user/user-03.png'
 // Handle form submission for personal information
-const handleSubmit = async () => await UpdateUsers.HandleSubmit(UpdateUsers.formData.fullName)
+const handleSubmit = async () => await UpdateUsers.HandleSubmit(UpdateUsers.formData.fullName, UpdateUsers.formData.uidUsers)
 // Handle cancel action for personal information
 const handleCancel = async () => await UpdateUsers.HandleCancel(UpdateUsers.formData.fullName)
 // Handle form submission for user photo
@@ -24,7 +24,7 @@ const { files, open } = useFileDialog()
 // Handle delete action for user photo
 const deletePhoto = async () => await UpdateUsers.DeletePhoto()
 // Handle update action for user photo
-const updatePhoto = async () => await UpdateUsers.UpdatePhoto(UpdateUsers.filename.value)
+const updatePhoto = async () => await UpdateUsers.UpdatePhoto(UpdateUsers.filename.value, UpdateUsers.formData.uidUsers)
 
 </script>
 

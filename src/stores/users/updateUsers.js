@@ -1,6 +1,7 @@
 import { ref, computed, watchEffect } from 'vue';
 import { defineStore } from 'pinia';
 import { useFirebaseStorage, useStorageFile, useCollection, useCurrentUser, updateCurrentUserProfile } from 'vuefire'
+import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { karyawanRef } from '@/firebase'
 import { ref as storageRef, deleteObject } from 'firebase/storage'
 
@@ -14,6 +15,7 @@ export const excelStore = defineStore('excelStore', () => {
     phoneNumber: users.value?.phoneNumber || 'N/A',
     emailAddress: users.value?.email || 'N/A',
     photoUsers: users.value?.photoURL || 'N/A',
+    uidUsers: users.value?.uid || 'N/A',
   })
   // State photo
   const filename = ref('')
@@ -32,10 +34,10 @@ export const excelStore = defineStore('excelStore', () => {
       console.error(error);
     }
   }
-  const UpdatePhoto = async (name) => {
+  const UpdatePhoto = async (photo) => {
     try {
       updateCurrentUserProfile({
-        photoURL: name
+        photoURL: photo
       })
     } catch (error) {
       console.error(error);
