@@ -16,16 +16,13 @@ const handleCancel = async () => await UpdateUsers.HandleCancel(UpdateUsers.form
 const handlePhotoSubmit = async () => await UpdateUsers.HandlePhotoSubmit(files.value)
 // const filename = ref('')
 const { files, open } = useFileDialog()
-
 // const handlePhotoCancel = () => {
 //  // Handle cancel action for user photo
 // }
-
 // Handle delete action for user photo
 const deletePhoto = async () => await UpdateUsers.DeletePhoto()
 // Handle update action for user photo
 const updatePhoto = async () => await UpdateUsers.UpdatePhoto(UpdateUsers.filename.value, UpdateUsers.formData.uidUsers)
-
 </script>
 
 <template>

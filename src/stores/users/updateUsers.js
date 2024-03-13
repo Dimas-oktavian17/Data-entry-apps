@@ -1,7 +1,6 @@
 import { ref, computed, watchEffect } from 'vue';
 import { defineStore } from 'pinia';
 import { useFirebaseStorage, useStorageFile, useCollection, useCurrentUser, updateCurrentUserProfile } from 'vuefire'
-import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { karyawanRef } from '@/firebase'
 import { ref as storageRef, deleteObject } from 'firebase/storage'
 
@@ -19,6 +18,7 @@ export const excelStore = defineStore('excelStore', () => {
   })
   // State photo
   const filename = ref('')
+  const filePath = ref('')
   // getters
   const emailUser = computed(() => users.value?.email || 'N/A')
   const phoneUser = computed(() => users.value?.phoneNumber || 'N/A')
@@ -80,12 +80,12 @@ export const excelStore = defineStore('excelStore', () => {
   const DeletePhoto = async () => {
     try {
       const storage = useFirebaseStorage()
-      const mountainFileRef = storageRef(storage, photoUser.value)
+      filePath.value = new URL(photoUser.value).pathname.split('/').pop()
+      const mountainFileRef = storageRef(storage, filePath.value)
       deleteObject(mountainFileRef)
-      // watchEffect(() => photoUser.value)
-      // updateCurrentUserProfile({
-      //   photoURL: null
-      // })
+      updateCurrentUserProfile({
+        photoURL: ''
+      })
     } catch (error) {
       console.error(error);
     }
