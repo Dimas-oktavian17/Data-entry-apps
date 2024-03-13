@@ -1,5 +1,3 @@
-s
-
 <script setup>
 import { UsersPinia } from '@/stores/users/users'
 import { storeToRefs } from 'pinia'
