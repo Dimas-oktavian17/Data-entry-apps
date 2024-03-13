@@ -28,7 +28,13 @@ export const UsersPinia = defineStore('UsersPinia', () => {
     return dataKaryawan.value.flatMap(user => user.author ? user.author : [])
       .reduce((acc, author) => {
         const found = acc.find(a => a.uid === author.uid)
-        found ? found.count++ : acc.push({ uid: author.uid, name: author.name, photo: author.picture, email: author.email, count: 1 }) // Include count property here
+        if (found) {
+          found.count++,
+            found.name = name.value,
+            found.photo = photo.value
+        } else {
+          acc.push({ uid: author.uid, name: author.name, photo: author.picture, email: author.email, count: 1 }) // Include count property here
+        }
         return acc
       }, [])
   })

@@ -14,9 +14,11 @@ export const excelStore = defineStore('excelStore', () => {
     phoneNumber: users.value?.phoneNumber || 'N/A',
     emailAddress: users.value?.email || 'N/A',
     photoUsers: users.value?.photoURL || 'N/A',
+    uidUsers: users.value?.uid || 'N/A',
   })
   // State photo
   const filename = ref('')
+  const filePath = ref('')
   // getters
   const emailUser = computed(() => users.value?.email || 'N/A')
   const phoneUser = computed(() => users.value?.phoneNumber || 'N/A')
@@ -32,10 +34,10 @@ export const excelStore = defineStore('excelStore', () => {
       console.error(error);
     }
   }
-  const UpdatePhoto = async (name) => {
+  const UpdatePhoto = async (photo) => {
     try {
       updateCurrentUserProfile({
-        photoURL: name
+        photoURL: photo
       })
     } catch (error) {
       console.error(error);
@@ -78,12 +80,12 @@ export const excelStore = defineStore('excelStore', () => {
   const DeletePhoto = async () => {
     try {
       const storage = useFirebaseStorage()
-      const mountainFileRef = storageRef(storage, photoUser.value)
+      filePath.value = new URL(photoUser.value).pathname.split('/').pop()
+      const mountainFileRef = storageRef(storage, filePath.value)
       deleteObject(mountainFileRef)
-      // watchEffect(() => photoUser.value)
-      // updateCurrentUserProfile({
-      //   photoURL: null
-      // })
+      updateCurrentUserProfile({
+        photoURL: ''
+      })
     } catch (error) {
       console.error(error);
     }

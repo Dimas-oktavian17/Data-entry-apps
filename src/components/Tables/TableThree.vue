@@ -23,6 +23,7 @@ const handleSubmit = async () => {
  updateDoc(doc(karyawanRef, formID.value), {
   author: [{ name: user.value.displayName, email: user.value.email, uid: user.value.uid, picture: user.value.photoURL }],
   id: karyawanRef.id.length + 1,
+  uidPhoto: user.value.uid,
   name: names.value,
   umur: age.value,
   jabatan: position.value,
@@ -113,8 +114,8 @@ watchEffect(() => selectedDistrict.value !== null && handleDistrict())
   <header class="grid grid-cols-1 place-items-end">
    <download-excel
     class="flex flex-row-reverse justify-center px-6 py-2 my-4 transition-all rounded-md cursor-pointer hover:transition-all align-items-center bg-primary hover:opacity-80"
-    @click="excelStore().generateFlattenedData" :data="excelStore().flattenedData"
-    :fields="excelStore().flattenedFields" worksheet="Data Karyawan" name="Data_Karyawan.xls">
+    @click="excelStore().generateFlattenedData" :data="excelStore().flattenedData" :fields="excelStore().flattenedFields"
+    worksheet="Data Karyawan" name="Data_Karyawan.xls">
     Download
     <IconVue icon="material-symbols:download" class="w-6 h-auto" />
    </download-excel>
@@ -153,10 +154,10 @@ watchEffect(() => selectedDistrict.value !== null && handleDistrict())
       </td>
       <td class="px-4 py-5">
        <p class="inline-flex px-3 py-1 text-sm font-medium rounded-full bg-opacity-10" :class="{
-  'bg-warning text-warning': status_karyawan === 'kontrak',
-  'bg-danger text-danger': status_karyawan === 'magang',
-  'bg-success text-success': status_karyawan === 'kartap'
- }">
+        'bg-warning text-warning': status_karyawan === 'kontrak',
+        'bg-danger text-danger': status_karyawan === 'magang',
+        'bg-success text-success': status_karyawan === 'kartap'
+       }">
         {{ status_karyawan }}
        </p>
       </td>
