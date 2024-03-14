@@ -1,5 +1,4 @@
 <script setup>
-// import { ref, computed, watchEffect, watch, onMounted } from 'vue';
 // firebase
 import { useFileDialog } from '@vueuse/core'
 // pinia
@@ -16,13 +15,12 @@ const handleCancel = async () => await UpdateUsers.HandleCancel(UpdateUsers.form
 const handlePhotoSubmit = async () => await UpdateUsers.HandlePhotoSubmit(files.value)
 // const filename = ref('')
 const { files, open } = useFileDialog()
-// const handlePhotoCancel = () => {
-//  // Handle cancel action for user photo
-// }
+// Handle cancel action for user photo
+const handlePhotoCancel = async () => await UpdateUsers.HandlePhotoCancel()
 // Handle delete action for user photo
 const deletePhoto = async () => await UpdateUsers.DeletePhoto()
 // Handle update action for user photo
-const updatePhoto = async () => await UpdateUsers.UpdatePhoto(UpdateUsers.filename.value, UpdateUsers.formData.uidUsers)
+const updatePhoto = async () => await UpdateUsers.UpdatePhoto(UpdateUsers.filename.value)
 </script>
 
 <template>
@@ -136,9 +134,8 @@ const updatePhoto = async () => await UpdateUsers.UpdatePhoto(UpdateUsers.filena
        </div>
       </div>
       <!-- File Upload Section -->
-
       <figure>
-       <img :src="UpdateUsers.filename.value" />
+       <img :src="UpdateUsers.filename.value" class="w-full h-auto" />
       </figure>
       <button
        class="block  relative mb-5.5  w-full cursor-pointer appearance-none rounded border-2 border-dashed border-primary bg-gray py-4 px-4 dark:bg-meta-4 sm:py-7.5 "

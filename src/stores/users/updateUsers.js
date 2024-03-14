@@ -77,6 +77,7 @@ export const excelStore = defineStore('excelStore', () => {
       console.error(error);
     }
   }
+  const HandlePhotoCancel = async () => filename.value = ''
   const DeletePhoto = async () => {
     try {
       const storage = useFirebaseStorage()
@@ -106,5 +107,6 @@ export const excelStore = defineStore('excelStore', () => {
     HandlePhotoSubmit,
     UpdatePhoto,
     DeletePhoto,
+    HandlePhotoCancel,
   };
 });
