@@ -61,15 +61,7 @@ watchEffect(() => selectedProvince.value !== null && handleProvince())
 watchEffect(() => selectedCity.value !== null && handleCity())
 watchEffect(() => selectedDistrict.value !== null && handleDistrict())
 // actions
-const handleSubmit = async () => FormUsers.HandleSubmit(
- name.value, Email.value, uid.value, photo.value,
- names.value, age.value, position.value, statusKaryawan.value,
- selectedProvince.value,
- selectedCity.value,
- selectedDistrict.value,
- selectedVillages.value,
- AlertsStatus.value
-)
+const handleSubmit = async () => FormUsers.HandleSubmit(name.value, Email.value, uid.value, photo.value)
 </script>
 
 <template>
