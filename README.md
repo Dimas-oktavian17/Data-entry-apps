@@ -27,7 +27,7 @@ Merupakan sebuah project data entry yang dapat di visualisasikan melalui diagram
 6) Api
 	  - [Data Indoensia](https://www.emsifa.com/api-wilayah-indonesia/)
 	
-# Functional feature list 'MVP'
+# Functional feature list 'MVP' || The project work in progress
 
 ### Register & login feature
 - User dapat register melalui email, ataupun auth dari google secara langsung. 
@@ -47,8 +47,10 @@ Merupakan sebuah project data entry yang dapat di visualisasikan melalui diagram
 - Export Data Karyawan to excel file.xls
 ### Profile
 - Update Displayname
-- Update PhotoUrl(WIP)
+- Update PhotoUrl
 - Uploud file images store in storage firebase
+- Delete photo users
+- Cancel uploud photo users
 ## Recommended IDE Setup
 
 [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
