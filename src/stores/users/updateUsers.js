@@ -50,21 +50,6 @@ export const excelStore = defineStore('excelStore', () => {
       console.error(error);
     }
   }
-  const HandleFileChange = (event) => {
-    // get the file values
-    const selectedFile = event
-    // past value files to another function
-    selectedFile && ReadFileContents(selectedFile)
-    console.log(selectedFile, imagePreview.value);
-  }
-  const ReadFileContents = (file) => {
-    // initialize fileReader api
-    const reader = new FileReader();
-    // Set the image data URL for preview when the data image is successfully read
-    reader.onload = (event) => imagePreview.value = event.target.result;
-    reader.readAsDataURL(file); // Read the file content as a data URL
-    console.log(imagePreview.value);
-  }
   const HandlePhotoSubmit = async (files) => {
     try {
       const data = files?.item(0)
@@ -102,8 +87,6 @@ export const excelStore = defineStore('excelStore', () => {
     photoUser,
     HandleSubmit,
     HandleCancel,
-    HandleFileChange,
-    ReadFileContents,
     HandlePhotoSubmit,
     UpdatePhoto,
     DeletePhoto,
