@@ -41,6 +41,7 @@ Merupakan sebuah project data entry yang dapat di visualisasikan melalui diagram
 - Menampilkan total input admin
 - Menampilkan total input all admin
 - Visualisasi data donuts, berdasarkan status_karyawan
+- Visualisasi data berdasarkan provinsi karyawan
 ### Dashboard Data Karyawan
 - Menampilkan Data list karyawan
 - Filter berdasarkan Provinsi, Kota, Kecamatan, Kelurahan (WIP)
