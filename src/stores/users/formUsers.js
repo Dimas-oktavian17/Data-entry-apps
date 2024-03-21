@@ -1,12 +1,16 @@
 /* eslint-disable no-unused-vars */
 import { ref, computed, watchEffect } from 'vue';
 import { defineStore } from 'pinia';
-import { addDoc } from 'firebase/firestore';
+import { addDoc, updateDoc, deleteDoc, doc } from 'firebase/firestore';
 import { karyawanRef } from '@/firebase'
+import { useCollection } from 'vuefire';
 
 export const formUsers = defineStore('formUsers', () => {
   // state
-  // Data source for the input group
+  const dataKaryawan = useCollection(karyawanRef)
+  const open = ref(false);
+  const dataView = ref([])
+  const formID = ref(null)
   const names = ref('')
   const age = ref(null)
   const position = ref('')
@@ -16,8 +20,9 @@ export const formUsers = defineStore('formUsers', () => {
   const selectedDistrict = ref([])
   const selectedVillages = ref(null)
   const AlertsStatus = ref(false)
+  const AlertForm = ref(false)
   // getters
-
+  const createAt = computed(() => new Date().getMonth() + 1)
   // actions
   const HandleProvince = (selectedCity, selectedDistrict, selectedVillages, cities, kecamatan, kelurahan) => {
     selectedCity = null
@@ -55,6 +60,7 @@ export const formUsers = defineStore('formUsers', () => {
         kota: selectedCity.value,
         kecamatan: selectedDistrict.value,
         kelurahan: selectedVillages.value,
+        createAt: createAt.value
       })
       names.value = '',
         age.value = null,
@@ -70,7 +76,62 @@ export const formUsers = defineStore('formUsers', () => {
       console.error(error);
     }
   }
+  const HandleEdit = (id) => {
+    formID.value = id
+    AlertForm.value = true
+  }
+  const HandleUpdate = async (
+    formID,
+    name,
+    Email,
+    uid,
+    photo,
+    names,
+    age,
+    position,
+    statusKaryawan,
+    selectedProvince,
+    selectedCity,
+    selectedDistrict,
+    selectedVillages,
+  ) => {
+    try {
+      updateDoc(doc(karyawanRef, formID), {
+        author: [{ name: name, email: Email, uid: uid, picture: photo }],
+        id: new Date().getTime(),
+        uidPhoto: photo,
+        name: names,
+        umur: age,
+        jabatan: position,
+        status_karyawan: statusKaryawan,
+        provinsi: selectedProvince,
+        kota: selectedCity,
+        kecamatan: selectedDistrict,
+        kelurahan: selectedVillages,
+        createAt: createAt.value
+      })
+      names = '',
+        age = null,
+        position = '',
+        statusKaryawan = null,
+        selectedProvince = null,
+        selectedCity = null,
+        selectedDistrict = null,
+        selectedVillages = null
+      AlertForm.value = true
+      setTimeout(() => AlertForm.value = false, 1000);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  const HandleView = (name) => {
+    const result = dataKaryawan.value.find(item => item.name === name);
+    open.value = true
+    dataView.value = result
+  }
+  const HandleDelete = (id) => deleteDoc(doc(karyawanRef, id))
   return {
+    formID,
     names,
     age,
     position,
@@ -83,6 +144,14 @@ export const formUsers = defineStore('formUsers', () => {
     HandleProvince,
     HandleCity,
     HandleDistrict,
-    HandleSubmit
+    HandleSubmit,
+    createAt,
+    HandleUpdate,
+    HandleEdit,
+    AlertForm,
+    HandleView,
+    HandleDelete,
+    open,
+    dataView
   };
 });
