@@ -1,31 +1,35 @@
 <script setup>
 import { onMounted, ref, watchEffect, watch } from 'vue'
 import { storeToRefs } from 'pinia'
+import { UsersPinia } from '@/stores/users/users'
 import { formPinia } from '@/stores/formAPI/index'
-import { karyawanRef } from '@/firebase'
-import { addDoc } from "firebase/firestore";
-import { useCurrentUser } from 'vuefire';
+import { formUsers } from '@/stores/users/formUsers';
 
 const formStore = formPinia()
-const user = useCurrentUser();
+const Users = UsersPinia()
+const FormUsers = formUsers()
+// Author information
+const { name, Email, photo, uid } = storeToRefs(Users)
 const {
  provinces,
  cities,
  kecamatan,
  kelurahan,
 } = storeToRefs(formStore)
-// Data source for the input group
-const names = ref('')
-const age = ref(null)
-const position = ref('')
-const statusKaryawan = ref(null)
-const selectedProvince = ref([])
-const selectedCity = ref([])
-const selectedDistrict = ref([])
-const selectedVillages = ref(null)
+const {
+ names,
+ age,
+ position,
+ statusKaryawan,
+ selectedProvince,
+ selectedCity,
+ selectedDistrict,
+ selectedVillages,
+ AlertsStatus
+} = storeToRefs(FormUsers)
 
 const isOptionSelected = ref(false)
-const AlertsStatus = ref(false)
+// const AlertsStatus = ref(false)
 const changeTextColor = () => isOptionSelected.value = true
 const pageTitle = ref('Form Layout')
 onMounted(async () => formStore.LoadProvinces())
@@ -33,59 +37,31 @@ onMounted(async () => formStore.LoadProvinces())
 const fetchProvinces = async ({ id }) => formStore.fetchProvinces({ id }, selectedCity.value, selectedDistrict.value)
 const fecthCity = async ({ id }) => formStore.fecthCity({ id }, selectedDistrict.value)
 const fetchDistrict = async ({ id }) => formStore.fetchDistrict({ id }, selectedVillages.value)
-
 // Watch effect for data form
 watch(selectedProvince, fetchProvinces, { immediate: true })
 watch(selectedCity, fecthCity, { immediate: true })
 watch(selectedDistrict, fetchDistrict, { immediate: true })
-const handleProvince = () => {
- selectedCity.value = null
- selectedDistrict.value = null
- selectedVillages.value = null
- cities.value = null
- kecamatan.value = null
- kelurahan.value = null
-}
-const handleCity = () => {
- selectedDistrict.value = null
- kecamatan.value = null
- kelurahan.value = null
- selectedVillages.value = null
-}
-const handleDistrict = () => {
- kelurahan.value = null
- selectedVillages.value = null
-}
+const handleProvince = () => FormUsers.HandleProvince(
+ selectedCity.value,
+ selectedDistrict.value,
+ selectedVillages.value,
+ cities.value,
+ kecamatan.value,
+ kelurahan.value
+)
+const handleCity = () => FormUsers.HandleCity(
+ selectedDistrict.value,
+ kecamatan.value,
+ kelurahan.value,
+ selectedVillages.value
+)
+const handleDistrict = () => FormUsers.HandleDistrict(kelurahan.value, selectedVillages.value)
 
 watchEffect(() => selectedProvince.value !== null && handleProvince())
 watchEffect(() => selectedCity.value !== null && handleCity())
 watchEffect(() => selectedDistrict.value !== null && handleDistrict())
 // actions
-const handleSubmit = async () => {
- // try {
- addDoc(karyawanRef, {
-  author: [{ name: user.value.displayName, email: user.value.email, uid: user.value.uid, picture: user.value.photoURL }],
-  id: karyawanRef.id.length + 1,
-  name: names.value,
-  umur: age.value,
-  jabatan: position.value,
-  status_karyawan: statusKaryawan.value,
-  provinsi: selectedProvince.value,
-  kota: selectedCity.value,
-  kecamatan: selectedDistrict.value,
-  kelurahan: selectedVillages.value,
- })
- names.value = '',
-  age.value = null,
-  position.value = '',
-  statusKaryawan.value = null,
-  selectedProvince.value = null,
-  selectedCity.value = null,
-  selectedDistrict.value = null,
-  selectedVillages.value = null
- AlertsStatus.value = true
- setTimeout(() => AlertsStatus.value = false, 3000);
-}
+const handleSubmit = async () => FormUsers.HandleSubmit(name.value, Email.value, uid.value, photo.value)
 </script>
 
 <template>
@@ -93,7 +69,6 @@ const handleSubmit = async () => {
   <!-- Breadcrumb Start -->
   <BreadcrumbDefault :pageTitle="pageTitle" />
   <!-- Breadcrumb End -->
-
   <!-- ====== Form Layout Section Start -->
   <div class="grid grid-cols-1 gap-9 ">
    <div class="flex flex-col gap-9">
@@ -105,32 +80,32 @@ const handleSubmit = async () => {
        <div class="mb-4.5 flex flex-col gap-6 xl:flex-row">
         <FormKit v-model="names" type="text" name="name" label="Your name" placeholder="Abu Na'im"
          validation="required|length:5,15" :classes="{
-          outer: 'mb-4.5 w-full xl:w-1/2',
-          label:
-           'mb-2.5 block text-black dark:text-white',
-          inner: ' focus:outline-1',
-          input:
-           'w-full rounded border-[1.5px] text-black border-stroke bg-transparent py-3 px-5 font-normal outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:text-white dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary',
-         }" />
+   outer: 'mb-4.5 w-full xl:w-1/2',
+   label:
+    'mb-2.5 block text-black dark:text-white',
+   inner: ' focus:outline-1',
+   input:
+    'w-full rounded border-[1.5px] text-black border-stroke bg-transparent py-3 px-5 font-normal outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:text-white dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary',
+  }" />
         <FormKit v-model="age" type="number" name="age" label="Your age" placeholder="Your age" validation="required"
          :classes="{
-          outer: 'mb-4.5 w-full xl:w-1/2',
-          label:
-           'mb-2.5 block text-black dark:text-white',
-          inner: ' focus:outline-1',
-          input:
-           'w-full rounded border-[1.5px] text-black border-stroke bg-transparent py-3 px-5 font-normal outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:text-white dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary',
-         }" />
+   outer: 'mb-4.5 w-full xl:w-1/2',
+   label:
+    'mb-2.5 block text-black dark:text-white',
+   inner: ' focus:outline-1',
+   input:
+    'w-full rounded border-[1.5px] text-black border-stroke bg-transparent py-3 px-5 font-normal outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:text-white dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary',
+  }" />
        </div>
        <FormKit v-model="position" type="text" name="Position" label="Your position" placeholder="IT Staff"
         validation="required|length:5,15" :classes="{
-         outer: 'mb-4.5 w-full ',
-         label:
-          'mb-2.5 block text-black dark:text-white',
-         inner: ' focus:outline-1',
-         input:
-          'w-full rounded border-[1.5px] text-black border-stroke bg-transparent py-3 px-5 font-normal outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:text-white dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary',
-        }" />
+   outer: 'mb-4.5 w-full ',
+   label:
+    'mb-2.5 block text-black dark:text-white',
+   inner: ' focus:outline-1',
+   input:
+    'w-full rounded border-[1.5px] text-black border-stroke bg-transparent py-3 px-5 font-normal outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:text-white dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary',
+  }" />
        <SelectGroup v-model="statusKaryawan" />
        <!-- location api -->
        <div class="mb-4.5">

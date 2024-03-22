@@ -12,7 +12,7 @@ import { Icon } from '@iconify/vue'
 import router from './router'
 import { plugin, defaultConfig } from '@formkit/vue'
 import VueApexCharts from 'vue3-apexcharts'
-
+import JsonExcel from "vue-json-excel3";
 // end library dependencies
 // firebase configuration
 import { firebaseApp } from './firebase/index.js'
@@ -71,6 +71,7 @@ app.component('IconVue', Icon)
   .component('DefaultAuthCard', DefaultAuthCard)
   .component('ProfileCard', ProfileCard)
   .component('TableFilterLocation', TableFilterLocation)
+  .component('downloadExcel', JsonExcel)
   .use(createPinia())
   .use(plugin, defaultConfig)
   .use(router)

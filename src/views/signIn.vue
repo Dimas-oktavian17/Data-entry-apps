@@ -62,7 +62,7 @@ onMounted(() => watch(() => authSignin.user && authSignin.user.value !== null, (
   </FormKit>
   <ButtonAuth @handleGoogleAuth="signInPopup">
    <IconVue icon="flat-color-icons:google" class="w-5 h-auto transition-all group-hover:-rotate-45" />
-   Sign up with Google
+   Sign in with Google
   </ButtonAuth>
   <div class="mt-6 text-center">
    <p class="font-medium">

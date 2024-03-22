@@ -8,12 +8,12 @@ const pageTitle = ref('Settings Page')
 </script>
 
 <template>
-  <DefaultLayout>
-    <div class="mx-auto max-w-270">
-      <!-- Breadcrumb Start -->
-      <BreadcrumbDefault :pageTitle="pageTitle" />
-      <!-- Breadcrumb End -->
-      <SettingsCard />
-    </div>
-  </DefaultLayout>
+ <DefaultLayout>
+  <div class="mx-auto max-w-270">
+   <!-- Breadcrumb Start -->
+   <BreadcrumbDefault :pageTitle="pageTitle" />
+   <!-- Breadcrumb End -->
+   <SettingsCard />
+  </div>
+ </DefaultLayout>
 </template>

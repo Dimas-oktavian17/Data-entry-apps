@@ -1,5 +1,5 @@
 <script setup>
-import { ref, } from 'vue'
+import { ref } from 'vue'
 import { RouterLink } from 'vue-router';
 import { authPinia } from '@/stores/auth/authSignup'
 import NotifError from '@/components/base/NotifError.vue';
@@ -23,7 +23,6 @@ const signInPopup = async () => {
 </script>
 
 <template>
- <!-- new -->
  <DefaultAuthCard subtitle="Sign-up now" title="Sign Up to TailAdmin">
   <NotifError v-if="notifStatus" :notif="notif" />
   <FormKit @submit="handleSignup" ref="form" type="form" submit-label="Sign Up" :classes="{

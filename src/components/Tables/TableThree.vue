@@ -1,49 +1,21 @@
 <script setup>
-import { ref, onMounted, watchEffect, watch } from 'vue'
-import { useCollection, useCurrentUser } from 'vuefire'
-import { karyawanRef } from '@/firebase'
-import { deleteDoc, doc, updateDoc } from "firebase/firestore";
-import { storeToRefs } from 'pinia';
-
-const dataKaryawan = useCollection(karyawanRef)
-const dataView = ref([])
-const open = ref(false)
-const user = useCurrentUser();
-const handleView = (name) => {
- const viewKaryawan = dataKaryawan.value.find(item => item.name === name)
- open.value = true
- dataView.value = viewKaryawan
-}
-// data form
-const handleEdit = async (id) => {
- formID.value = id
- AlertsStatus.value = true
-}
-const handleSubmit = async () => {
- updateDoc(doc(karyawanRef, formID.value), {
-  author: [{ name: user.value.displayName, email: user.value.email, uid: user.value.uid, picture: user.value.photoURL }],
-  id: karyawanRef.id.length + 1,
-  name: names.value,
-  umur: age.value,
-  jabatan: position.value,
-  status_karyawan: statusKaryawan.value,
-  provinsi: selectedProvince.value,
-  kota: selectedCity.value,
-  kecamatan: selectedDistrict.value,
-  kelurahan: selectedVillages.value
- })
- AlertsStatus.value = false
-}
-// form edit function 
-
-import { formPinia } from '@/stores/formAPI/index'
 import BreadcrumbDefault from '@/components/Breadcrumbs/BreadcrumbDefault.vue'
 import DefaultCard from '@/components/Forms/DefaultCard.vue'
 import InputGroup from '@/components/Forms/InputGroup.vue'
 import SelectGroup from '@/components/Forms/SelectGroup.vue'
+import { excelStore } from '@/stores/excel/excelStore';
+import { onMounted, ref, watchEffect, watch } from 'vue'
+import { storeToRefs } from 'pinia'
+import { UsersPinia } from '@/stores/users/users'
+import { formPinia } from '@/stores/formAPI/index'
+import { formUsers } from '@/stores/users/formUsers';
+
 
 const formStore = formPinia()
-
+const Users = UsersPinia()
+const FormUsers = formUsers()
+// Author information
+const { name, Email, photo, uid } = storeToRefs(Users)
 const {
  provinces,
  cities,
@@ -51,56 +23,67 @@ const {
  kelurahan,
  filterUsers
 } = storeToRefs(formStore)
-// Data source for the input group
-const names = ref('')
-const age = ref(null)
-const position = ref('')
-const statusKaryawan = ref(null)
-const selectedProvince = ref([])
-const selectedCity = ref([])
-const selectedDistrict = ref([])
-const selectedVillages = ref(null)
-const formID = ref(null)
+const {
+ formID,
+ names,
+ age,
+ position,
+ statusKaryawan,
+ selectedProvince,
+ selectedCity,
+ selectedDistrict,
+ selectedVillages,
+ AlertForm,
+ open,
+ dataView
+} = storeToRefs(FormUsers)
 
+const handleView = (name) => FormUsers.HandleView(name)
+// data form
+const handleDelete = (index) => FormUsers.HandleDelete(index)
+const handleEdit = async (id) => FormUsers.HandleEdit(id)
+const handleSubmit = async () => FormUsers.HandleUpdate(
+ formID.value,
+ name.value,
+ Email.value,
+ uid.value,
+ photo.value,
+ names.value,
+ age.value,
+ position.value,
+ statusKaryawan.value,
+ selectedProvince.value,
+ selectedCity.value,
+ selectedDistrict.value,
+ selectedVillages.value,
+)
 const isOptionSelected = ref(false)
-const AlertsSucces = ref(false)
-const AlertsStatus = ref(false)
 const changeTextColor = () => isOptionSelected.value = true
 const pageTitle = ref('Form Layout')
-const handleDelete = (index) => {
- deleteDoc(doc(karyawanRef, index))
- AlertsSucces.value = true
- setTimeout(() => AlertsSucces.value = false, 3000);
-}
 onMounted(async () => formStore.LoadProvinces())
 // Fetching data 
 const fetchProvinces = async ({ id }) => formStore.fetchProvinces({ id }, selectedCity.value, selectedDistrict.value)
 const fecthCity = async ({ id }) => formStore.fecthCity({ id }, selectedDistrict.value)
 const fetchDistrict = async ({ id }) => formStore.fetchDistrict({ id }, selectedVillages.value)
-
 // Watch effect for data form
-watch(selectedProvince.value, fetchProvinces, { immediate: true })
-watch(selectedCity.value, fecthCity, { immediate: true })
-watch(selectedDistrict.value, fetchDistrict, { immediate: true })
-
-const handleProvince = () => {
- selectedCity.value = null
- selectedDistrict.value = null
- selectedVillages.value = null
- cities.value = null
- kecamatan.value = null
- kelurahan.value = null
-}
-const handleCity = () => {
- selectedDistrict.value = null
- kecamatan.value = null
- kelurahan.value = null
- selectedVillages.value = null
-}
-const handleDistrict = () => {
- kelurahan.value = null
- selectedVillages.value = null
-}
+watch(selectedProvince, fetchProvinces, { immediate: true })
+watch(selectedCity, fecthCity, { immediate: true })
+watch(selectedDistrict, fetchDistrict, { immediate: true })
+const handleProvince = () => FormUsers.HandleProvince(
+ selectedCity.value,
+ selectedDistrict.value,
+ selectedVillages.value,
+ cities.value,
+ kecamatan.value,
+ kelurahan.value
+)
+const handleCity = () => FormUsers.HandleCity(
+ selectedDistrict.value,
+ kecamatan.value,
+ kelurahan.value,
+ selectedVillages.value
+)
+const handleDistrict = () => FormUsers.HandleDistrict(kelurahan.value, selectedVillages.value)
 
 watchEffect(() => selectedProvince.value !== null && handleProvince())
 watchEffect(() => selectedCity.value !== null && handleCity())
@@ -108,8 +91,17 @@ watchEffect(() => selectedDistrict.value !== null && handleDistrict())
 </script>
 
 <template>
- <div v-if="AlertsStatus === false"
+ <div v-if="AlertForm === false"
   class="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+  <header class="grid grid-cols-1 place-items-end">
+   <download-excel
+    class="flex flex-row-reverse justify-center px-6 py-2 my-4 text-white transition-all rounded-md cursor-pointer hover:transition-all align-items-center bg-primary hover:opacity-80"
+    @click="excelStore().generateFlattenedData" :data="excelStore().flattenedData" :fields="excelStore().flattenedFields"
+    worksheet="Data Karyawan" name="Data_Karyawan.xls">
+    Download
+    <IconVue icon="material-symbols:download" class="w-6 h-auto" />
+   </download-excel>
+  </header>
   <TableFilterLocation />
   <div class="max-w-full overflow-x-auto">
    <table class="w-full table-auto">
@@ -172,11 +164,10 @@ watchEffect(() => selectedDistrict.value !== null && handleDistrict())
   </div>
  </div>
  <!-- edit form -->
- <div class="" v-if="AlertsStatus !== false">
+ <div class="" v-if="AlertForm !== false">
   <!-- Breadcrumb Start -->
   <BreadcrumbDefault :pageTitle="pageTitle" />
   <!-- Breadcrumb End -->
-
   <!-- ====== Form Layout Section Start -->
   <div class="grid grid-cols-1 gap-9 ">
    <div class="flex flex-col gap-9">
