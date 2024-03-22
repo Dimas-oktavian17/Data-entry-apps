@@ -1,21 +1,23 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-// @ts-ignore
 import VueApexCharts from 'vue3-apexcharts'
-
+import { formUsers } from '@/stores/users/formUsers';
+import { storeToRefs } from 'pinia';
+import { UsersPinia } from '@/stores/users/users';
+const { DataMagang, DataKontrak, DataKartap } = storeToRefs(formUsers())
 const chartData = {
  series: [
   {
    name: 'Kontrak',
-   data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30, 45]
+   data: DataKontrak.value
   },
   {
    name: 'Magang',
-   data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30, 45]
+   data: DataMagang.value
   },
   {
    name: 'Kartap',
-   data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39, 51]
+   data: DataKartap.value
   }
  ],
  labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
@@ -136,7 +138,7 @@ const apexOptions = {
      </span>
      <div class="w-full">
       <p class="font-semibold text-[#D34053]">Total Magang</p>
-      <p class="text-sm font-medium">12.04.2022 - 12.05.2022</p>
+      <p class="text-sm font-medium">{{ UsersPinia().StatusMagang }}</p>
      </div>
     </div>
     <div class="flex min-w-47.5">
@@ -145,7 +147,7 @@ const apexOptions = {
      </span>
      <div class="w-full">
       <p class="font-semibold text-[#FFA70B]">Total Kontrak</p>
-      <p class="text-sm font-medium">12.04.2022 - 12.05.2022</p>
+      <p class="text-sm font-medium"> {{ UsersPinia().StatusKontrak }} </p>
      </div>
     </div>
     <div class="flex min-w-47.5">
@@ -154,7 +156,7 @@ const apexOptions = {
      </span>
      <div class="w-full">
       <p class="font-semibold text-[#219653]">Total Kartap</p>
-      <p class="text-sm font-medium">12.04.2022 - 12.05.2022</p>
+      <p class="text-sm font-medium">{{ UsersPinia().StatusKartap }}</p>
      </div>
     </div>
    </div>
