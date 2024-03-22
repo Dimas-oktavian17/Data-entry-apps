@@ -1,86 +1,24 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import VueApexCharts from 'vue3-apexcharts'
 import { storeToRefs } from 'pinia';
 import { UsersPinia } from '@/stores/users/users';
+import { formPinia } from '@/stores/formAPI';
 const Users = UsersPinia()
 const {
- employeAceh,
- employeSumut,
- employeSumbar,
- employeRiau,
- employeJambi,
- employeSumsel,
- employeBengkulu,
- employeLampung,
- employeBangka,
- employeKepri,
- employeJkt,
- employeJabar,
- employeJateng,
- employeJogja,
- employeJatim,
- employeBanten,
- employeBali,
- employeNusbar,
- employeNustim,
- employeKalbar,
- employeKalteng,
- employeKalsel,
- employeKaltim,
- employeKalut,
- employeSulut,
- employeSulteng,
- employeSulsel,
- employeSultengg,
- employeGorontalo,
- employeSulbar,
- employeMaluku,
- employeMalut,
- employePapbar,
- employePapua,
+ nameProvinsi
 } = storeToRefs(Users)
-
+onMounted(async () => formPinia().LoadProvinces())
+const data = ref([])
+for (let index = 0; index <= 34; index++) {
+ data.value.push([index])
+}
+console.log(data.value);
 const chart = ref(null)
-
+console.log(nameProvinsi);
 const options = {
  series: [{
-  data: [
-   employeAceh.value,
-   employeSumut.value,
-   employeSumbar.value,
-   employeRiau.value,
-   employeJambi.value,
-   employeSumsel.value,
-   employeBengkulu.value,
-   employeLampung.value,
-   employeBangka.value,
-   employeKepri.value,
-   employeJkt.value,
-   employeJabar.value,
-   employeJateng.value,
-   employeJogja.value,
-   employeJatim.value,
-   employeBanten.value,
-   employeBali.value,
-   employeNusbar.value,
-   employeNustim.value,
-   employeKalbar.value,
-   employeKalteng.value,
-   employeKalsel.value,
-   employeKaltim.value,
-   employeKalut.value,
-   employeSulut.value,
-   employeSulteng.value,
-   employeSulsel.value,
-   employeSultengg.value,
-   employeGorontalo.value,
-   employeSulbar.value,
-   employeMaluku.value,
-   employeMalut.value,
-   employePapbar.value,
-   employePapua.value,
-  ]
+  data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34]
  }],
  chart: {
   height: 350,
@@ -99,42 +37,7 @@ const options = {
   show: false
  },
  xaxis: {
-  categories: [
-   ['Aceh'],
-   ['Sumut'],
-   ['Sumbar'],
-   ['Riau'],
-   ['Jambi'],
-   ['Sumsel'],
-   ['Bengkulu'],
-   ['Lampung'],
-   ['Kep Bangka'],
-   ['Kep Riau'],
-   ['Jakarta'],
-   ['Jabar'],
-   ['Jateng'],
-   ['Jogja'],
-   ['Jatim'],
-   ['Banten'],
-   ['Bali'],
-   ['Nusbar'],
-   ['Nustim'],
-   ['Kalbar'],
-   ['Kalteng'],
-   ['Kalsel'],
-   ['Kaltim'],
-   ['Kalut'],
-   ['Sulut'],
-   ['Sulteng'],
-   ['Sulsel'],
-   ['Sultengg'],
-   ['Gorontalo'],
-   ['Sulbar'],
-   ['Maluku'],
-   ['Malut'],
-   ['Papbar'],
-   ['Papua'],
-  ],
+  categories: nameProvinsi.value,
   labels: {
    style: {
     colors: '#000000',
