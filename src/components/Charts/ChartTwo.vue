@@ -37,7 +37,9 @@ const options = ref({
   }
  }
 })
-watchEffect(() => options.value.series)
+watchEffect(() => options.value.series = [{
+ data: countProvinsi.value
+}])
 </script>
 
 <template>

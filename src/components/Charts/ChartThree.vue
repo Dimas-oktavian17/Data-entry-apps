@@ -48,7 +48,7 @@ const apexOptions = {
   }
  ]
 }
-watchEffect(() => chartData.value.series)
+watchEffect(() => chartData.value.series = [StatusKontrak.value, StatusMagang.value, StatusKartap.value])
 </script>
 
 <template>
