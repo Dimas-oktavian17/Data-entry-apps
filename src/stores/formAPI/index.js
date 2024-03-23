@@ -2,13 +2,11 @@
 import { ref, computed } from 'vue'
 import axios from 'axios';
 import { defineStore } from 'pinia';
-import { UsersPinia } from '@/stores/users/users'
-import { storeToRefs } from 'pinia'
-
+import { karyawanRef } from '@/firebase'
+import { useCollection, useCurrentUser } from 'vuefire'
 export const formPinia = defineStore('formPinia', () => {
   //  State
-  const Users = UsersPinia()
-  const { dataKaryawan } = storeToRefs(Users)
+  const dataKaryawan = useCollection(karyawanRef)
   const provinces = ref([])
   const cities = ref(null)
   const kecamatan = ref(null)
@@ -93,6 +91,7 @@ export const formPinia = defineStore('formPinia', () => {
     }
   }
   return {
+    dataKaryawan,
     provinces,
     cities,
     kecamatan,

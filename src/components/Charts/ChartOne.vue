@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watchEffect } from 'vue'
 import VueApexCharts from 'vue3-apexcharts'
 import { formUsers } from '@/stores/users/formUsers';
 import { storeToRefs } from 'pinia';
 import { UsersPinia } from '@/stores/users/users';
 const { DataMagang, DataKontrak, DataKartap } = storeToRefs(formUsers())
-const chartData = {
+
+const chartData = ref({
  series: [
   {
    name: 'Kontrak',
@@ -21,11 +22,9 @@ const chartData = {
   }
  ],
  labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-}
-
+})
 const chart = ref(null)
-
-const apexOptions = {
+const apexOptions = ref({
  legend: {
   show: false,
   position: 'top',
@@ -107,7 +106,7 @@ const apexOptions = {
  },
  xaxis: {
   type: 'category',
-  categories: chartData.labels,
+  categories: chartData.value.labels,
   axisBorder: {
    show: false
   },
@@ -124,7 +123,22 @@ const apexOptions = {
   min: 0,
   max: 100
  }
-}
+})
+watchEffect(() => {
+ chartData.value.series = [
+  {
+   name: 'Kontrak',
+   data: DataKontrak.value
+  },
+  {
+   name: 'Magang',
+   data: DataMagang.value
+  },
+  {
+   name: 'Kartap',
+   data: DataKartap.value
+  }]
+})
 </script>
 
 <template>
