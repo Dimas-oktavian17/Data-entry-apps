@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { ref, onMounted, watchEffect } from 'vue'
 import VueApexCharts from 'vue3-apexcharts'
 import { storeToRefs } from 'pinia';
 import { UsersPinia } from '@/stores/users/users';
@@ -7,7 +7,7 @@ import { formPinia } from '@/stores/formAPI';
 const Users = UsersPinia()
 const { nameProvinsi, countProvinsi } = storeToRefs(Users)
 onMounted(async () => formPinia().LoadProvinces())
-const options = {
+const options = ref({
  series: [{
   data: countProvinsi.value
  }],
@@ -36,7 +36,8 @@ const options = {
    }
   }
  }
-};
+})
+watchEffect(() => options.value.series)
 </script>
 
 <template>
