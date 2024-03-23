@@ -1,6 +1,7 @@
 <!-- eslint-disable vue/no-side-effects-in-computed-properties -->
+
 <script setup>
-import { ref } from 'vue'
+import { ref, watchEffect } from 'vue'
 import { UsersPinia } from '@/stores/users/users'
 import { storeToRefs } from 'pinia'
 // @ts-ignore
@@ -9,10 +10,10 @@ import VueApexCharts from 'vue3-apexcharts'
 const Users = UsersPinia()
 const { StatusKartap, StatusKontrak, StatusMagang } = storeToRefs(Users)
 
-const chartData = {
+const chartData = ref({
  series: [StatusKontrak.value, StatusMagang.value, StatusKartap.value],
  labels: ['kontrak', 'magang', 'kartap']
-}
+})
 const chart = ref(null)
 const apexOptions = {
  chart: {
@@ -20,7 +21,7 @@ const apexOptions = {
   width: 380
  },
  colors: ['#FFA70B', '#D34053', '#219653'],
- labels: chartData.labels,
+ labels: chartData.value.labels,
  legend: {
   show: false,
   position: 'bottom'
@@ -47,7 +48,7 @@ const apexOptions = {
   }
  ]
 }
-
+watchEffect(() => chartData.value.series)
 </script>
 
 <template>
