@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import SignedIn from '@/views/signIn.vue'
-
+import { authPinia } from '@/stores/auth/authSignin'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -131,5 +131,17 @@ const router = createRouter({
     }
   ]
 })
+router.beforeEach((to, from, next) => {
+  const login = authPinia()
+
+  if (!login.user && to.name !== 'sign-in' && to.name !== 'sign-up') {
+    // If user is not logged in and trying to access a restricted route (not sign-in or sign-up), redirect to sign-in
+    next({ name: 'sign-in' })
+  } else {
+    // Otherwise, allow navigation
+    next()
+  }
+})
+
 
 export default router
