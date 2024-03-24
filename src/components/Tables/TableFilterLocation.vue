@@ -21,10 +21,22 @@ onMounted(async () => {
  console.log(selectedProvince.value.id);
 })
 // Fetching data 
-const fetchProvinces = async ({ id, name }) => formStore.fetchProvinces({ id, name }, selectedCity.value, selectedDistrict.value)
-const fecthCity = async ({ id }) => formStore.fecthCity({ id }, selectedDistrict.value)
-const fetchDistrict = async ({ id }) => formStore.fetchDistrict({ id }, selectedVillages.value)
-
+// Fetching data 
+const fetchProvinces = async (obj) => {
+ // checking the parameter from select is null or not, procces if not null
+ const id = obj?.id;
+ id && formStore.fetchProvinces({ id }, selectedCity.value, selectedDistrict.value)
+}
+const fecthCity = async (obj) => {
+ // checking the parameter from select is null or not, procces if not null
+ const id = obj?.id;
+ id && formStore.fecthCity({ id }, selectedDistrict.value)
+}
+const fetchDistrict = async (obj) => {
+ // checking the parameter from select is null or not, procces if not null
+ const id = obj?.id;
+ id && formStore.fetchDistrict({ id }, selectedVillages.value)
+}
 // Watch effect for data form
 watch(selectedProvince, fetchProvinces, { immediate: true })
 watch(selectedCity, fecthCity, { immediate: true })
