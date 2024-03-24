@@ -53,7 +53,7 @@ export const formPinia = defineStore('formPinia', () => {
       // console.error(error)
     }
   }
-  const fetchProvinces = async ({ id, name }, selectedCity, selectedDistrict) => {
+  const fetchProvinces = async ({ id }, selectedCity, selectedDistrict) => {
     try {
       console.log(id);
       console.log(typeof (provincesID.value));
