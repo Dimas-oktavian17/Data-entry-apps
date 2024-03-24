@@ -3,9 +3,10 @@ import { defineStore } from 'pinia';
 import { useFirebaseStorage, useStorageFile, useCollection, useCurrentUser, updateCurrentUserProfile } from 'vuefire'
 import { karyawanRef } from '@/firebase'
 import { ref as storageRef, deleteObject } from 'firebase/storage'
-
+import { UsersPinia } from './users';
 export const excelStore = defineStore('excelStore', () => {
   // state
+  const UsersInput = UsersPinia()
   const imagePreview = ref('')
   const dataKaryawan = useCollection(karyawanRef)
   const users = ref(useCurrentUser())
@@ -91,5 +92,6 @@ export const excelStore = defineStore('excelStore', () => {
     UpdatePhoto,
     DeletePhoto,
     HandlePhotoCancel,
+    UsersInput
   };
 });

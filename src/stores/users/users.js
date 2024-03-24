@@ -13,7 +13,7 @@ export const UsersPinia = defineStore('UsersPinia', () => {
   const router = useRouter();
   // getters
   const currentCountUsers = computed(() => {
-    const CurrentUser = UsersInput.value.find(({ name }) => name === users.value.displayName)
+    const CurrentUser = UsersInput.value.find(({ email }) => email === users.value.email)
     return CurrentUser ? CurrentUser.count : 0
   })
   const LoginDate = computed(() => new Date(users.value.metadata.lastSignInTime).toDateString())
@@ -31,9 +31,7 @@ export const UsersPinia = defineStore('UsersPinia', () => {
       .reduce((acc, author) => {
         const found = acc.find(a => a.uid === author.uid)
         if (found) {
-          found.count++,
-            found.name = name.value,
-            found.photo = photo.value
+          found.count++
         } else {
           acc.push({ uid: author.uid, name: author.name, photo: author.picture, email: author.email, count: 1 }) // Include count property here
         }
