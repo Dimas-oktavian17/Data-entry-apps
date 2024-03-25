@@ -123,6 +123,7 @@ export const formUsers = defineStore('formUsers', () => {
   const HandleEdit = (id) => {
     formID.value = id
     AlertForm.value = true
+    console.log(id);
   }
   const HandleUpdate = async (
     formID,
