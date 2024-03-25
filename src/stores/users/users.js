@@ -32,6 +32,7 @@ export const UsersPinia = defineStore('UsersPinia', () => {
         const found = acc.find(a => a.uid === author.uid)
         if (found) {
           found.count++
+          found.picture = author.picture
         } else {
           acc.push({ uid: author.uid, name: author.name, photo: author.picture, email: author.email, count: 1 }) // Include count property here
         }
