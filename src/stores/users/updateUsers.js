@@ -2,6 +2,7 @@ import { ref, computed, watchEffect } from 'vue';
 import { defineStore } from 'pinia';
 import { useFirebaseStorage, useStorageFile, useCollection, useCurrentUser, updateCurrentUserProfile } from 'vuefire'
 import { karyawanRef } from '@/firebase'
+import { updateDoc, doc } from 'firebase/firestore';
 import { ref as storageRef, deleteObject } from 'firebase/storage'
 import { UsersPinia } from './users';
 export const excelStore = defineStore('excelStore', () => {
@@ -25,6 +26,18 @@ export const excelStore = defineStore('excelStore', () => {
   const phoneUser = computed(() => users.value?.phoneNumber || 'N/A')
   const photoUser = computed(() => users.value?.photoURL || 'N/A')
   // actions
+  const UpdatePhotoAction = async (photo) => {
+    // filtering data by uid firestore
+    const docs = dataKaryawan.value.filter(doc => doc.author[0].uid === users.value.uid)
+    for (const dosc of docs) {
+      const userDoc = doc(karyawanRef, dosc.id)
+      //  loop all data and update by id
+      await updateDoc(userDoc, {
+        author: [{ ...dosc.author[0], picture: photo }],
+      })
+    }
+  }
+
   const HandleSubmit = async (name) => {
     try {
       updateCurrentUserProfile({
@@ -37,9 +50,10 @@ export const excelStore = defineStore('excelStore', () => {
   }
   const UpdatePhoto = async (photo) => {
     try {
-      updateCurrentUserProfile({
+      await updateCurrentUserProfile({
         photoURL: photo
       })
+      return UpdatePhotoAction(photo)
     } catch (error) {
       console.error(error);
     }
@@ -92,6 +106,7 @@ export const excelStore = defineStore('excelStore', () => {
     UpdatePhoto,
     DeletePhoto,
     HandlePhotoCancel,
-    UsersInput
+    UsersInput,
+    UpdatePhotoAction
   };
 });
