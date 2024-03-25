@@ -3,7 +3,7 @@ import { ref, computed } from 'vue'
 import axios from 'axios';
 import { defineStore } from 'pinia';
 import { karyawanRef } from '@/firebase'
-import { useCollection, useCurrentUser } from 'vuefire'
+import { useCollection } from 'vuefire'
 export const formPinia = defineStore('formPinia', () => {
   //  State
   const dataKaryawan = useCollection(karyawanRef)
