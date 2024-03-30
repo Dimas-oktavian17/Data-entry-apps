@@ -12,7 +12,7 @@ export const excelStore = defineStore('excelStore', () => {
   const dataKaryawan = useCollection(karyawanRef)
   const users = ref(useCurrentUser())
   const formData = ref({
-    fullName: users.value?.displayName || users.value.displayName,
+    fullName: users.value?.displayName || 'N/A',
     phoneNumber: users.value?.phoneNumber || 'N/A',
     emailAddress: users.value?.email || 'N/A',
     photoUsers: users.value?.photoURL || 'N/A',
@@ -37,6 +37,17 @@ export const excelStore = defineStore('excelStore', () => {
       })
     }
   }
+  const UpdateNameAction = async (names) => {
+    // filtering data by uid firestore
+    const docs = dataKaryawan.value.filter(doc => doc.author[0].uid === users.value.uid)
+    for (const dosc of docs) {
+      const userDoc = doc(karyawanRef, dosc.id)
+      //  loop all data and update by id
+      await updateDoc(userDoc, {
+        author: [{ ...dosc.author[0], name: names }],
+      })
+    }
+  }
 
   const HandleSubmit = async (name) => {
     try {
@@ -44,6 +55,7 @@ export const excelStore = defineStore('excelStore', () => {
         displayName: name
       })
       console.log(users.value.displayName);
+      return UpdateNameAction(name)
     } catch (error) {
       console.error(error);
     }
@@ -107,6 +119,7 @@ export const excelStore = defineStore('excelStore', () => {
     DeletePhoto,
     HandlePhotoCancel,
     UsersInput,
-    UpdatePhotoAction
+    UpdatePhotoAction,
+    UpdateNameAction
   };
 });
