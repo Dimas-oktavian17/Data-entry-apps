@@ -1,7 +1,7 @@
 import { useFirebaseAuth, } from 'vuefire'
 import { useRouter } from 'vue-router';
 import { sendPasswordResetEmail } from 'firebase/auth';
-import { defineStore } from 'pinia'
+import { defineStore } from 'pi-nia'
 
 export const authPinia = defineStore('AuthPinia', () => {
   const auth = useFirebaseAuth()
