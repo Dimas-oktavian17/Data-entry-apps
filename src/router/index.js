@@ -12,7 +12,13 @@ const router = createRouter({
     {
       path: '/tables/:id',
       name: 'tablesDetails',
-      component: () => import('@/views/TablesDetails.vue'),
+      component: () => import('@/views/Tables/TablesDetails.vue'),
+      props: route => ({ ...route.params, id: route.params.id }),
+    },
+    {
+      path: '/tables-edit/edits/:id',
+      name: 'tablesEdits',
+      component: () => import('@/views/Tables/TablesEdits.vue'),
       props: route => ({ ...route.params, id: route.params.id }),
     },
     {
