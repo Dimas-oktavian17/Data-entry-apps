@@ -11,7 +11,7 @@ const props = defineProps(['pageTitle'])
   <nav>
    <ol class="flex items-center gap-2">
     <li>
-     <router-link class="font-medium" to="/Dashboard"> Dashboard / </router-link>
+     <button class="font-medium" @click="$router.back()">Previous Page /</button>
     </li>
     <li class="font-medium text-primary">{{ props.pageTitle }}</li>
    </ol>

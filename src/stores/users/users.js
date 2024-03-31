@@ -69,6 +69,7 @@ export const UsersPinia = defineStore('UsersPinia', () => {
     currentCountUsers,
     nameProvinsi,
     FormUsers,
-    countProvinsi
+    countProvinsi,
+    router
   }
 })

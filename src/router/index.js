@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import SignedIn from '@/views/signIn.vue'
-// import { authPinia } from '@/stores/auth/authSignin'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -8,6 +8,12 @@ const router = createRouter({
       path: '/',
       name: 'sign-in',
       component: SignedIn
+    },
+    {
+      path: '/tables/:id',
+      name: 'tablesDetails',
+      component: () => import('@/views/TablesDetails.vue'),
+      props: route => ({ ...route.params, id: route.params.id }),
     },
     {
       path: '/register',
@@ -128,7 +134,9 @@ const router = createRouter({
       meta: {
         title: 'Signup'
       }
-    }
+    },
+    // will match everything and put it under `route.params.pathMatch`
+    { path: '/:pathMatch(.*)*', name: 'NotFound', component: () => import('@/views/NotFound/NotFound.vue'), },
   ]
 })
 // router.beforeEach((to, from, next) => {

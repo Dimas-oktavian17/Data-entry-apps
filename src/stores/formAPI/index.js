@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { ref, computed } from 'vue'
+import { ref, computed, defineProps } from 'vue'
 import axios from 'axios';
 import { defineStore } from 'pinia';
 import { karyawanRef } from '@/firebase'
@@ -26,6 +26,7 @@ export const formPinia = defineStore('formPinia', () => {
         (kecamatanID.value ? district : true);
     })
   })
+
   // actions function delegations
   const handleProvinces = (selectedDistrict, selectedCity) => {
     selectedDistrict = null
@@ -104,6 +105,5 @@ export const formPinia = defineStore('formPinia', () => {
     handleCity,
     handleDistrict,
     filterUsers,
-
   }
 })

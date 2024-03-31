@@ -1,17 +1,18 @@
-import { computed } from 'vue'
-import { useCollection } from 'vuefire'
-import { karyawanRef } from '@/firebase'
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
+import { useRoute } from 'vue-router'
+import { UsersPinia } from '../users/users'
 
-
-export const UsersPinia = defineStore('UsersPinia', () => {
+export const TableStore = defineStore('TableStore', () => {
   // state
-  const dataKaryawan = useCollection(karyawanRef)
+  const TableUsers = UsersPinia()
+  const dataView = ref(null)
   // getters
-  const FiltersProvince = computed(() => 't')
   // actions
+  const TableView = () => dataView.value = TableUsers.dataKaryawan.filter(details => details.id === useRoute().params.id)
   return {
-    dataKaryawan,
-    FiltersProvince,
+    TableUsers,
+    dataView,
+    TableView
   }
 })
