@@ -8,7 +8,7 @@ defineProps({
 </script>
 <template>
  <div
-  class="flex w-full border-l-6 border-[#34D399] bg-[#34D399] bg-opacity-[15%] px-7 py-8 shadow-md dark:bg-[#1B1B24] dark:bg-opacity-30 md:p-9">
+  class="flex  w-full h-auto border-l-6 border-[#34D399] bg-[#34D399] bg-opacity-[15%] px-7 py-8 shadow-md dark:bg-[#1B1B24] dark:bg-opacity-30 md:p-9">
   <div class="mr-5 flex h-9 w-full max-w-[36px] items-center justify-center rounded-lg bg-[#34D399]">
    <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path
@@ -17,18 +17,19 @@ defineProps({
    </svg>
   </div>
   <div class="w-full">
-   <div class="flex flex-col items-start justify-start text-2xl leading-relaxed text-body">
-    <p class="pb-1 leading-relaxed text-body">
-     Name: {{ data.name }} - Age: {{ data.umur }}
-    </p>
-    <p class="pb-1 leading-relaxed text-body">
-     Position: {{ data.jabatan }} - Status: {{ data.status_karyawan }}
-    </p>
+   <div v-for="(item) in data" :key="item.id"
+    class="flex flex-col items-start justify-start leading-relaxed capitalize text-body">
+    <h1 class="pb-1 leading-relaxed text-body">
+     Name: {{ item.name }} - Age: {{ item.umur }}
+    </h1>
+    <h2 class="pb-1 leading-relaxed text-body">
+     Position: {{ item.jabatan }} - Status: {{ item.status_karyawan }}
+    </h2>
     <ul class="pb-1 leading-relaxed text-body">
-     <li>Provinsi: {{ data.provinsi.name }}</li>
-     <li>City: {{ data.kota.name }}</li>
-     <li>District: {{ data.kecamatan.name }}</li>
-     <li>Villages: {{ data.kelurahan.name }}</li>
+     <li>Provinsi: {{ item.provinsi.name }}</li>
+     <li>City: {{ item.kota.name }}</li>
+     <li>District: {{ item.kecamatan.name }}</li>
+     <li>Villages: {{ item.kelurahan.name }}</li>
     </ul>
    </div>
   </div>
