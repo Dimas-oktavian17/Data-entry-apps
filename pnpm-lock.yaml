@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@formkit/core':
+    specifier: ^1.6.1
+    version: 1.6.1
   '@formkit/vue':
     specifier: ^1.5.2
     version: 1.5.2(tailwindcss@3.4.1)
@@ -829,6 +832,12 @@ packages:
       '@formkit/utils': 1.5.2
     dev: false
 
+  /@formkit/core@1.6.1:
+    resolution: {integrity: sha512-9QV6Si+YlZ059RvB1NaJiRu9vcTVEMpJ5bIi6Aqt5AyIIQDk1m/u1N0mdugolrhv3FShA5RVJ1Mj2m2zF0BmIw==}
+    dependencies:
+      '@formkit/utils': 1.6.1
+    dev: false
+
   /@formkit/dev@1.5.2:
     resolution: {integrity: sha512-uTndXSuF/SM4xQiOjA/Uv5O03lm06olCUhRikxTXHqO3OiMNw94+iO8DXnJd29qhcc7b+jq1pUzauO8M7c9bdA==}
     dependencies:
@@ -886,6 +895,10 @@ packages:
 
   /@formkit/utils@1.5.2:
     resolution: {integrity: sha512-wWqFIyIoeld6v+nqwV89z96HSvEFXKJv0sigmaXT+j6wZKnQgNFVsSEaG/B4Ku3fx2OW03GrtjJKm0qBBpt4qw==}
+    dev: false
+
+  /@formkit/utils@1.6.1:
+    resolution: {integrity: sha512-34KtuNgNoVe/kG4eJ52tUgJ/kT+PTrQGvtHg9n4zb5oTZW66J7wZR1IbRl/PV19yZr6gvpLBfyt9VYEgkEnZHg==}
     dev: false
 
   /@formkit/validation@1.5.2:

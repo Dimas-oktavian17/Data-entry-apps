@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-const pageTitle = ref('Profile')
+import { useRouteStore } from '@/stores/route'
 </script>
 
 <template>
  <DefaultLayout>
   <div class="mx-auto max-w-242.5">
    <!-- Breadcrumb Start -->
-   <BreadcrumbDefault :pageTitle="pageTitle" />
+   <BreadcrumbDefault :pageTitle="useRouteStore().RouteName" />
    <!-- Breadcrumb End -->
    <ProfileCard />
   </div>

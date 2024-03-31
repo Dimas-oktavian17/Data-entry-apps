@@ -1,10 +1,11 @@
 <script setup>
-import { onMounted, ref, watchEffect, watch } from 'vue'
+import { onMounted, watchEffect, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { UsersPinia } from '@/stores/users/users'
 import { formPinia } from '@/stores/formAPI/index'
 import { formUsers } from '@/stores/users/formUsers';
 import { TableStore } from '@/stores/tables/tableStore';
+import { useRouteStore } from '@/stores/route'
 // State Management
 const formStore = formPinia()
 const Users = UsersPinia()
@@ -28,7 +29,6 @@ const {
  AlertsStatus
 } = storeToRefs(FormUsers)
 // end State Management
-const pageTitle = ref('Form Layout')
 // data form
 const handleSubmit = async () => FormUsers.HandleSubmit(name.value, Email.value, uid.value, photo.value)
 // Fetching data 
@@ -60,6 +60,16 @@ const handleCity = () => FormUsers.HandleCity(
  selectedVillages.value
 )
 const handleDistrict = () => FormUsers.HandleDistrict(kelurahan.value, selectedVillages.value)
+const resetForm = () => {
+ names.value = ''
+ age.value = ''
+ position.value = ''
+ statusKaryawan.value = ''
+ selectedProvince.value = null
+ selectedCity.value = null
+ selectedDistrict.value = null
+ selectedVillages.value = null
+}
 // Watch Mutations API
 watch(selectedProvince, fetchProvinces, { immediate: true })
 watch(selectedCity, fecthCity, { immediate: true })
@@ -67,13 +77,16 @@ watch(selectedDistrict, fetchDistrict, { immediate: true })
 watchEffect(() => selectedProvince.value !== null && handleProvince())
 watchEffect(() => selectedCity.value !== null && handleCity())
 watchEffect(() => selectedDistrict.value !== null && handleDistrict())
-onMounted(async () => formStore.LoadProvinces())
+onMounted(async () => {
+ formStore.LoadProvinces()
+ resetForm()
+})
 </script>
 
 <template>
  <DefaultLayout>
   <!-- Breadcrumb Start -->
-  <BreadcrumbDefault :pageTitle="pageTitle" />
+  <BreadcrumbDefault :pageTitle="useRouteStore().RouteName" />
   <!-- Breadcrumb End -->
   <!-- ====== Form Layout Section Start -->
   <div class="grid grid-cols-1 gap-9 ">
