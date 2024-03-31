@@ -17,7 +17,6 @@ export const excelStore = defineStore('excelStore', () => {
     Kecamatan: "kecamatan",
     Kelurahan: "kelurahan",
   });
-
   // actions
   // excel example
   const generateFlattenedData = () => {

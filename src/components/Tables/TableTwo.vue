@@ -1,4 +1,4 @@
-<script setup >
+<script setup>
 import { ref } from 'vue'
 
 import ProductOne from '@/assets/images/product/product-01.png'
