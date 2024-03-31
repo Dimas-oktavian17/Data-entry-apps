@@ -1,68 +1,41 @@
 <script setup>
-import {
- onMounted,
- // ref,
- watchEffect, watch
-} from 'vue'
+import { onMounted, watchEffect, watch } from 'vue'
 import { storeToRefs } from 'pinia'
-// import { UsersPinia } from '@/stores/users/users'
 import { formPinia } from '@/stores/formAPI/index'
 import { formUsers } from '@/stores/users/formUsers';
-import { excelStore } from '@/stores/users/updateUsers';
-
+import { excelStore } from '@/stores/excel/excelStore';
+// State Management
 const formStore = formPinia()
-// const Users = UsersPinia()
 const FormUsers = formUsers()
-// Author information
-// const { name, Email, photo, uid } = storeToRefs(Users)
 const {
- // provinces,
  cities,
  kecamatan,
  kelurahan,
  filterUsers,
 } = storeToRefs(formStore)
 const {
- // formID,
- // names,
- // age,
- // position,
- // statusKaryawan,
  selectedProvince,
  selectedCity,
  selectedDistrict,
  selectedVillages
 } = storeToRefs(FormUsers)
+// end State Management
 // data form
 const handleDelete = (index) => FormUsers.HandleDelete(index)
-// const handleEdit = async (id) => FormUsers.HandleEdit(id)
-// const handleSubmit = async () => FormUsers.HandleUpdate(
-//  formID.value,
-//  name.value,
-//  Email.value,
-//  uid.value,
-//  photo.value,
-//  names.value,
-//  age.value,
-//  position.value,
-//  statusKaryawan.value,
-//  selectedProvince.value,
-//  selectedCity.value,
-//  selectedDistrict.value,
-//  selectedVillages.value,
-// )
-// const isOptionSelected = ref(false)
-// const changeTextColor = () => isOptionSelected.value = true
-// const pageTitle = ref('Form Layout')
-onMounted(async () => formStore.LoadProvinces())
 // Fetching data 
-const fetchProvinces = async ({ id }) => formStore.fetchProvinces({ id }, selectedCity.value, selectedDistrict.value)
-const fecthCity = async ({ id }) => formStore.fecthCity({ id }, selectedDistrict.value)
-const fetchDistrict = async ({ id }) => formStore.fetchDistrict({ id }, selectedVillages.value)
-// Watch effect for data form
-watch(selectedProvince, fetchProvinces, { immediate: true })
-watch(selectedCity, fecthCity, { immediate: true })
-watch(selectedDistrict, fetchDistrict, { immediate: true })
+const fetchProvinces = async (obj) => {
+ // checking the parameter from select is null or not, procces if not null
+ const id = obj?.id;
+ id && formStore.fetchProvinces({ id }, selectedCity.value, selectedDistrict.value)
+}
+const fecthCity = async (obj) => {
+ const id = obj?.id;
+ id && formStore.fecthCity({ id }, selectedDistrict.value)
+}
+const fetchDistrict = async (obj) => {
+ const id = obj?.id;
+ id && formStore.fetchDistrict({ id }, selectedVillages.value)
+}
 const handleProvince = () => FormUsers.HandleProvince(
  selectedCity.value,
  selectedDistrict.value,
@@ -78,10 +51,14 @@ const handleCity = () => FormUsers.HandleCity(
  selectedVillages.value
 )
 const handleDistrict = () => FormUsers.HandleDistrict(kelurahan.value, selectedVillages.value)
-
+// Watch Mutations API
+watch(selectedProvince, fetchProvinces, { immediate: true })
+watch(selectedCity, fecthCity, { immediate: true })
+watch(selectedDistrict, fetchDistrict, { immediate: true })
 watchEffect(() => selectedProvince.value !== null && handleProvince())
 watchEffect(() => selectedCity.value !== null && handleCity())
 watchEffect(() => selectedDistrict.value !== null && handleDistrict())
+onMounted(async () => formStore.LoadProvinces())
 </script>
 
 <template>
@@ -91,7 +68,7 @@ watchEffect(() => selectedDistrict.value !== null && handleDistrict())
    <!-- {{ testUser }} -->
    <download-excel
     class="flex flex-row-reverse justify-center px-6 py-2 my-4 text-white transition-all rounded-md cursor-pointer hover:transition-all align-items-center bg-primary hover:opacity-80"
-    @click="excelStore().generateFlattenedData" :data="excelStore().flattenedData"
+    @click="excelStore().generateFlattenedData()" :data="excelStore().flattenedData"
     :fields="excelStore().flattenedFields" worksheet="Data Karyawan" name="Data_Karyawan.xls">
     Download
     <IconVue icon="material-symbols:download" class="w-6 h-auto" />

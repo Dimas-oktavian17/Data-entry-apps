@@ -5,11 +5,10 @@ import { UsersPinia } from '@/stores/users/users'
 import { formPinia } from '@/stores/formAPI/index'
 import { formUsers } from '@/stores/users/formUsers';
 import { TableStore } from '@/stores/tables/tableStore';
-
+// State Management
 const formStore = formPinia()
 const Users = UsersPinia()
 const FormUsers = formUsers()
-// Author information
 const { name, Email, photo, uid } = storeToRefs(Users)
 const {
  provinces,
@@ -28,8 +27,10 @@ const {
  selectedVillages,
  AlertsStatus
 } = storeToRefs(FormUsers)
+// end State Management
 const pageTitle = ref('Form Layout')
-onMounted(async () => formStore.LoadProvinces())
+// data form
+const handleSubmit = async () => FormUsers.HandleSubmit(name.value, Email.value, uid.value, photo.value)
 // Fetching data 
 const fetchProvinces = async (obj) => {
  // checking the parameter from select is null or not, procces if not null
@@ -37,19 +38,13 @@ const fetchProvinces = async (obj) => {
  id && formStore.fetchProvinces({ id }, selectedCity.value, selectedDistrict.value)
 }
 const fecthCity = async (obj) => {
- // checking the parameter from select is null or not, procces if not null
  const id = obj?.id;
  id && formStore.fecthCity({ id }, selectedDistrict.value)
 }
 const fetchDistrict = async (obj) => {
- // checking the parameter from select is null or not, procces if not null
  const id = obj?.id;
  id && formStore.fetchDistrict({ id }, selectedVillages.value)
 }
-// Watch effect for data form
-watch(selectedProvince, fetchProvinces, { immediate: true })
-watch(selectedCity, fecthCity, { immediate: true })
-watch(selectedDistrict, fetchDistrict, { immediate: true })
 const handleProvince = () => FormUsers.HandleProvince(
  selectedCity.value,
  selectedDistrict.value,
@@ -65,11 +60,14 @@ const handleCity = () => FormUsers.HandleCity(
  selectedVillages.value
 )
 const handleDistrict = () => FormUsers.HandleDistrict(kelurahan.value, selectedVillages.value)
+// Watch Mutations API
+watch(selectedProvince, fetchProvinces, { immediate: true })
+watch(selectedCity, fecthCity, { immediate: true })
+watch(selectedDistrict, fetchDistrict, { immediate: true })
 watchEffect(() => selectedProvince.value !== null && handleProvince())
 watchEffect(() => selectedCity.value !== null && handleCity())
 watchEffect(() => selectedDistrict.value !== null && handleDistrict())
-// actions
-const handleSubmit = async () => FormUsers.HandleSubmit(name.value, Email.value, uid.value, photo.value)
+onMounted(async () => formStore.LoadProvinces())
 </script>
 
 <template>

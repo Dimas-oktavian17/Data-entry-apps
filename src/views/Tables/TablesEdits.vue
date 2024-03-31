@@ -8,9 +8,11 @@ import { storeToRefs } from 'pinia';
 import { useRoute } from 'vue-router';
 const route = useRoute()
 const ID = ref(route.params.id)
+// State Management
 const formStore = formPinia()
 const FormUsers = formUsers()
 const Users = UsersPinia()
+const { name, Email, photo, uid } = storeToRefs(Users)
 const {
  provinces,
  cities,
@@ -28,9 +30,9 @@ const {
  selectedDistrict,
  selectedVillages
 } = storeToRefs(FormUsers)
-// Author information
-const { name, Email, photo, uid } = storeToRefs(Users)
+// end State Management
 const pageTitle = ref('Form Layout')
+// data form
 const handleSubmit = async () => FormUsers.HandleUpdate(
  ID.value,
  name.value,
@@ -47,13 +49,19 @@ const handleSubmit = async () => FormUsers.HandleUpdate(
  selectedVillages.value,
 )
 // Fetching data 
-const fetchProvinces = async ({ id }) => formStore.fetchProvinces({ id }, selectedCity.value, selectedDistrict.value)
-const fecthCity = async ({ id }) => formStore.fecthCity({ id }, selectedDistrict.value)
-const fetchDistrict = async ({ id }) => formStore.fetchDistrict({ id }, selectedVillages.value)
-// Watch effect for data form
-watch(selectedProvince, fetchProvinces, { immediate: true })
-watch(selectedCity, fecthCity, { immediate: true })
-watch(selectedDistrict, fetchDistrict, { immediate: true })
+const fetchProvinces = async (obj) => {
+ // checking the parameter from select is null or not, procces if not null
+ const id = obj?.id;
+ id && formStore.fetchProvinces({ id }, selectedCity.value, selectedDistrict.value)
+}
+const fecthCity = async (obj) => {
+ const id = obj?.id;
+ id && formStore.fecthCity({ id }, selectedDistrict.value)
+}
+const fetchDistrict = async (obj) => {
+ const id = obj?.id;
+ id && formStore.fetchDistrict({ id }, selectedVillages.value)
+}
 const handleProvince = () => FormUsers.HandleProvince(
  selectedCity.value,
  selectedDistrict.value,
@@ -69,11 +77,16 @@ const handleCity = () => FormUsers.HandleCity(
  selectedVillages.value
 )
 const handleDistrict = () => FormUsers.HandleDistrict(kelurahan.value, selectedVillages.value)
+// Watch Mutations API
+watch(selectedDistrict, fetchDistrict, { immediate: true })
+watch(selectedProvince, fetchProvinces, { immediate: true })
+watch(selectedCity, fecthCity, { immediate: true })
 watchEffect(() => selectedProvince.value !== null && handleProvince())
 watchEffect(() => selectedCity.value !== null && handleCity())
 watchEffect(() => selectedDistrict.value !== null && handleDistrict())
 onMounted(() => TableStore().TableView())
 </script>
+
 <template>
  <DefaultLayout>
   <!-- edit form -->
