@@ -2,6 +2,7 @@
 import { onMounted, ref, watchEffect, watch, } from 'vue'
 import { storeToRefs } from 'pinia'
 import { formPinia } from '@/stores/formAPI/index'
+import { TableStore } from '@/stores/tables/tableStore';
 
 const formStore = formPinia()
 
@@ -76,7 +77,8 @@ watchEffect(() => selectedDistrict.value !== null && handleDistrict())
       <div class="relative z-20 bg-transparent dark:bg-form-input">
        <select v-model="selectedProvince"
         class="relative z-20 w-full px-5 py-3 transition bg-transparent border rounded outline-none appearance-none border-stroke focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-        :class="{ 'text-black dark:text-white': isOptionSelected }" @change="changeTextColor">
+        :class="{ 'text-black dark:text-white': TableStore().isOptionSelected }"
+        @change="TableStore().changeTextColor()">
         <option value="" disabled selected>Type your subject</option>
         <option v-for="( item, index ) in provinces" :key="index" :value="item">
          {{ item.name }}
@@ -99,7 +101,8 @@ watchEffect(() => selectedDistrict.value !== null && handleDistrict())
       <div class="relative z-20 bg-transparent dark:bg-form-input">
        <select :disabled="cities === null" v-model="selectedCity"
         class="relative z-20 w-full px-5 py-3 transition bg-transparent border rounded outline-none appearance-none border-stroke focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-        :class="{ 'text-black dark:text-white': isOptionSelected }" @change="changeTextColor">
+        :class="{ 'text-black dark:text-white': TableStore().isOptionSelected }"
+        @change="TableStore().changeTextColor()">
         <option value="" disabled selected>Type your subject</option>
         <option v-for="( item, index ) in cities" :key="index" :value="item">{{ item.name }}</option>
        </select>
@@ -122,7 +125,8 @@ watchEffect(() => selectedDistrict.value !== null && handleDistrict())
       <div class="relative z-20 bg-transparent dark:bg-form-input">
        <select :disabled="selectedCity === null" v-model="selectedDistrict"
         class="relative z-20 w-full px-5 py-3 transition bg-transparent border rounded outline-none appearance-none border-stroke focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-        :class="{ 'text-black dark:text-white': isOptionSelected }" @change="changeTextColor">
+        :class="{ 'text-black dark:text-white': TableStore().isOptionSelected }"
+        @change="TableStore().changeTextColor()">
         <option value="" disabled selected>Type your subject</option>
         <option v-for="(item, index) in kecamatan" :key="index" :value="item">{{ item.name }}</option>
        </select>
@@ -145,7 +149,8 @@ watchEffect(() => selectedDistrict.value !== null && handleDistrict())
       <div class="relative z-20 bg-transparent dark:bg-form-input">
        <select :disabled="selectedDistrict === null" v-model="selectedVillages"
         class="relative z-20 w-full px-5 py-3 transition bg-transparent border rounded outline-none appearance-none border-stroke focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-        :class="{ 'text-black dark:text-white': isOptionSelected }" @change="changeTextColor">
+        :class="{ 'text-black dark:text-white': TableStore().isOptionSelected }"
+        @change="TableStore().changeTextColor()">
         <option value="" disabled selected>Type your subject</option>
         <option v-for="(item, index) in kelurahan" :key="index" :value="item">{{ item.name }}</option>
        </select>

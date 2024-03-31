@@ -1,12 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-
-const selectedOption = ref<string>('')
-const isOptionSelected = ref<boolean>(false)
-
-const changeTextColor = () => {
- isOptionSelected.value = true
-}
+import { TableStore } from '@/stores/tables/tableStore';
 defineProps(['modelValue'])
 </script>
 
@@ -17,7 +10,7 @@ defineProps(['modelValue'])
   <div class="relative z-20 bg-transparent dark:bg-form-input">
    <select :value="modelValue" @input="$emit('update:modelValue', $event.target.value)"
     class="relative z-20 w-full px-5 py-3 transition bg-transparent border rounded outline-none appearance-none border-stroke focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-    :class="{ 'text-black dark:text-white': isOptionSelected }" @change="changeTextColor">
+    :class="{ 'text-black dark:text-white': TableStore().isOptionSelected }" @change="TableStore().changeTextColor()">
     <option value="" disabled selected>Type your subject</option>
     <option value="kontrak">Kontrak</option>
     <option value="kartap">Kartap</option>

@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
-import { ref, computed, watchEffect } from 'vue';
+import { ref, computed } from 'vue';
+import { useRouter } from 'vue-router'
 import { defineStore } from 'pinia';
 import { addDoc, updateDoc, deleteDoc, doc } from 'firebase/firestore';
 import { karyawanRef } from '@/firebase'
@@ -11,8 +12,6 @@ export const formUsers = defineStore('formUsers', () => {
   const CountKontrak = ref([])
   const CountKartap = ref([])
   const dataKaryawan = useCollection(karyawanRef)
-  const open = ref(false);
-  const dataView = ref([])
   const formID = ref(null)
   const names = ref('')
   const age = ref(null)
@@ -24,6 +23,7 @@ export const formUsers = defineStore('formUsers', () => {
   const selectedVillages = ref(null)
   const AlertsStatus = ref(false)
   const AlertForm = ref(false)
+  const router = useRouter()
   // getters
   const createAt = computed(() => new Date().getMonth() + 1)
   const StatusMagang = computed(() => dataKaryawan.value.filter(({ status_karyawan, createAt }) => status_karyawan === 'magang' && createAt === 3).length)
@@ -66,7 +66,6 @@ export const formUsers = defineStore('formUsers', () => {
     CountKartap.value = grouped
     return CountKartap.value
   });
-
   // actions
   const HandleProvince = (selectedCity, selectedDistrict, selectedVillages, cities, kecamatan, kelurahan) => {
     selectedCity = null
@@ -120,13 +119,8 @@ export const formUsers = defineStore('formUsers', () => {
       console.error(error);
     }
   }
-  const HandleEdit = (id) => {
-    formID.value = id
-    AlertForm.value = true
-    console.log(id);
-  }
   const HandleUpdate = async (
-    formID,
+    id,
     name,
     Email,
     uid,
@@ -141,7 +135,7 @@ export const formUsers = defineStore('formUsers', () => {
     selectedVillages,
   ) => {
     try {
-      updateDoc(doc(karyawanRef, formID), {
+      updateDoc(doc(karyawanRef, id), {
         author: [{ name: name, email: Email, uid: uid, picture: photo }],
         id: new Date().getTime(),
         uidPhoto: photo,
@@ -163,17 +157,13 @@ export const formUsers = defineStore('formUsers', () => {
         selectedCity = null,
         selectedDistrict = null,
         selectedVillages = null
-      AlertForm.value = true
-      setTimeout(() => AlertForm.value = false, 1000);
+      AlertsStatus.value = true
     } catch (error) {
       console.error(error);
+    } finally {
+      AlertsStatus.value = false
+      router.push('/tables')
     }
-  }
-  const HandleView = (name, id) => {
-    // const result = dataKaryawan.value.find(item => item.name === name);
-    // open.value = true
-    // dataView.value = result
-    $router.push({ name: 'User', params: { id: id } });
   }
   const HandleDelete = (id) => deleteDoc(doc(karyawanRef, id))
   return {
@@ -193,12 +183,8 @@ export const formUsers = defineStore('formUsers', () => {
     HandleSubmit,
     createAt,
     HandleUpdate,
-    HandleEdit,
     AlertForm,
-    HandleView,
     HandleDelete,
-    open,
-    dataView,
     StatusMagang,
     StatusKontrak,
     StatusKartap,

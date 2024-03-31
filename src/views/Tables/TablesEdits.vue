@@ -1,16 +1,16 @@
 <script setup>
-import { onMounted, ref, watchEffect, watch } from 'vue'
-import { storeToRefs } from 'pinia'
-import { UsersPinia } from '@/stores/users/users'
+import { onMounted, watchEffect, watch, ref } from 'vue';
 import { formPinia } from '@/stores/formAPI/index'
+import { UsersPinia } from '@/stores/users/users'
 import { formUsers } from '@/stores/users/formUsers';
-import { TableStore } from '@/stores/tables/tableStore';
-
+import { TableStore } from "@/stores/tables/tableStore"
+import { storeToRefs } from 'pinia';
+import { useRoute } from 'vue-router';
+const route = useRoute()
+const ID = ref(route.params.id)
 const formStore = formPinia()
-const Users = UsersPinia()
 const FormUsers = formUsers()
-// Author information
-const { name, Email, photo, uid } = storeToRefs(Users)
+const Users = UsersPinia()
 const {
  provinces,
  cities,
@@ -18,6 +18,7 @@ const {
  kelurahan,
 } = storeToRefs(formStore)
 const {
+ AlertsStatus,
  names,
  age,
  position,
@@ -25,27 +26,30 @@ const {
  selectedProvince,
  selectedCity,
  selectedDistrict,
- selectedVillages,
- AlertsStatus
+ selectedVillages
 } = storeToRefs(FormUsers)
+// Author information
+const { name, Email, photo, uid } = storeToRefs(Users)
 const pageTitle = ref('Form Layout')
-onMounted(async () => formStore.LoadProvinces())
+const handleSubmit = async () => FormUsers.HandleUpdate(
+ ID.value,
+ name.value,
+ Email.value,
+ uid.value,
+ photo.value,
+ names.value,
+ age.value,
+ position.value,
+ statusKaryawan.value,
+ selectedProvince.value,
+ selectedCity.value,
+ selectedDistrict.value,
+ selectedVillages.value,
+)
 // Fetching data 
-const fetchProvinces = async (obj) => {
- // checking the parameter from select is null or not, procces if not null
- const id = obj?.id;
- id && formStore.fetchProvinces({ id }, selectedCity.value, selectedDistrict.value)
-}
-const fecthCity = async (obj) => {
- // checking the parameter from select is null or not, procces if not null
- const id = obj?.id;
- id && formStore.fecthCity({ id }, selectedDistrict.value)
-}
-const fetchDistrict = async (obj) => {
- // checking the parameter from select is null or not, procces if not null
- const id = obj?.id;
- id && formStore.fetchDistrict({ id }, selectedVillages.value)
-}
+const fetchProvinces = async ({ id }) => formStore.fetchProvinces({ id }, selectedCity.value, selectedDistrict.value)
+const fecthCity = async ({ id }) => formStore.fecthCity({ id }, selectedDistrict.value)
+const fetchDistrict = async ({ id }) => formStore.fetchDistrict({ id }, selectedVillages.value)
 // Watch effect for data form
 watch(selectedProvince, fetchProvinces, { immediate: true })
 watch(selectedCity, fecthCity, { immediate: true })
@@ -68,12 +72,11 @@ const handleDistrict = () => FormUsers.HandleDistrict(kelurahan.value, selectedV
 watchEffect(() => selectedProvince.value !== null && handleProvince())
 watchEffect(() => selectedCity.value !== null && handleCity())
 watchEffect(() => selectedDistrict.value !== null && handleDistrict())
-// actions
-const handleSubmit = async () => FormUsers.HandleSubmit(name.value, Email.value, uid.value, photo.value)
+onMounted(() => TableStore().TableView())
 </script>
-
 <template>
  <DefaultLayout>
+  <!-- edit form -->
   <!-- Breadcrumb Start -->
   <BreadcrumbDefault :pageTitle="pageTitle" />
   <!-- Breadcrumb End -->
