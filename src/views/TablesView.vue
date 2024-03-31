@@ -1,12 +1,11 @@
 <script setup>
-import { ref } from 'vue'
-const pageTitle = ref('Tables')
+import { useRouteStore } from '@/stores/route';
 </script>
 
 <template>
  <DefaultLayout>
   <!-- Breadcrumb Start -->
-  <BreadcrumbDefault :pageTitle="pageTitle" />
+  <BreadcrumbDefault :pageTitle="useRouteStore().RouteName" />
   <!-- Breadcrumb End -->
   <div class="flex flex-col gap-10">
    <!-- <TableOne /> -->

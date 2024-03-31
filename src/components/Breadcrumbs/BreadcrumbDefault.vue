@@ -4,7 +4,7 @@ const props = defineProps(['pageTitle'])
 
 <template>
  <div class="flex flex-col gap-3 mb-6 sm:flex-row sm:items-center sm:justify-between">
-  <h2 class="font-semibold text-black text-title-md2 dark:text-white">
+  <h2 class="font-semibold text-black capitalize text-title-md2 dark:text-white">
    {{ props.pageTitle }}
   </h2>
 
