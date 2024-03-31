@@ -116,13 +116,6 @@ watchEffect(() => selectedDistrict.value !== null && handleDistrict())
 
      <tr v-for="({ name, jabatan, status_karyawan, umur, id }) in filterUsers" :key="id">
       <td class="px-4 py-5 pl-9 xl:pl-11">
-       <div v-if="open" class="absolute -translate-x-1/2 -translate-y-1/2 z-999999 top-1/2 left-1/2">
-        <button @click="open = false">
-         <IconVue icon="maki:cross"
-          class="flex flex-row items-end justify-end w-6 h-auto font-medium text-black dark:text-white" />
-        </button>
-        <AlertView :data="dataView" />
-       </div>
        <AlertSucces :title="name" />
        <h5 class="font-medium text-black dark:text-white">{{ name }}</h5>
        <p class="text-sm">{{ umur }} Thn</p>

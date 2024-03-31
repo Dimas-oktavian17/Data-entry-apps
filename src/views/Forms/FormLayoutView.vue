@@ -4,6 +4,7 @@ import { storeToRefs } from 'pinia'
 import { UsersPinia } from '@/stores/users/users'
 import { formPinia } from '@/stores/formAPI/index'
 import { formUsers } from '@/stores/users/formUsers';
+import { TableStore } from '@/stores/tables/tableStore';
 
 const formStore = formPinia()
 const Users = UsersPinia()
@@ -27,10 +28,6 @@ const {
  selectedVillages,
  AlertsStatus
 } = storeToRefs(FormUsers)
-
-const isOptionSelected = ref(false)
-// const AlertsStatus = ref(false)
-const changeTextColor = () => isOptionSelected.value = true
 const pageTitle = ref('Form Layout')
 onMounted(async () => formStore.LoadProvinces())
 // Fetching data 
@@ -68,7 +65,6 @@ const handleCity = () => FormUsers.HandleCity(
  selectedVillages.value
 )
 const handleDistrict = () => FormUsers.HandleDistrict(kelurahan.value, selectedVillages.value)
-
 watchEffect(() => selectedProvince.value !== null && handleProvince())
 watchEffect(() => selectedCity.value !== null && handleCity())
 watchEffect(() => selectedDistrict.value !== null && handleDistrict())
@@ -125,7 +121,8 @@ const handleSubmit = async () => FormUsers.HandleSubmit(name.value, Email.value,
         <div class="relative z-20 bg-transparent dark:bg-form-input">
          <select v-model="selectedProvince"
           class="relative z-20 w-full px-5 py-3 transition bg-transparent border rounded outline-none appearance-none border-stroke focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-          :class="{ 'text-black dark:text-white': isOptionSelected }" @change="changeTextColor">
+          :class="{ 'text-black dark:text-white': TableStore().isOptionSelected }"
+          @change="TableStore().changeTextColor()">
           <option value="" disabled selected>Type your subject</option>
           <option v-for="( item, index ) in provinces" :key="index" :value="item">
            {{ item.name }}
@@ -147,7 +144,8 @@ const handleSubmit = async () => FormUsers.HandleSubmit(name.value, Email.value,
         <div class="relative z-20 bg-transparent dark:bg-form-input">
          <select :disabled="cities === null" v-model="selectedCity"
           class="relative z-20 w-full px-5 py-3 transition bg-transparent border rounded outline-none appearance-none border-stroke focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-          :class="{ 'text-black dark:text-white': isOptionSelected }" @change="changeTextColor">
+          :class="{ 'text-black dark:text-white': TableStore().isOptionSelected }"
+          @change="TableStore().changeTextColor()">
           <option value="" disabled selected>Type your subject</option>
           <option v-for="( item, index ) in cities" :key="index" :value="item">{{ item.name }}</option>
          </select>
@@ -168,7 +166,8 @@ const handleSubmit = async () => FormUsers.HandleSubmit(name.value, Email.value,
         <div class="relative z-20 bg-transparent dark:bg-form-input">
          <select :disabled="selectedCity === null" v-model="selectedDistrict"
           class="relative z-20 w-full px-5 py-3 transition bg-transparent border rounded outline-none appearance-none border-stroke focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-          :class="{ 'text-black dark:text-white': isOptionSelected }" @change="changeTextColor">
+          :class="{ 'text-black dark:text-white': TableStore().isOptionSelected }"
+          @change="TableStore().changeTextColor()">
           <option value="" disabled selected>Type your subject</option>
           <option v-for="(item, index) in kecamatan" :key="index" :value="item">{{ item.name }}</option>
          </select>
@@ -189,7 +188,8 @@ const handleSubmit = async () => FormUsers.HandleSubmit(name.value, Email.value,
         <div class="relative z-20 bg-transparent dark:bg-form-input">
          <select :disabled="selectedDistrict === null" v-model="selectedVillages"
           class="relative z-20 w-full px-5 py-3 transition bg-transparent border rounded outline-none appearance-none border-stroke focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-          :class="{ 'text-black dark:text-white': isOptionSelected }" @change="changeTextColor">
+          :class="{ 'text-black dark:text-white': TableStore().isOptionSelected }"
+          @change="TableStore().changeTextColor()">
           <option value="" disabled selected>Type your subject</option>
           <option v-for="(item, index) in kelurahan" :key="index" :value="item">{{ item.name }}</option>
          </select>
