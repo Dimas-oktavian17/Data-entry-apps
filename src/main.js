@@ -42,11 +42,13 @@ import DropdownNotification from '@/components/Header/DropdownNotification.vue'
 import DropdownUser from '@/components/Header/DropdownUser.vue'
 import ProfileCard from '@/components/ProfileCard.vue'
 import DefaultAuthCard from '@/components/Auths/DefaultAuthCard.vue'
+import ErrorLayout from '@/layouts/ErrorLayout.vue'
 
 import App from './App.vue'
 const app = createApp(App)
 app.component('IconVue', Icon)
   .component('NotifError', NotifError)
+  .component('ErrorLayout', ErrorLayout)
   .component('ButtonAuth', buttonAuth)
   .component('AlertSuccess', AlertSuccess)
   .component('AlertView', AlertView)

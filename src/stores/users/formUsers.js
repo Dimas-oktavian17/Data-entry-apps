@@ -95,9 +95,9 @@ export const formUsers = defineStore('formUsers', () => {
     try {
       addDoc(karyawanRef, {
         author: [{ name: name, email: Email, uid: uid, picture: photo }],
-        id: karyawanRef.id.length + 1,
+        id: karyawanRef.id,
         name: names.value,
-        umur: age.value,
+        umur: Number(age.value),
         jabatan: position.value,
         status_karyawan: statusKaryawan.value,
         provinsi: selectedProvince.value,
@@ -169,10 +169,11 @@ export const formUsers = defineStore('formUsers', () => {
       console.error(error);
     }
   }
-  const HandleView = (name) => {
-    const result = dataKaryawan.value.find(item => item.name === name);
-    open.value = true
-    dataView.value = result
+  const HandleView = (name, id) => {
+    // const result = dataKaryawan.value.find(item => item.name === name);
+    // open.value = true
+    // dataView.value = result
+    $router.push({ name: 'User', params: { id: id } });
   }
   const HandleDelete = (id) => deleteDoc(doc(karyawanRef, id))
   return {

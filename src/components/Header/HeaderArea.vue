@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useSidebarStore } from '@/stores/sidebar'
-const { isSidebarOpen, toggleSidebar } = useSidebarStore()
+const { toggleSidebar } = useSidebarStore()
 </script>
 
 <template>

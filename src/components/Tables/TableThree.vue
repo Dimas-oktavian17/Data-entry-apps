@@ -10,7 +10,6 @@ import { UsersPinia } from '@/stores/users/users'
 import { formPinia } from '@/stores/formAPI/index'
 import { formUsers } from '@/stores/users/formUsers';
 
-
 const formStore = formPinia()
 const Users = UsersPinia()
 const FormUsers = formUsers()
@@ -38,7 +37,7 @@ const {
  dataView
 } = storeToRefs(FormUsers)
 
-const handleView = (name) => FormUsers.HandleView(name)
+const handleView = (name, id) => FormUsers.HandleView(name, id)
 // data form
 const handleDelete = (index) => FormUsers.HandleDelete(index)
 const handleEdit = async (id) => FormUsers.HandleEdit(id)
@@ -119,6 +118,7 @@ watchEffect(() => selectedDistrict.value !== null && handleDistrict())
      </tr>
     </thead>
     <tbody>
+
      <tr v-for="({ name, jabatan, status_karyawan, umur, id }) in filterUsers" :key="id">
       <td class="px-4 py-5 pl-9 xl:pl-11">
        <div v-if="open" class="absolute -translate-x-1/2 -translate-y-1/2 z-999999 top-1/2 left-1/2">
@@ -146,9 +146,12 @@ watchEffect(() => selectedDistrict.value !== null && handleDistrict())
       </td>
       <td class="px-4 py-5">
        <div class="flex items-center space-x-3.5">
-        <button @click="handleView(name, index)">
+        <router-link :to="{ name: 'tablesDetails', params: { id: id } }">
          <IconVue icon="ph:eye-bold" class="hover:text-primary w-[18px] h-auto" />
-        </button>
+        </router-link>
+        <!-- <button @click="handleView(name, id)">
+         <IconVue icon="ph:eye-bold" class="hover:text-primary w-[18px] h-auto" />
+        </button> -->
 
         <button @click="handleDelete(id)" class="hover:text-primary">
          <IconVue icon="ion:trash-outline" class="hover:text-primary w-[18px] h-auto" />
