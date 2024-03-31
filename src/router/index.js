@@ -35,11 +35,6 @@ const router = createRouter({
       component: () => import('@/views/AboutView.vue')
     },
     {
-      path: '/learn',
-      name: 'learn',
-      component: () => import('@/views/learn/uploud.vue')
-    },
-    {
       path: '/forgot-password',
       name: 'reset-password',
       component: () => import('@/views/ResetPassword.vue')
@@ -63,7 +58,7 @@ const router = createRouter({
     },
     {
       path: '/profile',
-      name: 'profile',
+      name: 'Profile',
       component: () => import('@/views/ProfileView.vue'),
       meta: {
         title: 'Profile'
@@ -79,7 +74,7 @@ const router = createRouter({
     },
     {
       path: '/forms/form-layout',
-      name: 'formLayout',
+      name: 'Form Employe',
       component: () => import('@/views/Forms/FormLayoutView.vue'),
       meta: {
         title: 'Form Layout'
@@ -95,7 +90,7 @@ const router = createRouter({
     },
     {
       path: '/pages/settings',
-      name: 'settings',
+      name: 'Page Settings',
       component: () => import('@/views/Pages/SettingsView.vue'),
       meta: {
         title: 'Settings'

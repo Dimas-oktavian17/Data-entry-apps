@@ -5,6 +5,7 @@ import { defineStore } from 'pinia';
 import { addDoc, updateDoc, deleteDoc, doc } from 'firebase/firestore';
 import { karyawanRef } from '@/firebase'
 import { useCollection } from 'vuefire';
+import { reset } from '@formkit/core'
 
 export const formUsers = defineStore('formUsers', () => {
   // state
@@ -149,7 +150,12 @@ export const formUsers = defineStore('formUsers', () => {
         kelurahan: selectedVillages,
         createAt: createAt.value
       })
-      names = '',
+      AlertsStatus.value = true
+    } catch (error) {
+      console.error(error);
+    } finally {
+      reset('myForm',
+        names = '',
         age = null,
         position = '',
         statusKaryawan = null,
@@ -157,10 +163,7 @@ export const formUsers = defineStore('formUsers', () => {
         selectedCity = null,
         selectedDistrict = null,
         selectedVillages = null
-      AlertsStatus.value = true
-    } catch (error) {
-      console.error(error);
-    } finally {
+      )
       AlertsStatus.value = false
       router.push('/tables')
     }

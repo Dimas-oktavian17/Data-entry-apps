@@ -5,9 +5,8 @@ import { UsersPinia } from '@/stores/users/users'
 import { formUsers } from '@/stores/users/formUsers';
 import { TableStore } from "@/stores/tables/tableStore"
 import { storeToRefs } from 'pinia';
-import { useRoute } from 'vue-router';
-const route = useRoute()
-const ID = ref(route.params.id)
+import { useRouteStore } from '@/stores/route';
+const ID = ref(useRouteStore().route.params.id)
 // State Management
 const formStore = formPinia()
 const FormUsers = formUsers()
@@ -31,7 +30,6 @@ const {
  selectedVillages
 } = storeToRefs(FormUsers)
 // end State Management
-const pageTitle = ref('Form Layout')
 // data form
 const handleSubmit = async () => FormUsers.HandleUpdate(
  ID.value,
@@ -77,6 +75,16 @@ const handleCity = () => FormUsers.HandleCity(
  selectedVillages.value
 )
 const handleDistrict = () => FormUsers.HandleDistrict(kelurahan.value, selectedVillages.value)
+const resetForm = () => {
+ names.value = ''
+ age.value = ''
+ position.value = ''
+ statusKaryawan.value = ''
+ selectedProvince.value = null
+ selectedCity.value = null
+ selectedDistrict.value = null
+ selectedVillages.value = null
+}
 // Watch Mutations API
 watch(selectedDistrict, fetchDistrict, { immediate: true })
 watch(selectedProvince, fetchProvinces, { immediate: true })
@@ -84,14 +92,17 @@ watch(selectedCity, fecthCity, { immediate: true })
 watchEffect(() => selectedProvince.value !== null && handleProvince())
 watchEffect(() => selectedCity.value !== null && handleCity())
 watchEffect(() => selectedDistrict.value !== null && handleDistrict())
-onMounted(() => TableStore().TableView())
+onMounted(() => {
+ TableStore().TableView()
+ resetForm()
+})
 </script>
 
 <template>
  <DefaultLayout>
   <!-- edit form -->
   <!-- Breadcrumb Start -->
-  <BreadcrumbDefault :pageTitle="pageTitle" />
+  <BreadcrumbDefault :pageTitle="useRouteStore().RouteName" />
   <!-- Breadcrumb End -->
   <!-- ====== Form Layout Section Start -->
   <div class="grid grid-cols-1 gap-9 ">
@@ -99,7 +110,7 @@ onMounted(() => TableStore().TableView())
     <!-- Contact Form Start -->
     <DefaultCard cardTitle="Contact Form">
      <AlertSuccess v-if="AlertsStatus" :title="names" />
-     <FormKit type="form" @submit="handleSubmit">
+     <FormKit id="myForm" type="form" @submit="handleSubmit">
       <div class="p-6.5">
        <div class="mb-4.5 flex flex-col gap-6 xl:flex-row">
         <FormKit v-model="names" type="text" name="name" label="Your name" placeholder="Abu Na'im"

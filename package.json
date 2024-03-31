@@ -11,6 +11,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@formkit/core": "^1.6.1",
     "@formkit/vue": "^1.5.2",
     "@vueuse/core": "^10.7.2",
     "apexcharts": "^3.45.2",
