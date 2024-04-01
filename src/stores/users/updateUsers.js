@@ -62,7 +62,11 @@ export const excelStore = defineStore('excelStore', () => {
   }
   const UpdatePhoto = async (photo) => {
     try {
-      await updateCurrentUserProfile({
+      const storage = useFirebaseStorage()
+      filePath.value = new URL(photoUser.value).pathname.split('/').pop()
+      const mountainFileRef = storageRef(storage, filePath.value)
+      deleteObject(mountainFileRef)
+      updateCurrentUserProfile({
         photoURL: photo
       })
       return UpdatePhotoAction(photo)
