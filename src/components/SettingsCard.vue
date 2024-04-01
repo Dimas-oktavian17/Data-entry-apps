@@ -135,7 +135,7 @@ const updatePhoto = async () => await UpdateUsers.UpdatePhoto(UpdateUsers.filena
       </div>
       <!-- File Upload Section -->
       <figure>
-       <img :src="UpdateUsers.filename.value" class="w-full h-auto" />
+       <img :src="UpdateUsers.filename?.value || ''" class="w-full h-auto" />
       </figure>
       <button
        class="block  relative mb-5.5  w-full cursor-pointer appearance-none rounded border-2 border-dashed border-primary bg-gray py-4 px-4 dark:bg-meta-4 sm:py-7.5 "
