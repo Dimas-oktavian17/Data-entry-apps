@@ -4,8 +4,10 @@ import axios from 'axios';
 import { defineStore } from 'pinia';
 import { karyawanRef } from '@/firebase'
 import { useCollection } from 'vuefire'
+import { formUsers } from '@/stores/users/formUsers';
 export const formPinia = defineStore('formPinia', () => {
   //  State
+  const FormUsers = formUsers()
   const dataKaryawan = useCollection(karyawanRef)
   const provinces = ref([])
   const cities = ref(null)
@@ -17,14 +19,13 @@ export const formPinia = defineStore('formPinia', () => {
   const kelurahanID = ref('')
   // getters
   const filterUsers = computed(() => {
-    return dataKaryawan.value.filter(item => {
-      const provinsi = provincesID.value ? item.provinsi.id === provincesID.value : true;
-      const city = citiesID.value ? item.kota.id === citiesID.value : true;
-      const district = kecamatanID.value ? item.kecamatan.id === kecamatanID.value : true;
-      return (provincesID.value ? provinsi : true) &&
-        (citiesID.value ? city : true) &&
-        (kecamatanID.value ? district : true);
-    })
+    let copyItems = [...dataKaryawan.value]
+    copyItems = copyItems
+      .filter(item => provincesID.value ? item.provinsi.id === provincesID.value : true)
+      .filter(item => citiesID.value ? item.kota.id === citiesID.value : true)
+      .filter(item => kecamatanID.value ? item.kecamatan.id === kecamatanID.value : true)
+      .filter(item => FormUsers.selectedVillages?.id || null ? item.kelurahan.id === FormUsers.selectedVillages.id : true)
+    return copyItems
   })
 
   // actions function delegations
@@ -105,5 +106,6 @@ export const formPinia = defineStore('formPinia', () => {
     handleCity,
     handleDistrict,
     filterUsers,
+    FormUsers
   }
 })
