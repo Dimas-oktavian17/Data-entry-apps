@@ -16,7 +16,7 @@ const handlePhotoSubmit = async () => await UpdateUsers.HandlePhotoSubmit(files.
 // const filename = ref('')
 const { files, open } = useFileDialog()
 // Handle cancel action for user photo
-const handlePhotoCancel = async () => await UpdateUsers.HandlePhotoCancel()
+const handlePhotoCancel = async () => await UpdateUsers.HandlePhotoCancel(UpdateUsers.filename.value)
 // Handle delete action for user photo
 const deletePhoto = async () => await UpdateUsers.DeletePhoto()
 // Handle update action for user photo
