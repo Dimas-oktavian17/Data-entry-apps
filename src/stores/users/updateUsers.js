@@ -65,6 +65,7 @@ export const excelStore = defineStore('excelStore', () => {
       await updateCurrentUserProfile({
         photoURL: photo
       })
+      filename.value = null
       return UpdatePhotoAction(photo)
     } catch (error) {
       console.error(error);
