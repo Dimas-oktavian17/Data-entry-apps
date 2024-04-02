@@ -62,7 +62,7 @@ export const formPinia = defineStore('formPinia', () => {
       id === null && handleProvinces(selectedCity, selectedDistrict)
       const { data } = await axios.get(`https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${id}.json`)
       provincesID.value = id
-      console.log(provincesID.value, 'ok');
+      console.log(provincesID.value, 'provinsi is');
       cities.value = data
     } catch (error) {
       // console.warn(error);
@@ -76,6 +76,7 @@ export const formPinia = defineStore('formPinia', () => {
       id === null && handleCity(selectedDistrict)
       const { data } = await axios.get(`https://www.emsifa.com/api-wilayah-indonesia/api/districts/${id}.json`)
       kecamatan.value = data
+      console.log(citiesID.value, 'city is');
     } catch (error) {
       // console.error(error);
     }
@@ -88,6 +89,7 @@ export const formPinia = defineStore('formPinia', () => {
       id === null && handleDistrict(selectedVillages)
       const { data } = await axios.get(`https://www.emsifa.com/api-wilayah-indonesia/api/villages/${id}.json`)
       kelurahan.value = data
+      console.log(kecamatanID.value, 'camat is');
     } catch (error) {
       // console.error(error);
     }
@@ -106,6 +108,10 @@ export const formPinia = defineStore('formPinia', () => {
     handleCity,
     handleDistrict,
     filterUsers,
-    FormUsers
+    FormUsers,
+    provincesID,
+    citiesID,
+    kecamatanID,
+    kelurahanID,
   }
 })

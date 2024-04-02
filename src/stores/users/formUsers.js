@@ -1,11 +1,12 @@
 /* eslint-disable no-unused-vars */
-import { ref, computed } from 'vue';
+import { ref, computed, watchEffect } from 'vue';
 import { useRouter } from 'vue-router'
 import { defineStore } from 'pinia';
 import { addDoc, updateDoc, deleteDoc, doc } from 'firebase/firestore';
 import { karyawanRef } from '@/firebase'
 import { useCollection } from 'vuefire';
 import { reset } from '@formkit/core'
+import { formPinia } from '../formAPI';
 
 export const formUsers = defineStore('formUsers', () => {
   // state
@@ -92,6 +93,7 @@ export const formUsers = defineStore('formUsers', () => {
     uid,
     photo,
   ) => {
+    const FormStore = formPinia()
     try {
       addDoc(karyawanRef, {
         author: [{ name: name, email: Email, uid: uid, picture: photo }],
@@ -106,6 +108,11 @@ export const formUsers = defineStore('formUsers', () => {
         kelurahan: selectedVillages.value,
         createAt: createAt.value
       })
+      // ? reset data api location
+      FormStore.provincesID = null
+      FormStore.citiesID = null
+      FormStore.kecamatanID = null
+      FormStore.kelurahanID = null
       names.value = '',
         age.value = null,
         position.value = '',
@@ -116,6 +123,7 @@ export const formUsers = defineStore('formUsers', () => {
         selectedVillages.value = null
       AlertsStatus.value = true
       setTimeout(() => AlertsStatus.value = false, 3000);
+      console.log('ini di formusers', FormStore.provincesID);
     } catch (error) {
       console.error(error);
     }
@@ -197,5 +205,6 @@ export const formUsers = defineStore('formUsers', () => {
     CountMagang,
     CountKontrak,
     CountKartap,
+
   };
 });

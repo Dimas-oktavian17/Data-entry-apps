@@ -6,7 +6,10 @@ import { UsersPinia } from '@/stores/users/users';
 import { formPinia } from '@/stores/formAPI';
 const Users = UsersPinia()
 const { nameProvinsi, countProvinsi } = storeToRefs(Users)
-onMounted(async () => formPinia().LoadProvinces())
+onMounted(async () => {
+ formPinia().LoadProvinces()
+ options.value
+})
 const options = ref({
  series: [{
   data: countProvinsi.value
@@ -37,9 +40,15 @@ const options = ref({
   }
  }
 })
-watchEffect(() => options.value.series = [{
- data: countProvinsi.value
-}])
+watchEffect(() =>
+ options.value.series = [{
+  data: countProvinsi.value
+ }]
+
+)
+watchEffect(() =>
+ options.value.xaxis.categories = nameProvinsi.value
+)
 </script>
 
 <template>
