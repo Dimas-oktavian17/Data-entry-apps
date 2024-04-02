@@ -58,7 +58,10 @@ watch(selectedDistrict, fetchDistrict, { immediate: true })
 watchEffect(() => selectedProvince.value !== null && handleProvince())
 watchEffect(() => selectedCity.value !== null && handleCity())
 watchEffect(() => selectedDistrict.value !== null && handleDistrict())
-onMounted(async () => formStore.LoadProvinces())
+onMounted(async () => {
+ formStore.LoadProvinces()
+ filterUsers.value;
+})
 </script>
 
 <template>
