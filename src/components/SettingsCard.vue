@@ -13,7 +13,6 @@ const handleSubmit = async () => await UpdateUsers.HandleSubmit(UpdateUsers.form
 const handleCancel = async () => await UpdateUsers.HandleCancel(UpdateUsers.formData.fullName)
 // Handle form submission for user photo
 const handlePhotoSubmit = async () => await UpdateUsers.HandlePhotoSubmit(files.value)
-// const filename = ref('')
 const { files, open } = useFileDialog()
 // Handle cancel action for user photo
 const handlePhotoCancel = async () => await UpdateUsers.HandlePhotoCancel(UpdateUsers.filename.value)
@@ -55,7 +54,7 @@ const updatePhoto = async () => await UpdateUsers.UpdatePhoto(UpdateUsers.filena
          </span>
          <input v-model="UpdateUsers.formData.fullName"
           class="rounded border border-stroke bg-gray py-3 pl-11.5 w-full pr-4.5 font-normal text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-          type="text" name="fullName" id="fullName" :placeholder="UpdateUsers.formData.fullName" />
+          type="text" name="fullName" id="fullName" placeholder="Jhon Doe" />
         </div>
        </div>
        <!-- Phone Number Section -->
