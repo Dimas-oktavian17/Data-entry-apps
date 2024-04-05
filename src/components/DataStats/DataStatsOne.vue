@@ -117,14 +117,17 @@ const cardItems = ref([
     <span class="text-sm font-medium">{{ item.title }}</span>
    </div>
 
-   <span class="flex items-center gap-1 text-sm font-medium" :class="[item.growthRate >= 100 ?
-  'text-meta-3' : item.growthRate <= 10 ? 'text-meta-1' :
-   item.growthRate <= 50 ? 'text-meta-6' : 'text-meta-4']">
+   <span class="flex items-center gap-1 text-sm font-medium" :class="{
+  'text-meta-3': item.growthRate >= 100,
+  'text-meta-6': item.growthRate <= 50,
+  'text-meta-1': item.growthRate <= 10,
+ }">
     {{ item.growthRate }}%
-    <svg :class="[item.growthRate <= 10 ?
-  'fill-meta-1 rotate-[150deg]' : item.growthRate <= 50 ? 'fill-meta-6 rotate-90'
-   : item.growthRate >= 100 ? 'fill-meta-3 rotate-45' : '']" width="10" height="11" viewBox="0 0 10 11" fill="none"
-     xmlns="http://www.w3.org/2000/svg">
+    <svg :class="{
+  'fill-meta-3 rotate-45': item.growthRate >= 100,
+  'fill-meta-6 rotate-90': item.growthRate <= 50,
+  'fill-meta-1 rotate-[150deg]': item.growthRate <= 10
+ }" width="10" height="11" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
      <path
       d="M4.35716 2.47737L0.908974 5.82987L5.0443e-07 4.94612L5 0.0848689L10 4.94612L9.09103 5.82987L5.64284 2.47737L5.64284 10.0849L4.35716 10.0849L4.35716 2.47737Z"
       fill="" />
