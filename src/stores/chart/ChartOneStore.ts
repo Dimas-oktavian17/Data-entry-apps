@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import { computed, ref, reactive, watchEffect } from 'vue'
 import { defineStore } from 'pinia'
 import { UsersPinia } from '@/stores/users/users'

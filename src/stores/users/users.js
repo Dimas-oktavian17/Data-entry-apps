@@ -34,16 +34,6 @@ export const UsersPinia = defineStore('UsersPinia', () => {
         return acc
       }, [])
   })
-  const nameProvinsi = computed(() => FormUsers.provinces.filter(item => item.name).map(item => item.name))
-  const countProvinsi = computed(() => {
-    const filteredData = dataKaryawan.value.filter(item => item.provinsi.name)
-    const grouped = [];
-    for (let i = 0; i < nameProvinsi.value.length; i++) {
-      const provinceName = nameProvinsi.value[i];
-      grouped[i] = filteredData.filter(item => item.provinsi.name === provinceName).length;
-    }
-    return grouped;
-  })
   watch(users, (newUser) => newUser === null && router.push('/'))
   // actions
   return {
@@ -60,9 +50,7 @@ export const UsersPinia = defineStore('UsersPinia', () => {
     uid,
     LoginDate,
     CreateDate,
-    nameProvinsi,
     FormUsers,
-    countProvinsi,
     router
   }
 })
