@@ -8,44 +8,32 @@ interface DataInfo {
  name: string;
  count: number;
 }
+// Define a type or interface for the array of numbers
+type NumberArray = number[];
+type StringArray = string[];
 export const ChartOneStore = defineStore('ChartOneStore', () => {
  // getters
  const StatusMagang = computed<number>(() => DataKaryawan.dataKaryawan.filter(({ status_karyawan }) => status_karyawan === 'magang').length)
  const StatusKontrak = computed<number>(() => DataKaryawan.dataKaryawan.filter(({ status_karyawan }) => status_karyawan === 'kontrak').length)
  const StatusKartap = computed<number>(() => DataKaryawan.dataKaryawan.filter(({ status_karyawan }) => status_karyawan === 'kartap').length)
- const DataMagang = computed(() => {
-  const filteredMagang = DataKaryawan.dataKaryawan.filter(item => {
-   return item.status_karyawan === 'magang' && item.createAt >= 1 && item.createAt <= 12
-  });
-  // Group filtered data by createAt value
-  const grouped = []
-  for (let i = 1; i <= 12; i++) {
-   grouped[i - 1] = filteredMagang.filter(item => item.createAt === i).length;
-  }
+ const DataMagang = computed<NumberArray>(() => {
+  const filteredMagang = DataKaryawan.dataKaryawan.filter(item => item.status_karyawan === 'magang' && item.createAt >= 1 && item.createAt <= 12);
+  // Filter by array from index and filter again base on index parameter
+  const grouped = Array.from({ length: Labels.value.length }, (_, i) => filteredMagang.filter(item => item.createAt === i + 1).length);
   CountMagang.value = grouped
   return CountMagang.value
  });
- const DataKontrak = computed(() => {
-  const filteredMagang = DataKaryawan.dataKaryawan.filter(item => {
-   return item.status_karyawan === 'kontrak' && item.createAt >= 1 && item.createAt <= 12
-  });
-  // Group filtered data by createAt value
-  const grouped = []
-  for (let i = 1; i <= 12; i++) {
-   grouped[i - 1] = filteredMagang.filter(item => item.createAt === i).length;
-  }
+ const DataKontrak = computed<NumberArray>(() => {
+  const filteredKontrak = DataKaryawan.dataKaryawan.filter(item => item.status_karyawan === 'kontrak' && item.createAt >= 1 && item.createAt <= 12);
+  // Filter by array from index and filter again base on index parameter
+  const grouped = Array.from({ length: Labels.value.length }, (_, i) => filteredKontrak.filter(item => item.createAt === i + 1).length);
   CountKontrak.value = grouped
   return CountKontrak.value
  });
- const DataKartap = computed(() => {
-  const filteredMagang = DataKaryawan.dataKaryawan.filter(item => {
-   return item.status_karyawan === 'kartap' && item.createAt >= 1 && item.createAt <= 12
-  });
-  // Group filtered data by createAt value
-  const grouped = []
-  for (let i = 1; i <= 12; i++) {
-   grouped[i - 1] = filteredMagang.filter(item => item.createAt === i).length;
-  }
+ const DataKartap = computed<NumberArray>(() => {
+  const filteredKartap = DataKaryawan.dataKaryawan.filter(item => item.status_karyawan === 'kartap' && item.createAt >= 1 && item.createAt <= 12);
+  // Filter by array from index and filter again base on index parameter
+  const grouped = Array.from({ length: Labels.value.length }, (_, i) => filteredKartap.filter(item => item.createAt === i + 1).length);
   CountKartap.value = grouped
   return CountKartap.value
  });
@@ -66,9 +54,10 @@ export const ChartOneStore = defineStore('ChartOneStore', () => {
    count: StatusKartap.value,
   },
  ])
- const CountMagang = ref([])
- const CountKontrak = ref([])
- const CountKartap = ref([])
+ const CountMagang = ref<NumberArray>([])
+ const CountKontrak = ref<NumberArray>([])
+ const CountKartap = ref<NumberArray>([])
+ const Labels = ref<StringArray>(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'])
  // onMounted hook to update DataResult after computed properties are evaluated
  watchEffect(() => {
   DataResult[0].count = StatusMagang.value
@@ -85,7 +74,8 @@ export const ChartOneStore = defineStore('ChartOneStore', () => {
   DataResult,
   DataKartap,
   DataKontrak,
-  DataMagang
+  DataMagang,
+  Labels
  }
 })
 

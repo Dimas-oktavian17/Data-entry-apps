@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue'
 import VueApexCharts from 'vue3-apexcharts'
-import { formUsers } from '@/stores/users/formUsers';
 import { storeToRefs } from 'pinia';
 import { ChartOneStore } from '@/stores/chart/ChartOneStore';
-const { DataMagang, DataKontrak, DataKartap } = storeToRefs(formUsers())
-const { DataResult } = storeToRefs(ChartOneStore())
+const { DataResult, DataKontrak, DataKartap, DataMagang, Labels } = storeToRefs(ChartOneStore())
 
 const chartData = ref({
  series: [
@@ -22,7 +20,7 @@ const chartData = ref({
    data: DataKartap.value
   }
  ],
- labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+ labels: Labels.value
 })
 const chart = ref(null)
 const apexOptions = ref({
@@ -170,22 +168,6 @@ watchEffect(() => {
      </div>
     </div>
    </div>
-   <!-- <div class="flex justify-end w-full max-w-45">
-    <div class="inline-flex items-center rounded-md bg-whiter p-1.5 dark:bg-meta-4">
-     <button
-      class="px-3 py-1 text-xs font-medium text-black bg-white rounded shadow-card hover:bg-white hover:shadow-card dark:bg-boxdark dark:text-white dark:hover:bg-boxdark">
-      Day
-     </button>
-     <button
-      class="px-3 py-1 text-xs font-medium text-black rounded hover:bg-white hover:shadow-card dark:text-white dark:hover:bg-boxdark">
-      Week
-     </button>
-     <button
-      class="px-3 py-1 text-xs font-medium text-black rounded hover:bg-white hover:shadow-card dark:text-white dark:hover:bg-boxdark">
-      Month
-     </button>
-    </div>
-   </div> -->
   </div>
   <div>
    <div id="chartOne" class="-ml-5">
