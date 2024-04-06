@@ -3,8 +3,9 @@ import { ref, watchEffect } from 'vue'
 import VueApexCharts from 'vue3-apexcharts'
 import { formUsers } from '@/stores/users/formUsers';
 import { storeToRefs } from 'pinia';
-import { UsersPinia } from '@/stores/users/users';
+import { ChartOneStore } from '@/stores/chart/ChartOneStore';
 const { DataMagang, DataKontrak, DataKartap } = storeToRefs(formUsers())
+const { DataResult } = storeToRefs(ChartOneStore())
 
 const chartData = ref({
  series: [
@@ -146,31 +147,26 @@ watchEffect(() => {
   class="col-span-12 rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-8">
   <div class="flex flex-wrap items-start justify-between gap-3 sm:flex-nowrap">
    <div class="flex flex-wrap w-full gap-3 sm:gap-5">
-    <div class="flex min-w-47.5">
-     <span class="flex items-center justify-center w-full h-4 mt-1 mr-2 border rounded-full max-w-4 border-[#D34053]">
-      <span class="block h-2.5 w-full max-w-2.5 rounded-full bg-[#D34053]"></span>
+    <div class="flex min-w-47.5" v-for="({ name, count }, index) in DataResult" :key="index">
+     <span class="flex items-center justify-center w-full h-4 mt-1 mr-2 border rounded-full max-w-4 " :class="{
+     'border-[#D34053]': name === 'Total Magang',
+     'border-[#FFA70B]': name === 'Total Kontrak',
+     'border-[#219653]': name !== 'Total Magang' && name !== 'Total Kontrak'
+    }">
+      <span :class="{
+     'bg-[#D34053] block h-2.5 w-full max-w-2.5 rounded-full': name === 'Total Magang',
+     'bg-[#FFA70B] block h-2.5 w-full max-w-2.5 rounded-full': name === 'Total Kontrak',
+     'bg-[#219653] block h-2.5 w-full max-w-2.5 rounded-full': name !== 'Total Magang' && name !== 'Total Kontrak'
+    }">
+      </span>
      </span>
      <div class="w-full">
-      <p class="font-semibold text-[#D34053]">Total Magang</p>
-      <p class="text-sm font-medium">{{ UsersPinia().StatusMagang }}</p>
-     </div>
-    </div>
-    <div class="flex min-w-47.5">
-     <span class="flex items-center justify-center w-full h-4 mt-1 mr-2 border rounded-full max-w-4 border-[#FFA70B]">
-      <span class="block h-2.5 w-full max-w-2.5 rounded-full bg-[#FFA70B]"></span>
-     </span>
-     <div class="w-full">
-      <p class="font-semibold text-[#FFA70B]">Total Kontrak</p>
-      <p class="text-sm font-medium"> {{ UsersPinia().StatusKontrak }} </p>
-     </div>
-    </div>
-    <div class="flex min-w-47.5">
-     <span class="flex items-center justify-center w-full h-4 mt-1 mr-2 border rounded-full max-w-4 border-[#219653]">
-      <span class="block h-2.5 w-full max-w-2.5 rounded-full bg-[#219653]"></span>
-     </span>
-     <div class="w-full">
-      <p class="font-semibold text-[#219653]">Total Kartap</p>
-      <p class="text-sm font-medium">{{ UsersPinia().StatusKartap }}</p>
+      <p class="" :class="{
+     'text-[#D34053] font-semibold': name === 'Total Magang',
+     'text-[#FFA70B] font-semibold': name === 'Total Kontrak',
+     'text-[#219653] font-semibold': name !== 'Total Magang' && name !== 'Total Kontrak'
+    }">{{ name }}</p>
+      <p class="text-sm font-medium">{{ count }}</p>
      </div>
     </div>
    </div>
