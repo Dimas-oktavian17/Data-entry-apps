@@ -4,7 +4,7 @@ import { karyawanRef } from '@/firebase'
 import { defineStore } from 'pinia'
 import {
   // query,
-  // orderBy,
+  // orderBy,da
   // limit, doc, collection, updateDoc, onSnapshot,
   addDoc,
   // deleteDoc

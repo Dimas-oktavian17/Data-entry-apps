@@ -12,17 +12,12 @@ export const UsersPinia = defineStore('UsersPinia', () => {
   const users = useCurrentUser()
   const router = useRouter();
   // getters
-  const currentCountUsers = computed(() => {
-    const CurrentUser = UsersInput.value.find(({ email }) => email === users.value.email)
-    return CurrentUser ? CurrentUser.count : 0
-  })
   const LoginDate = computed(() => new Date(users.value.metadata.lastSignInTime).toDateString())
   const CreateDate = computed(() => new Date(users.value.metadata.creationTime).toDateString())
   const name = computed(() => users.value?.displayName || 'N/A')
   const Email = computed(() => users.value?.email || 'N/A')
   const photo = computed(() => users.value?.photoURL || 'N/A')
   const uid = computed(() => users.value?.uid || 'N/A')
-  const TotalEmploye = computed(() => dataKaryawan.value.length)
   const StatusMagang = computed(() => dataKaryawan.value.filter(({ status_karyawan }) => status_karyawan === 'magang').length)
   const StatusKontrak = computed(() => dataKaryawan.value.filter(({ status_karyawan }) => status_karyawan === 'kontrak').length)
   const StatusKartap = computed(() => dataKaryawan.value.filter(({ status_karyawan }) => status_karyawan === 'kartap').length)
@@ -65,8 +60,6 @@ export const UsersPinia = defineStore('UsersPinia', () => {
     uid,
     LoginDate,
     CreateDate,
-    TotalEmploye,
-    currentCountUsers,
     nameProvinsi,
     FormUsers,
     countProvinsi,
