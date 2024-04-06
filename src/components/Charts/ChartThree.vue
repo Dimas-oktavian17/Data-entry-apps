@@ -1,15 +1,25 @@
 <!-- eslint-disable vue/no-side-effects-in-computed-properties -->
-
 <script setup>
 import { ref, watchEffect } from 'vue'
-import { UsersPinia } from '@/stores/users/users'
+import { ChartOneStore } from '@/stores/chart/ChartOneStore'
 import { storeToRefs } from 'pinia'
-// @ts-ignore
 import VueApexCharts from 'vue3-apexcharts'
 
-const Users = UsersPinia()
-const { StatusKartap, StatusKontrak, StatusMagang } = storeToRefs(Users)
-
+const { StatusKartap, StatusKontrak, StatusMagang } = storeToRefs(ChartOneStore())
+const DataEmploye = ref([
+ {
+  name: 'Magang',
+  count: StatusMagang
+ },
+ {
+  name: 'Kontrak',
+  count: StatusKontrak
+ },
+ {
+  name: 'Kartap',
+  count: StatusKartap
+ }
+])
 const chartData = ref({
  series: [StatusKontrak.value, StatusMagang.value, StatusKartap.value],
  labels: ['kontrak', 'magang', 'kartap']
@@ -70,31 +80,18 @@ watchEffect(() => chartData.value.series = [StatusKontrak.value, StatusMagang.va
     <VueApexCharts type="donut" width="340" :options="apexOptions" :series="chartData.series" ref="chart" />
    </div>
   </div>
+
   <div class="flex flex-wrap items-center justify-center -mx-8 gap-y-3">
-   <div class="w-full px-8 sm:w-1/2">
+   <div class="w-full px-8 sm:w-1/2" v-for="({ name, count }, index) in DataEmploye" :key="index">
     <div class="flex items-center w-full">
-     <span class="block w-full h-3 mr-2 rounded-full max-w-3 bg-danger"></span>
+     <span :class="{
+     'block w-full h-3 mr-2 rounded-full max-w-3 bg-danger': name === 'Magang',
+     'block w-full h-3 mr-2 rounded-full max-w-3 bg-warning': name === 'Kontrak',
+     'block w-full h-3 mr-2 rounded-full max-w-3 bg-success': name === 'Kartap'
+    }"></span>
      <p class="flex justify-between w-full text-sm font-medium text-black dark:text-white">
-      <span> Magang </span>
-      <span> {{ StatusMagang }} </span>
-     </p>
-    </div>
-   </div>
-   <div class="w-full px-8 sm:w-1/2">
-    <div class="flex items-center w-full">
-     <span class="block w-full h-3 mr-2 rounded-full max-w-3 bg-success"></span>
-     <p class="flex justify-between w-full text-sm font-medium text-black dark:text-white">
-      <span> Kartap </span>
-      <span> {{ StatusKartap }}</span>
-     </p>
-    </div>
-   </div>
-   <div class="w-full px-8 sm:w-1/2">
-    <div class="flex items-center w-full">
-     <span class="block w-full h-3 mr-2 rounded-full max-w-3 bg-warning"></span>
-     <p class="flex justify-between w-full text-sm font-medium text-black dark:text-white">
-      <span> Kontrak </span>
-      <span> {{ StatusKontrak }} </span>
+      <span> {{ name }}</span>
+      <span> {{ count }} </span>
      </p>
     </div>
    </div>
