@@ -28,46 +28,6 @@ export const formUsers = defineStore('formUsers', () => {
   const router = useRouter()
   // getters
   const createAt = computed(() => new Date().getMonth() + 1)
-  const StatusMagang = computed(() => dataKaryawan.value.filter(({ status_karyawan, createAt }) => status_karyawan === 'magang' && createAt === 3).length)
-  const StatusKontrak = computed(() => dataKaryawan.value.filter(({ status_karyawan, createAt }) => status_karyawan === 'kontrak' && createAt === 3).length)
-  const StatusKartap = computed(() => dataKaryawan.value.filter(({ status_karyawan, createAt }) => status_karyawan === 'kartap' && createAt === 3).length)
-
-  const DataMagang = computed(() => {
-    const filteredMagang = dataKaryawan.value.filter(item => {
-      return item.status_karyawan === 'magang' && item.createAt >= 1 && item.createAt <= 12
-    });
-    // Group filtered data by createAt value
-    const grouped = []
-    for (let i = 1; i <= 12; i++) {
-      grouped[i - 1] = filteredMagang.filter(item => item.createAt === i).length;
-    }
-    CountMagang.value = grouped
-    return CountMagang.value
-  });
-  const DataKontrak = computed(() => {
-    const filteredMagang = dataKaryawan.value.filter(item => {
-      return item.status_karyawan === 'kontrak' && item.createAt >= 1 && item.createAt <= 12
-    });
-    // Group filtered data by createAt value
-    const grouped = []
-    for (let i = 1; i <= 12; i++) {
-      grouped[i - 1] = filteredMagang.filter(item => item.createAt === i).length;
-    }
-    CountKontrak.value = grouped
-    return CountKontrak.value
-  });
-  const DataKartap = computed(() => {
-    const filteredMagang = dataKaryawan.value.filter(item => {
-      return item.status_karyawan === 'kartap' && item.createAt >= 1 && item.createAt <= 12
-    });
-    // Group filtered data by createAt value
-    const grouped = []
-    for (let i = 1; i <= 12; i++) {
-      grouped[i - 1] = filteredMagang.filter(item => item.createAt === i).length;
-    }
-    CountKartap.value = grouped
-    return CountKartap.value
-  });
   // actions
   const HandleProvince = (selectedCity, selectedDistrict, selectedVillages, cities, kecamatan, kelurahan) => {
     selectedCity = null
@@ -196,12 +156,6 @@ export const formUsers = defineStore('formUsers', () => {
     HandleUpdate,
     AlertForm,
     HandleDelete,
-    StatusMagang,
-    StatusKontrak,
-    StatusKartap,
-    DataMagang,
-    DataKontrak,
-    DataKartap,
     CountMagang,
     CountKontrak,
     CountKartap,

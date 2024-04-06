@@ -1,18 +1,17 @@
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted, watchEffect } from 'vue'
 import VueApexCharts from 'vue3-apexcharts'
 import { storeToRefs } from 'pinia';
-import { UsersPinia } from '@/stores/users/users';
 import { formPinia } from '@/stores/formAPI';
-const Users = UsersPinia()
-const { nameProvinsi, countProvinsi } = storeToRefs(Users)
+import { ChartTwoStore } from '@/stores/chart/ChartTwoStore';
+const { NameProvinsi, CountProvinsi } = storeToRefs(ChartTwoStore())
 onMounted(async () => {
  formPinia().LoadProvinces()
  options.value
 })
 const options = ref({
  series: [{
-  data: countProvinsi.value
+  data: CountProvinsi.value
  }],
  chart: {
   height: 350,
@@ -31,7 +30,7 @@ const options = ref({
   show: false
  },
  xaxis: {
-  categories: nameProvinsi.value,
+  categories: NameProvinsi.value,
   labels: {
    style: {
     colors: '#000000',
@@ -42,13 +41,20 @@ const options = ref({
 })
 watchEffect(() =>
  options.value.series = [{
-  data: countProvinsi.value
+  data: CountProvinsi.value
  }]
+)
+watchEffect(() => options.value.xaxis = {
+ categories: NameProvinsi.value,
+ labels: {
+  style: {
+   colors: '#000000',
+   fontSize: '12px'
+  }
+ }
+}
+)
 
-)
-watchEffect(() =>
- options.value.xaxis.categories = nameProvinsi.value
-)
 </script>
 
 <template>
@@ -62,6 +68,7 @@ watchEffect(() =>
    </div>
   </div>
   <div>
+
    <div id="chartTwo" class="-ml-5 -mb-9">
     <VueApexCharts type="bar" height="335" :options="options" :series="options.series" ref="chart" />
    </div>
