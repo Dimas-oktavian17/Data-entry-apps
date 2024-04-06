@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, watchEffect } from 'vue'
+import { ref, onMounted } from 'vue'
 import VueApexCharts from 'vue3-apexcharts'
 import { storeToRefs } from 'pinia';
 import { formPinia } from '@/stores/formAPI';
@@ -11,7 +11,7 @@ onMounted(async () => {
 })
 const options = ref({
  series: [{
-  data: CountProvinsi.value
+  data: CountProvinsi
  }],
  chart: {
   height: 350,
@@ -30,7 +30,7 @@ const options = ref({
   show: false
  },
  xaxis: {
-  categories: NameProvinsi.value,
+  categories: NameProvinsi,
   labels: {
    style: {
     colors: '#000000',
@@ -39,22 +39,6 @@ const options = ref({
   }
  }
 })
-watchEffect(() =>
- options.value.series = [{
-  data: CountProvinsi.value
- }]
-)
-watchEffect(() => options.value.xaxis = {
- categories: NameProvinsi.value,
- labels: {
-  style: {
-   colors: '#000000',
-   fontSize: '12px'
-  }
- }
-}
-)
-
 </script>
 
 <template>
