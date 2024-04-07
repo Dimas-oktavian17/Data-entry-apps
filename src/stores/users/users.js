@@ -12,8 +12,6 @@ export const UsersPinia = defineStore('UsersPinia', () => {
   const users = useCurrentUser()
   const router = useRouter();
   // getters
-  const LoginDate = computed(() => new Date(users.value.metadata.lastSignInTime).toDateString())
-  const CreateDate = computed(() => new Date(users.value.metadata.creationTime).toDateString())
   const name = computed(() => users.value?.displayName || 'N/A')
   const Email = computed(() => users.value?.email || 'N/A')
   const photo = computed(() => users.value?.photoURL || 'N/A')
@@ -48,8 +46,6 @@ export const UsersPinia = defineStore('UsersPinia', () => {
     Email,
     photo,
     uid,
-    LoginDate,
-    CreateDate,
     FormUsers,
     router
   }
