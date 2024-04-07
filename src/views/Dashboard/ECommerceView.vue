@@ -19,7 +19,6 @@
    <!-- ====== Chart Three Start -->
    <ChartThree />
    <!-- ====== Chart Three End -->
-
    <!-- ====== Map One Start -->
    <MapOne />
    <!-- ====== Map One End -->
