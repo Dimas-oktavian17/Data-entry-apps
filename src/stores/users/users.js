@@ -5,7 +5,7 @@ import { karyawanRef } from '@/firebase'
 import { defineStore } from 'pinia'
 import { formPinia } from '../formAPI';
 export const UsersPinia = defineStore('UsersPinia', () => {
-  // state
+  // statep
   const FormUsers = formPinia()
   const nameProvinces = ref([])
   const dataKaryawan = useCollection(karyawanRef)
