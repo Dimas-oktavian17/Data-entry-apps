@@ -1,9 +1,7 @@
 <script setup>
-import { UsersPinia } from '@/stores/users/users'
+import { TableOneStore } from '@/stores/tables/TableOneStore';
 import { storeToRefs } from 'pinia'
-
-const Users = UsersPinia()
-const { UsersInput } = storeToRefs(Users)
+const { UsersInput } = storeToRefs(TableOneStore())
 </script>
 
 <template>
