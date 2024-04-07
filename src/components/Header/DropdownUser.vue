@@ -1,35 +1,15 @@
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref } from 'vue';
 import { onClickOutside } from '@vueuse/core';
-import { useRouter } from 'vue-router';
-import { useFirebaseAuth, useCurrentUser } from 'vuefire';
-import { signOut } from 'firebase/auth';
 import { storeToRefs } from 'pinia';
 import { UsersPinia } from '@/stores/users/users';
+import { AuthLogout } from '@/stores/auth/AuthLogout.ts'
 
-
-const Users = UsersPinia()
-const { name, Email, photo, } = storeToRefs(Users)
-const user = useCurrentUser();
-const router = useRouter();
-const auth = useFirebaseAuth()
+const { name, Email, photo, } = storeToRefs(UsersPinia())
 const target = ref(null);
 const dropdownOpen = ref(false);
-
 onClickOutside(target, () => (dropdownOpen.value = false));
-
-const logout = async () => {
- try {
-  user === null && router.push('/');
-  await signOut(auth);
- } catch (error) {
-  console.error(error);
- }
-};
-
-onMounted(() => user.value === null && router.push('/'));
-// Watch for changes in user and update UserInformations accordingly
-watch(user, (newUser) => newUser === null && router.push('/'));
+const logout = async () => AuthLogout().HandleLogout()
 </script>
 
 <template>
