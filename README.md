@@ -45,7 +45,7 @@ Merupakan sebuah project data entry yang dapat di visualisasikan melalui diagram
 - Visualisasi data dari bulan input admin
 ### Dashboard Data Karyawan
 - Menampilkan Data list karyawan
-- Filter berdasarkan Provinsi, Kota, Kecamatan, Kelurahan (WIP)
+- Filter berdasarkan Provinsi, Kota, Kecamatan, Kelurahan 
 - Export Data Karyawan to excel file.xls
 ### Profile
 - Update Displayname
