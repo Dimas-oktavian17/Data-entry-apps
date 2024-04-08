@@ -12,7 +12,7 @@ export const ChartTwoStore = defineStore('ChartTwoStore', () => {
  // getters
  const NameProvinsi = computed<StringArray>(() => DataProvinsi.provinces.filter(item => item.name).map(item => item.name))
  const CountProvinsi = computed<any>(() => {
-  const filteredData = DataKaryawan.dataKaryawan.filter(item => item.provinsi.name)
+  const filteredData = DataKaryawan.dataKaryawan.filter(({ provinsi }) => provinsi.name)
   return Array.from({ length: NameProvinsi.value.length }, (_, i) => filteredData.filter(item => item.provinsi.name === NameProvinsi.value[i]).length);
  })
  return {
