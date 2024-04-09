@@ -17,19 +17,19 @@ defineProps({
    </svg>
   </div>
   <div class="w-full">
-   <div v-for="(item) in data" :key="item.id"
+   <div v-for="({ name, umur, jabatan, status_karyawan, provinsi, kota, kecamatan, kelurahan, id }) in data" :key="id"
     class="flex flex-col items-start justify-start leading-relaxed capitalize text-body">
     <h1 class="pb-1 leading-relaxed text-body">
-     Name: {{ item.name }} - Age: {{ item.umur }}
+     Name: {{ name }} - Age: {{ umur }}
     </h1>
     <h2 class="pb-1 leading-relaxed text-body">
-     Position: {{ item.jabatan }} - Status: {{ item.status_karyawan }}
+     Position: {{ jabatan }} - Status: {{ status_karyawan }}
     </h2>
     <ul class="pb-1 leading-relaxed text-body">
-     <li>Provinsi: {{ item.provinsi.name }}</li>
-     <li>City: {{ item.kota.name }}</li>
-     <li>District: {{ item.kecamatan.name }}</li>
-     <li>Villages: {{ item.kelurahan.name }}</li>
+     <li>Provinsi: {{ provinsi?.name || 'na' }}</li>
+     <li>City: {{ kota?.name || 'na' }}</li>
+     <li>District: {{ kecamatan?.name || 'na' }}</li>
+     <li>Villages: {{ kelurahan?.name || 'na' }}</li>
     </ul>
    </div>
   </div>
