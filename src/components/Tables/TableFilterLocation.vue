@@ -12,6 +12,8 @@ const {
  cities,
  kecamatan,
  kelurahan,
+ citiesID,
+ kecamatanID
 } = storeToRefs(formStore)
 const {
  selectedProvince,
@@ -41,12 +43,15 @@ const handleProvince = () => {
  cities.value = null
  kecamatan.value = null
  kelurahan.value = null
+ citiesID.value = null
+ kecamatanID.value = null
 }
 const handleCity = () => {
  selectedDistrict.value = null
  kecamatan.value = null
  kelurahan.value = null
  selectedVillages.value = null
+ kecamatanID.value = null
 }
 const handleDistrict = () => {
  kelurahan.value = null

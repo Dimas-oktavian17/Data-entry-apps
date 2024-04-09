@@ -1,66 +1,57 @@
 <script setup>
-import { onMounted, watchEffect, watch } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { formPinia } from '@/stores/formAPI/index'
 import { formUsers } from '@/stores/users/formUsers';
 import { excelStore } from '@/stores/excel/excelStore';
+import { useOffsetPagination } from '@vueuse/core'
 // State Management
 const formStore = formPinia()
 const FormUsers = formUsers()
-const {
- cities,
- kecamatan,
- kelurahan,
- filterUsers,
-} = storeToRefs(formStore)
-const {
- selectedProvince,
- selectedCity,
- selectedDistrict,
- selectedVillages
-} = storeToRefs(FormUsers)
+const { filterUsers } = storeToRefs(formStore)
 // end State Management
-// data form
 const handleDelete = (index) => FormUsers.HandleDelete(index)
 // Fetching data 
-const fetchProvinces = async (obj) => {
- // checking the parameter from select is null or not, procces if not null
- const id = obj?.id;
- id && formStore.fetchProvinces({ id }, selectedCity.value, selectedDistrict.value)
-}
-const fecthCity = async (obj) => {
- const id = obj?.id;
- id && formStore.fecthCity({ id }, selectedDistrict.value)
-}
-const fetchDistrict = async (obj) => {
- const id = obj?.id;
- id && formStore.fetchDistrict({ id }, selectedVillages.value)
-}
-const handleProvince = () => FormUsers.HandleProvince(
- selectedCity.value,
- selectedDistrict.value,
- selectedVillages.value,
- cities.value,
- kecamatan.value,
- kelurahan.value
-)
-const handleCity = () => FormUsers.HandleCity(
- selectedDistrict.value,
- kecamatan.value,
- kelurahan.value,
- selectedVillages.value
-)
-const handleDistrict = () => FormUsers.HandleDistrict(kelurahan.value, selectedVillages.value)
-// Watch Mutations API
-watch(selectedProvince, fetchProvinces, { immediate: true })
-watch(selectedCity, fecthCity, { immediate: true })
-watch(selectedDistrict, fetchDistrict, { immediate: true })
-watchEffect(() => selectedProvince.value !== null && handleProvince())
-watchEffect(() => selectedCity.value !== null && handleCity())
-watchEffect(() => selectedDistrict.value !== null && handleDistrict())
 onMounted(async () => {
  formStore.LoadProvinces()
  filterUsers.value;
+})
+function fetch(page, pageSize) {
+ return new Promise((resolve, reject) => {
+  const start = (page - 1) * pageSize
+  const end = start + pageSize
+  setTimeout(() => {
+   resolve(filterUsers.value.slice(start, end))
+  }, 100)
+ })
+}
+const page = ref(1)
+const pageSize = ref(5)
+const data = ref([])
+fetchData({
+ currentPage: page.value,
+ currentPageSize: pageSize.value,
+})
+
+function fetchData({ currentPage, currentPageSize }) {
+ fetch(currentPage, currentPageSize).then((responseData) => {
+  data.value = responseData
+ })
+}
+const {
+ currentPage,
+ currentPageSize,
+ pageCount,
+ isFirstPage,
+ isLastPage,
+ prev,
+ next,
+} = useOffsetPagination({
+ total: filterUsers.value.length,
+ page: 1,
+ pageSize,
+ onPageChange: fetchData,
+ onPageSizeChange: fetchData,
 })
 </script>
 
@@ -73,8 +64,8 @@ onMounted(async () => {
     class="flex flex-row-reverse justify-center px-6 py-2 my-4 text-white transition-all rounded-md cursor-pointer hover:transition-all align-items-center bg-primary hover:opacity-80"
     @click="excelStore().generateFlattenedData()" :data="excelStore().flattenedData"
     :fields="excelStore().flattenedFields" worksheet="Data Karyawan" name="Data_Karyawan.xls">
-    Download
     <IconVue icon="material-symbols:download" class="w-6 h-auto" />
+    Download
    </download-excel>
   </header>
   <TableFilterLocation />
@@ -93,8 +84,7 @@ onMounted(async () => {
      </tr>
     </thead>
     <tbody>
-
-     <tr v-for="({ name, jabatan, status_karyawan, umur, id }) in filterUsers" :key="id">
+     <tr v-for="({ name, jabatan, status_karyawan, umur, id }) in data" :key="id">
       <td class="px-4 py-5 pl-9 xl:pl-11">
        <AlertSucces :title="name" />
        <h5 class="font-medium text-black dark:text-white">{{ name }}</h5>
@@ -105,10 +95,10 @@ onMounted(async () => {
       </td>
       <td class="px-4 py-5">
        <p class="inline-flex px-3 py-1 text-sm font-medium rounded-full bg-opacity-10" :class="{
-     'bg-warning text-warning': status_karyawan === 'kontrak',
-     'bg-danger text-danger': status_karyawan === 'magang',
-     'bg-success text-success': status_karyawan === 'kartap'
-    }">
+        'bg-warning text-warning': status_karyawan === 'kontrak',
+        'bg-danger text-danger': status_karyawan === 'magang',
+        'bg-success text-success': status_karyawan === 'kartap'
+       }">
         {{ status_karyawan }}
        </p>
       </td>
@@ -117,11 +107,9 @@ onMounted(async () => {
         <router-link :to="{ name: 'tablesDetails', params: { id: id } }">
          <IconVue icon="ph:eye-bold" class="hover:text-primary w-[18px] h-auto" />
         </router-link>
-        <!--  -->
         <button @click="handleDelete(id)" class="hover:text-primary">
          <IconVue icon="ion:trash-outline" class="hover:text-primary w-[18px] h-auto" />
         </button>
-        <!-- @click="handleEdit(id)" -->
         <router-link :to="{ name: 'tablesEdits', params: { id: id } }" class="hover:text-primary">
          <IconVue icon="akar-icons:edit" class="hover:text-primary w-[18px] h-auto" />
         </router-link>
@@ -130,6 +118,17 @@ onMounted(async () => {
      </tr>
     </tbody>
    </table>
+   <div class="my-4">
+    <button :disabled="isFirstPage" @click="prev">
+     prev
+    </button>
+    <button v-for="item in pageCount" :key="item" :disabled="currentPage === item" @click="currentPage = item">
+     {{ item }}
+    </button>
+    <button :disabled="isLastPage" @click="next">
+     next
+    </button>
+   </div>
   </div>
  </div>
 </template>
