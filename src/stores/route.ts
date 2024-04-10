@@ -11,8 +11,8 @@ export const useRouteStore = defineStore('route', () => {
  const RouteName = computed(() => route.value.name)
  // actions 
  const GoBack = () => {
-  TableDataStore.dataView = null
   router.back()
+  TableDataStore.dataView = null
  }
  return {
   TableDataStore,
