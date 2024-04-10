@@ -7,8 +7,9 @@ export const PagginationStore = defineStore('PagginationStore', () => {
  // state
  const DataUsers = formPinia()
  const page = ref<NumberCount>(1)
- const pageSize = ref<NumberCount>(5)
+ const pageSize = ref<NumberCount>(10)
  const data = ref([])
+ const Database = ref(DataUsers.filterUsers)
  // getters
  const RealData = computed(() => data.value)
  // Actions
@@ -17,17 +18,23 @@ export const PagginationStore = defineStore('PagginationStore', () => {
    const start = (page - 1) * pageSize
    const end = start + pageSize
    setTimeout(() => {
+    // data slice is must be state not getters
     resolve(DataUsers.filterUsers.slice(start, end))
    }, 100)
   })
  }
- fetchData({
-  currentPage: page.value,
-  currentPageSize: pageSize.value,
- })
+ fetchData(
+  {
+   currentPage: page.value,
+   currentPageSize: pageSize.value,
+  }
+ )
+
 
  function fetchData({ currentPage, currentPageSize }: { currentPage: number, currentPageSize: number }) {
-  fetch(currentPage, currentPageSize).then((responseData) => data.value = responseData)
+  fetch(currentPage, currentPageSize).then((responseData) => {
+   data.value = responseData
+  });
  }
  return {
   DataUsers,

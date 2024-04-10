@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted, watchEffect } from 'vue'
 import { storeToRefs } from 'pinia'
 import { formPinia } from '@/stores/formAPI/index'
 import { formUsers } from '@/stores/users/formUsers';
@@ -15,14 +15,26 @@ const { RealData, page, pageSize } = storeToRefs(StorePaggination)
 // end State Management
 const handleDelete = (index) => FormUsers.HandleDelete(index)
 // Fetching data 
-function fetch(page, pageSize) {
- StorePaggination.fetch(page, pageSize)
-}
-fetchData({
- currentPage: page.value,
- currentPageSize: pageSize.value,
+function fetch() { StorePaggination.fetch(page.value, pageSize.value) }
+
+watchEffect(() => {
+ //  // This will run immediately and re-run whenever any reactive 
+ //  // dependencies (properties of `StorePaggination`) change.
+ fetchData({
+  currentPage: page.value,
+  currentPageSize: pageSize.value,
+ })
+ useOffsetPagination({
+  total: filterUsers.value.length,
+  page: 1,
+  pageSize,
+  onPageChange: StorePaggination.fetchData,
+  onPageSizeChange: StorePaggination.fetchData,
+ })
 })
-function fetchData({ currentPage, currentPageSize }) {
+function fetchData(item) {
+ const currentPage = item?.currentPage
+ const currentPageSize = item?.currentPageSize
  StorePaggination.fetchData({ currentPage, currentPageSize })
 }
 const {
@@ -40,11 +52,16 @@ const {
  onPageSizeChange: StorePaggination.fetchData,
 })
 onMounted(async () => {
- fetch()
- fetchData()
  formStore.LoadProvinces()
  filterUsers.value
- RealData.value
+})
+watchEffect(() => {
+ currentPage,
+  pageCount,
+  isFirstPage,
+  isLastPage,
+  prev,
+  next
 })
 </script>
 

@@ -159,6 +159,6 @@ export const formUsers = defineStore('formUsers', () => {
     CountMagang,
     CountKontrak,
     CountKartap,
-
+    dataKaryawan
   };
 });
