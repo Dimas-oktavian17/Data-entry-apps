@@ -1,46 +1,44 @@
 <script setup>
-import { onMounted, ref, computed } from 'vue'
+import { onMounted, watchEffect } from 'vue'
 import { storeToRefs } from 'pinia'
 import { formPinia } from '@/stores/formAPI/index'
 import { formUsers } from '@/stores/users/formUsers';
 import { excelStore } from '@/stores/excel/excelStore';
 import { useOffsetPagination } from '@vueuse/core'
+import { PagginationStore } from '@/stores/utility/PagginationStore';
 // State Management
 const formStore = formPinia()
 const FormUsers = formUsers()
+const StorePaggination = PagginationStore()
 const { filterUsers } = storeToRefs(formStore)
+const { RealData, page, pageSize } = storeToRefs(StorePaggination)
 // end State Management
 const handleDelete = (index) => FormUsers.HandleDelete(index)
 // Fetching data 
-onMounted(async () => {
- formStore.LoadProvinces()
- filterUsers.value;
-})
-function fetch(page, pageSize) {
- return new Promise((resolve, reject) => {
-  const start = (page - 1) * pageSize
-  const end = start + pageSize
-  setTimeout(() => {
-   resolve(filterUsers.value.slice(start, end))
-  }, 100)
- })
-}
-const page = ref(1)
-const pageSize = ref(5)
-const data = ref([])
-fetchData({
- currentPage: page.value,
- currentPageSize: pageSize.value,
-})
+function fetch() { StorePaggination.fetch(page.value, pageSize.value) }
 
-function fetchData({ currentPage, currentPageSize }) {
- fetch(currentPage, currentPageSize).then((responseData) => {
-  data.value = responseData
+watchEffect(() => {
+ //  // This will run immediately and re-run whenever any reactive 
+ //  // dependencies (properties of `StorePaggination`) change.
+ fetchData({
+  currentPage: page.value,
+  currentPageSize: pageSize.value,
  })
+ useOffsetPagination({
+  total: filterUsers.value.length,
+  page: 1,
+  pageSize,
+  onPageChange: StorePaggination.fetchData,
+  onPageSizeChange: StorePaggination.fetchData,
+ })
+})
+function fetchData(item) {
+ const currentPage = item?.currentPage
+ const currentPageSize = item?.currentPageSize
+ StorePaggination.fetchData({ currentPage, currentPageSize })
 }
 const {
  currentPage,
- currentPageSize,
  pageCount,
  isFirstPage,
  isLastPage,
@@ -50,8 +48,20 @@ const {
  total: filterUsers.value.length,
  page: 1,
  pageSize,
- onPageChange: fetchData,
- onPageSizeChange: fetchData,
+ onPageChange: StorePaggination.fetchData,
+ onPageSizeChange: StorePaggination.fetchData,
+})
+onMounted(async () => {
+ formStore.LoadProvinces()
+ filterUsers.value
+})
+watchEffect(() => {
+ currentPage,
+  pageCount,
+  isFirstPage,
+  isLastPage,
+  prev,
+  next
 })
 </script>
 
@@ -84,7 +94,7 @@ const {
      </tr>
     </thead>
     <tbody>
-     <tr v-for="({ name, jabatan, status_karyawan, umur, id }) in data" :key="id">
+     <tr v-for="({ name, jabatan, status_karyawan, umur, id }) in RealData" :key="id">
       <td class="px-4 py-5 pl-9 xl:pl-11">
        <AlertSucces :title="name" />
        <h5 class="font-medium text-black dark:text-white">{{ name }}</h5>
@@ -118,17 +128,17 @@ const {
      </tr>
     </tbody>
    </table>
-   <div class="my-4">
-    <button :disabled="isFirstPage" @click="prev">
-     prev
-    </button>
-    <button v-for="item in pageCount" :key="item" :disabled="currentPage === item" @click="currentPage = item">
-     {{ item }}
-    </button>
-    <button :disabled="isLastPage" @click="next">
-     next
-    </button>
+   <div class="flex flex-row items-center justify-center my-4 space-x-4 lg:space-x-6">
+    <ButtonPagination CustomClass="flex-row" label="Prev" :disabled="isFirstPage" @handleActions="prev">
+     <IconVue icon="wpf:previous" class="w-6 h-auto mr-2" />
+    </ButtonPagination>
+    <ButtonPagination :label="item" v-for="item in pageCount" :key="item" :disabled="currentPage === item"
+     @handleActions="currentPage = item" />
+    <ButtonPagination CustomClass="flex-row-reverse" label="Next" :disabled="isLastPage" @click="next">
+     <IconVue icon="wpf:previous" class="w-6 h-auto ml-2 rotate-180 " />
+    </ButtonPagination>
    </div>
+   Total: {{ filterUsers.length }}
   </div>
  </div>
 </template>

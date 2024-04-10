@@ -1,15 +1,8 @@
 <script setup lang="ts">
 const props = defineProps(['pageTitle'])
-// import { useRouter } from 'vue-router'
 import { useRouteStore } from '@/stores/route'
-// import { TableStore } from '@/stores/tables/tableStore';
 const RouteStore = useRouteStore()
-// const router = useRouter()
 const GoBack = () => RouteStore.GoBack()
-// {
-//  TableStore().dataView = null
-//  router.back()
-// }
 </script>
 
 <template>
@@ -17,7 +10,6 @@ const GoBack = () => RouteStore.GoBack()
   <h2 class="font-semibold text-black capitalize text-title-md2 dark:text-white">
    {{ props.pageTitle }}
   </h2>
-
   <nav>
    <ol class="flex items-center gap-2">
     <li>
