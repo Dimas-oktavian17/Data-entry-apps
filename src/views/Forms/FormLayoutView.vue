@@ -99,32 +99,32 @@ onMounted(async () => {
        <div class="mb-4.5 flex flex-col gap-6 xl:flex-row">
         <FormKit v-model="names" type="text" name="name" label="Your name" placeholder="Abu Na'im"
          validation="required|length:5,15" :classes="{
-   outer: 'mb-4.5 w-full xl:w-1/2',
-   label:
-    'mb-2.5 block text-black dark:text-white',
-   inner: ' focus:outline-1',
-   input:
-    'w-full rounded border-[1.5px] text-black border-stroke bg-transparent py-3 px-5 font-normal outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:text-white dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary',
-  }" />
+          outer: 'mb-4.5 w-full xl:w-1/2',
+          label:
+           'mb-2.5 block text-black dark:text-white',
+          inner: ' focus:outline-1',
+          input:
+           'w-full rounded border-[1.5px] text-black border-stroke bg-transparent py-3 px-5 font-normal outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:text-white dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary',
+         }" />
         <FormKit v-model="age" type="number" name="age" label="Your age" placeholder="Your age" validation="required"
          :classes="{
-   outer: 'mb-4.5 w-full xl:w-1/2',
-   label:
-    'mb-2.5 block text-black dark:text-white',
-   inner: ' focus:outline-1',
-   input:
-    'w-full rounded border-[1.5px] text-black border-stroke bg-transparent py-3 px-5 font-normal outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:text-white dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary',
-  }" />
+          outer: 'mb-4.5 w-full xl:w-1/2',
+          label:
+           'mb-2.5 block text-black dark:text-white',
+          inner: ' focus:outline-1',
+          input:
+           'w-full rounded border-[1.5px] text-black border-stroke bg-transparent py-3 px-5 font-normal outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:text-white dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary',
+         }" />
        </div>
        <FormKit v-model="position" type="text" name="Position" label="Your position" placeholder="IT Staff"
         validation="required|length:5,15" :classes="{
-   outer: 'mb-4.5 w-full ',
-   label:
-    'mb-2.5 block text-black dark:text-white',
-   inner: ' focus:outline-1',
-   input:
-    'w-full rounded border-[1.5px] text-black border-stroke bg-transparent py-3 px-5 font-normal outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:text-white dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary',
-  }" />
+         outer: 'mb-4.5 w-full ',
+         label:
+          'mb-2.5 block text-black dark:text-white',
+         inner: ' focus:outline-1',
+         input:
+          'w-full rounded border-[1.5px] text-black border-stroke bg-transparent py-3 px-5 font-normal outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:text-white dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary',
+        }" />
        <SelectGroup v-model="statusKaryawan" />
        <!-- location api -->
        <div class="mb-4.5">
