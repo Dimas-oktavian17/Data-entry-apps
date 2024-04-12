@@ -17,6 +17,9 @@ import JsonExcel from "vue-json-excel3";
 // firebase configuration
 import { firebaseApp } from './firebase/index.js'
 // Component configuration
+import HeaderArea from '@/components/Header/HeaderArea.vue'
+import SidebarArea from '@/components/Sidebar/SidebarArea.vue'
+import SidebarItem from '@/components/Sidebar/SidebarItem.vue'
 import NotifError from "@/components/base/NotifError.vue"
 import buttonAuth from "@/components/base/ButtonAuth.vue"
 import buttonPaggination from "@/components/Buttons/ButtonPagination.vue"
@@ -51,6 +54,9 @@ import App from './App.vue'
 const app = createApp(App)
 app.component('IconVue', Icon)
   .component('NotifError', NotifError)
+  .component('SidebarArea', SidebarArea)
+  .component('HeaderArea', HeaderArea)
+  .component('SidebarItem', SidebarItem)
   .component('SettingsCard', SettingsCard)
   .component('ErrorLayout', ErrorLayout)
   .component('ButtonAuth', buttonAuth)
