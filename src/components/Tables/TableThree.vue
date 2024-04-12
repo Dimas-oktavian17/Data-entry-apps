@@ -15,7 +15,7 @@ const { RealData, page, pageSize } = storeToRefs(StorePaggination)
 // end State Management
 const handleDelete = (index) => FormUsers.HandleDelete(index)
 // Fetching data 
-function fetch() { StorePaggination.fetch(page.value, pageSize.value) }
+function fetch() { return StorePaggination.fetch(page.value, pageSize.value) }
 
 watchEffect(() => {
  //  // This will run immediately and re-run whenever any reactive 
