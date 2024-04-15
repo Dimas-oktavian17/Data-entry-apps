@@ -3,7 +3,7 @@ import { onMounted, watchEffect, watch, } from 'vue'
 import { storeToRefs } from 'pinia'
 import { formPinia } from '@/stores/formAPI/index'
 import { formUsers } from '@/stores/users/formUsers';
-import { TableStore } from '@/stores/tables/tableStore';
+import { TableStore } from '@/stores/tables/tableStore.ts';
 // State Management
 const formStore = formPinia()
 const FormUsers = formUsers()

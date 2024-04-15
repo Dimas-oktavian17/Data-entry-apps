@@ -21,7 +21,7 @@ const { UsersInput } = storeToRefs(TableOneStore())
      <h5 class="text-sm font-medium uppercase xsm:text-base">Email</h5>
     </div>
     <div class="hidden p-2.5 text-center sm:block xl:p-5">
-     <h5 class="text-sm font-medium uppercase xsm:text-base">Sales</h5>
+     <h5 class="text-sm font-medium uppercase xsm:text-base">Count</h5>
     </div>
 
    </div>

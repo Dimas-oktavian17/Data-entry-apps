@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { useRoute, useRouter } from 'vue-router'
 import { computed, ref } from 'vue'
-import { TableStore } from '@/stores/tables/tableStore.js'
+import { TableStore } from '@/stores/tables/tableStore'
 export const useRouteStore = defineStore('route', () => {
  // state
  const route = ref(useRoute())

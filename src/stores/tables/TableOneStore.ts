@@ -1,16 +1,8 @@
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import { defineStore } from 'pinia'
 import { UsersPinia } from '@/stores/users/users'
+import { DataInfo } from '@/interfaces/InterfacesChartOne'
 
-// Define a type or interface for the array of numbers
-interface DataInfo {
- count: number;
- email: string;
- name: string;
- photo: string;
- picture: string;
- uid: string;
-}
 export const TableOneStore = defineStore('TableTwoStore', () => {
  // state
  const UserProfile = UsersPinia()
@@ -18,7 +10,7 @@ export const TableOneStore = defineStore('TableTwoStore', () => {
  const UsersInput = computed<DataInfo[]>(() => {
   return UserProfile.dataKaryawan.flatMap(user => user.author ? user.author : [] as DataInfo[])
    .reduce((acc, author): DataInfo[] => {
-    const found = acc.find(a => a.uid === author.uid)
+    const found = acc.find((a: { uid: string }) => a.uid === author.uid)
     if (found) {
      found.count++
      found.picture = author.picture

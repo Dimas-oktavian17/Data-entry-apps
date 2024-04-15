@@ -1,28 +1,19 @@
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { onMounted, watch } from 'vue'
 import { RouterLink } from 'vue-router';
-import { authPinia } from '@/stores/auth/authSignin'
 import NotifError from '@/components/base/NotifError.vue';
-
-const email = ref('');
-const pw = ref('');
-const notif = ref('')
-const notifStatus = ref(false)
-const authSignin = authPinia()
-
-const submitHandler = async () => {
- const { notif: newNotif, notifStatus: newNotifStatus } = await authSignin.submitHandler(email.value, pw.value)
- notif.value = `${newNotif}`
-
- notifStatus.value = newNotifStatus
-};
+import { AuthSigin } from '@/stores/auth/authSignin';
+import { storeToRefs } from 'pinia'
+const authSigin = AuthSigin()
+const { email, pw, notif, notifStatus } = storeToRefs(authSigin)
+const submitHandler = async () => authSigin.submitHandler(email.value, pw.value)
 
 const signInPopup = async () => {
- const { notif: newNotif } = await authSignin.signInPopu()
+ const { notif: newNotif } = await authSigin.signInPopu()
  notif.value = newNotif
 }
 
-onMounted(() => watch(() => authSignin.user && authSignin.user.value !== null, () => authSignin.checkUser()))
+onMounted(() => watch(() => authSigin.user && authSigin.user.value !== null, () => authSigin.checkUser()))
 </script>
 
 
@@ -35,28 +26,28 @@ onMounted(() => watch(() => authSignin.user && authSignin.user.value !== null, (
   }">
    <FormKit v-model="email" class="p-16" type="text" name="email" label="Your email" placeholder="jane@example.com"
     validation="required|email" :classes="{
-   outer: 'mb-2 ',
-   label:
-    'block mb-2 text-sm font-medium text-primary text-black',
-   inner: ' focus:outline-1',
-   input:
-    'w-full rounded border-[1.5px] text-black border-stroke bg-transparent py-3 px-5 font-normal outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:text-white dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary',
-  }" />
+     outer: 'mb-2 ',
+     label:
+      'block mb-2 text-sm font-medium text-primary text-black',
+     inner: ' focus:outline-1',
+     input:
+      'w-full rounded border-[1.5px] text-black border-stroke bg-transparent py-3 px-5 font-normal outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:text-white dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary',
+    }" />
    <FormKit v-model="pw" placeholder="***" type="password" label="Password" validation="required|password" :classes="{
-   outer: 'mb-2 ',
-   label:
-    'block mb-2 text-sm font-medium text-primary text-black',
-   inner: ' focus:outline-1',
-   input:
-    'w-full rounded border-[1.5px] text-black border-stroke bg-transparent py-3 px-5 font-normal outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:text-white dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary',
-  }" />
+    outer: 'mb-2 ',
+    label:
+     'block mb-2 text-sm font-medium text-primary text-black',
+    inner: ' focus:outline-1',
+    input:
+     'w-full rounded border-[1.5px] text-black border-stroke bg-transparent py-3 px-5 font-normal outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:text-white dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary',
+   }" />
    <RouterLink to="/forgot-password" class="my-6 text-blue-600 transition-all hover:opacity-50">
     Forgot Password?
    </RouterLink>
    <FormKit type="submit" :classes="{
-   outer: 'my-4',
-   input: 'w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 font-medium text-white transition '
-  }">
+    outer: 'my-4',
+    input: 'w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 font-medium text-white transition '
+   }">
     Sign in account
    </FormKit>
   </FormKit>

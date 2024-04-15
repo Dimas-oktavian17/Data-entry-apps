@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { onClickOutside } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
-import { UsersPinia } from '@/stores/users/users';
+import { UsersPinia } from '@/stores/users/users.ts';
 import { AuthLogout } from '@/stores/auth/AuthLogout.ts'
 
 const { name, Email, photo, } = storeToRefs(UsersPinia())

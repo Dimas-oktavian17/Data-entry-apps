@@ -1,18 +1,7 @@
 import { useStorage } from '@vueuse/core'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-
-interface MenuItem {
- icon: string;
- label: string;
- route: string;
-}
-
-interface MenuGroup {
- name: string;
- menuItems: MenuItem[];
-}
-
+import { MenuGroup } from '@/interfaces/InterfacesSidebar'
 
 export const useSidebarStore = defineStore('sidebar', () => {
  const isSidebarOpen = ref(false)
