@@ -6,11 +6,12 @@ import { signOut } from 'firebase/auth';
 import { useRouter } from 'vue-router';
 export const AuthLogout = defineStore('AuthLogout', () => {
  // state
- const UsersProfile = UsersPinia()
- const Auth = useFirebaseAuth()
+ const UsersProfile: any = UsersPinia()
+ // auth is data firebase login user
+ const Auth: any = useFirebaseAuth()
  const Router = useRouter()
  // actions
- const HandleLogout = async () => {
+ const HandleLogout = async (): Promise<void> => {
   try {
    UsersProfile.users === null && Router.push('/')
    await signOut(Auth)

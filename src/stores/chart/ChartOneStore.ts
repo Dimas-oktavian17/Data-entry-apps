@@ -1,38 +1,32 @@
 import { computed, ref, reactive, watchEffect } from 'vue'
 import { defineStore } from 'pinia'
-import { UsersPinia } from '@/stores/users/users'
+import { UsersPinia } from '@/stores/users/users.ts'
 import { formUsers } from '@/stores/users/formUsers'
+import { DataInfo, Karyawan, NumberArray, StringArray } from '@/interfaces/InterfacesChartOne'
 
-interface DataInfo {
- name: string;
- count: number;
-}
-// Define a type or interface for the array of numbers
-type NumberArray = number[];
-type StringArray = string[];
 export const ChartOneStore = defineStore('ChartOneStore', () => {
  // getters
  const StatusMagang = computed<number>(() => DataKaryawan.dataKaryawan.filter(({ status_karyawan }) => status_karyawan === 'magang').length)
  const StatusKontrak = computed<number>(() => DataKaryawan.dataKaryawan.filter(({ status_karyawan }) => status_karyawan === 'kontrak').length)
  const StatusKartap = computed<number>(() => DataKaryawan.dataKaryawan.filter(({ status_karyawan }) => status_karyawan === 'kartap').length)
- const DataMagang = computed<NumberArray>(() => {
-  const filteredMagang = DataKaryawan.dataKaryawan.filter(item => item.status_karyawan === 'magang' && item.createAt >= 1 && item.createAt <= 12);
+ const DataMagang = computed<NumberArray>((): NumberArray => {
+  const filteredMagang = DataKaryawan.dataKaryawan.filter((item) => item.status_karyawan === 'magang' && item.createAt >= 1 && item.createAt <= 12);
   // Filter by array from index and filter again base on index parameter
-  const grouped = Array.from({ length: Labels.value.length }, (_, i) => filteredMagang.filter(item => item.createAt === i + 1).length);
+  const grouped = Array.from({ length: Labels.value.length }, (_, i) => filteredMagang.filter((item) => item.createAt === i + 1).length);
   CountMagang.value = grouped
   return CountMagang.value
  });
  const DataKontrak = computed<NumberArray>(() => {
-  const filteredKontrak = DataKaryawan.dataKaryawan.filter(item => item.status_karyawan === 'kontrak' && item.createAt >= 1 && item.createAt <= 12);
+  const filteredKontrak = DataKaryawan.dataKaryawan.filter((item) => item.status_karyawan === 'kontrak' && item.createAt >= 1 && item.createAt <= 12);
   // Filter by array from index and filter again base on index parameter
-  const grouped = Array.from({ length: Labels.value.length }, (_, i) => filteredKontrak.filter(item => item.createAt === i + 1).length);
+  const grouped = Array.from({ length: Labels.value.length }, (_, i) => filteredKontrak.filter((item) => item.createAt === i + 1).length);
   CountKontrak.value = grouped
   return CountKontrak.value
  });
  const DataKartap = computed<NumberArray>(() => {
-  const filteredKartap = DataKaryawan.dataKaryawan.filter(item => item.status_karyawan === 'kartap' && item.createAt >= 1 && item.createAt <= 12);
+  const filteredKartap = DataKaryawan.dataKaryawan.filter((item) => item.status_karyawan === 'kartap' && item.createAt >= 1 && item.createAt <= 12);
   // Filter by array from index and filter again base on index parameter
-  const grouped = Array.from({ length: Labels.value.length }, (_, i) => filteredKartap.filter(item => item.createAt === i + 1).length);
+  const grouped = Array.from({ length: Labels.value.length }, (_, i) => filteredKartap.filter((item) => item.createAt === i + 1).length);
   CountKartap.value = grouped
   return CountKartap.value
  });

@@ -16,6 +16,8 @@ const {
  cities,
  kecamatan,
  kelurahan,
+ citiesID,
+ kecamatanID,
 } = storeToRefs(formStore)
 const {
  names,
@@ -35,31 +37,37 @@ const handleSubmit = async () => FormUsers.HandleSubmit(name.value, Email.value,
 const fetchProvinces = async (obj) => {
  // checking the parameter from select is null or not, procces if not null
  const id = obj?.id;
- id && formStore.fetchProvinces({ id }, selectedCity.value, selectedDistrict.value)
+ id && formStore.fetchProvinces({ id })
 }
 const fecthCity = async (obj) => {
  const id = obj?.id;
- id && formStore.fecthCity({ id }, selectedDistrict.value)
+ id && formStore.fecthCity({ id })
 }
 const fetchDistrict = async (obj) => {
  const id = obj?.id;
- id && formStore.fetchDistrict({ id }, selectedVillages.value)
+ id && formStore.fetchDistrict({ id })
 }
-const handleProvince = () => FormUsers.HandleProvince(
- selectedCity.value,
- selectedDistrict.value,
- selectedVillages.value,
- cities.value,
- kecamatan.value,
- kelurahan.value
-)
-const handleCity = () => FormUsers.HandleCity(
- selectedDistrict.value,
- kecamatan.value,
- kelurahan.value,
- selectedVillages.value
-)
-const handleDistrict = () => FormUsers.HandleDistrict(kelurahan.value, selectedVillages.value)
+const handleProvince = () => {
+ selectedCity.value = null
+ selectedDistrict.value = null
+ selectedVillages.value = null
+ cities.value = null
+ kecamatan.value = null
+ kelurahan.value = null
+ citiesID.value = null
+ kecamatanID.value = null
+}
+const handleCity = () => {
+ selectedDistrict.value = null
+ kecamatan.value = null
+ kelurahan.value = null
+ selectedVillages.value = null
+ kecamatanID.value = null
+}
+const handleDistrict = () => {
+ kelurahan.value = null
+ selectedVillages.value = null
+}
 const resetForm = () => {
  names.value = ''
  age.value = ''

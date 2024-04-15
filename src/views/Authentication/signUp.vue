@@ -1,25 +1,19 @@
 <script setup>
-import { ref } from 'vue'
 import { RouterLink } from 'vue-router';
-import { authPinia } from '@/stores/auth/authSignup'
 import NotifError from '@/components/base/NotifError.vue';
-
-const email = ref('')
-const password = ref('')
-const notif = ref('')
-const notifStatus = ref(false)
-const authSignup = authPinia()
+import { AuthSigin } from '@/stores/auth/authSignin';
+import { AuthSignUp } from '@/stores/auth/authSignup';
+import { storeToRefs } from 'pinia'
+const authSigin = AuthSigin()
+const { email, pw, notif, notifStatus } = storeToRefs(authSigin)
+const authSignup = AuthSignUp()
 
 const handleSignup = async () => {
- const { notif: newNotif, notifStatus: newNotifStatus } = await authSignup.submitHandler(email.value, password.value)
+ const { notif: newNotif, notifStatus: newNotifStatus } = await authSignup.submitHandler(email.value, pw.value, notif.value, notifStatus.value)
  notif.value = `${newNotif}`
  notifStatus.value = newNotifStatus
- // 
 }
-const signInPopup = async () => {
- const { notif: newNotif } = await authSignup.signInPopu()
- notif.value = newNotif
-}
+const signInPopup = async () => await authSignup.signInPopu()
 </script>
 
 <template>
@@ -32,26 +26,25 @@ const signInPopup = async () => {
 
    <FormKit v-model="email" class="p-16" type="text" name="email" label="Your email" placeholder="jane@example.com"
     validation="required|email" :classes="{
-   outer: 'mb-2 ',
-   label:
-    'block mb-2 text-sm font-medium text-primary text-black',
-   inner: ' focus:outline-1',
-   input:
-    'w-full rounded border-[1.5px] text-black border-stroke bg-transparent py-3 px-5 font-normal outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:text-white dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary',
-  }" />
-   <FormKit v-model="password" placeholder="***" type="password" label="Password" validation="required|password"
-    :classes="{
-   outer: 'mb-2',
-   label:
-    'block mb-2 text-sm font-medium text-primary text-black',
-   inner: ' focus:outline-1',
-   input:
-    'w-full rounded border-[1.5px] text-black border-stroke bg-transparent py-3 px-5 font-normal outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:text-white dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary',
-  }" />
+     outer: 'mb-2 ',
+     label:
+      'block mb-2 text-sm font-medium text-primary text-black',
+     inner: ' focus:outline-1',
+     input:
+      'w-full rounded border-[1.5px] text-black border-stroke bg-transparent py-3 px-5 font-normal outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:text-white dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary',
+    }" />
+   <FormKit v-model="pw" placeholder="***" type="password" label="Password" validation="required|password" :classes="{
+    outer: 'mb-2',
+    label:
+     'block mb-2 text-sm font-medium text-primary text-black',
+    inner: ' focus:outline-1',
+    input:
+     'w-full rounded border-[1.5px] text-black border-stroke bg-transparent py-3 px-5 font-normal outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:text-white dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary',
+   }" />
    <FormKit type="submit" :classes="{
-   outer: 'my-4',
-   input: 'w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 font-medium text-white transition '
-  }">
+    outer: 'my-4',
+    input: 'w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 font-medium text-white transition '
+   }">
     Create Account
    </FormKit>
   </FormKit>

@@ -1,5 +1,5 @@
-<script setup lang="ts">
-import { TableStore } from '@/stores/tables/tableStore';
+<script setup>
+import { TableStore } from '@/stores/tables/tableStore'
 defineProps(['modelValue'])
 </script>
 
