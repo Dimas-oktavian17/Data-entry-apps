@@ -1,5 +1,5 @@
 <script setup>
-import { UsersPinia } from '@/stores/users/users';
+import { UsersPinia } from '@/stores/users/users.ts';
 import { ProfileStore } from '@/stores/profile/ProfileStore'
 import { storeToRefs } from 'pinia';
 const { name, email, uid, photo, users } = storeToRefs(UsersPinia())

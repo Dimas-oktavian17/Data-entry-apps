@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { ref, watchEffect } from 'vue'
 import VueApexCharts from 'vue3-apexcharts'
 import { storeToRefs } from 'pinia';
@@ -147,23 +147,23 @@ watchEffect(() => {
    <div class="flex flex-wrap w-full gap-3 sm:gap-5">
     <div class="flex min-w-47.5" v-for="({ name, count }, index) in DataResult" :key="index">
      <span class="flex items-center justify-center w-full h-4 mt-1 mr-2 border rounded-full max-w-4 " :class="{
-     'border-[#D34053]': name === 'Total Magang',
-     'border-[#FFA70B]': name === 'Total Kontrak',
-     'border-[#219653]': name !== 'Total Magang' && name !== 'Total Kontrak'
-    }">
+      'border-[#D34053]': name === 'Total Magang',
+      'border-[#FFA70B]': name === 'Total Kontrak',
+      'border-[#219653]': name !== 'Total Magang' && name !== 'Total Kontrak'
+     }">
       <span :class="{
-     'bg-[#D34053] block h-2.5 w-full max-w-2.5 rounded-full': name === 'Total Magang',
-     'bg-[#FFA70B] block h-2.5 w-full max-w-2.5 rounded-full': name === 'Total Kontrak',
-     'bg-[#219653] block h-2.5 w-full max-w-2.5 rounded-full': name !== 'Total Magang' && name !== 'Total Kontrak'
-    }">
+       'bg-[#D34053] block h-2.5 w-full max-w-2.5 rounded-full': name === 'Total Magang',
+       'bg-[#FFA70B] block h-2.5 w-full max-w-2.5 rounded-full': name === 'Total Kontrak',
+       'bg-[#219653] block h-2.5 w-full max-w-2.5 rounded-full': name !== 'Total Magang' && name !== 'Total Kontrak'
+      }">
       </span>
      </span>
      <div class="w-full">
       <p class="" :class="{
-     'text-[#D34053] font-semibold': name === 'Total Magang',
-     'text-[#FFA70B] font-semibold': name === 'Total Kontrak',
-     'text-[#219653] font-semibold': name !== 'Total Magang' && name !== 'Total Kontrak'
-    }">{{ name }}</p>
+       'text-[#D34053] font-semibold': name === 'Total Magang',
+       'text-[#FFA70B] font-semibold': name === 'Total Kontrak',
+       'text-[#219653] font-semibold': name !== 'Total Magang' && name !== 'Total Kontrak'
+      }">{{ name }}</p>
       <p class="text-sm font-medium">{{ count }}</p>
      </div>
     </div>

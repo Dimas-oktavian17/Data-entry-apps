@@ -15,7 +15,7 @@ import VueApexCharts from 'vue3-apexcharts'
 import JsonExcel from "vue-json-excel3";
 // end library dependencies
 // firebase configuration
-import { firebaseApp } from './firebase/index.js'
+import { firebaseApp } from './firebase/index.ts'
 // Component configuration
 import HeaderArea from '@/components/Header/HeaderArea.vue'
 import SidebarArea from '@/components/Sidebar/SidebarArea.vue'

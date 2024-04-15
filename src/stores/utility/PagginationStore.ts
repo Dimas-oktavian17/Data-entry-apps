@@ -1,19 +1,17 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 import { formPinia } from '@/stores/formAPI/index';
-// Define a type or interface for the array of numbers
-type NumberCount = number;
+
 export const PagginationStore = defineStore('PagginationStore', () => {
  // state
  const DataUsers = formPinia()
- const page = ref<NumberCount>(1)
- const pageSize = ref<NumberCount>(10)
- const data = ref([])
- const Database = ref(DataUsers.filterUsers)
+ const page = ref<number>(1)
+ const pageSize = ref<number>(10)
+ const data = ref<any>([])
  // getters
  const RealData = computed(() => data.value)
  // Actions
- function fetch(page: NumberCount, pageSize: NumberCount) {
+ function fetch(page: number, pageSize: number) {
   return new Promise((resolve) => {
    const start = (page - 1) * pageSize
    const end = start + pageSize
@@ -32,9 +30,7 @@ export const PagginationStore = defineStore('PagginationStore', () => {
 
 
  function fetchData({ currentPage, currentPageSize }: { currentPage: number, currentPageSize: number }) {
-  fetch(currentPage, currentPageSize).then((responseData) => {
-   data.value = responseData
-  });
+  fetch(currentPage, currentPageSize).then((responseData) => data.value = responseData);
  }
  return {
   DataUsers,

@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 import { computed } from 'vue'
 import { defineStore } from 'pinia'
-import { UsersPinia } from '@/stores/users/users'
+import { UsersPinia } from '@/stores/users/users.ts'
 import { TableOneStore } from '@/stores/tables/TableOneStore'
 export const DataStatsStore = defineStore('DataStatsStore', () => {
  // state

@@ -2,13 +2,13 @@
 // firebase
 import { useFileDialog } from '@vueuse/core'
 // pinia
-import { excelStore } from '@/stores/users/updateUsers.js';
+import { excelStore } from '@/stores/users/updateUsers';
 import { storeToRefs } from 'pinia';
 const UpdateUsers = excelStore()
-const { phoneUser, emailUser, photoUser } = storeToRefs(UpdateUsers);
+const { phoneUser, emailUser, photoUser, formData } = storeToRefs(UpdateUsers);
 // import userPhoto from '@/assets/images/user/user-03.png'
 // Handle form submission for personal information
-const handleSubmit = async () => await UpdateUsers.HandleSubmit(UpdateUsers.formData.fullName, UpdateUsers.formData.uidUsers)
+const handleSubmit = async () => await UpdateUsers.HandleSubmit(UpdateUsers.formData.fullName)
 // Handle cancel action for personal information
 const handleCancel = async () => await UpdateUsers.HandleCancel(UpdateUsers.formData.fullName)
 // Handle form submission for user photo
@@ -52,7 +52,7 @@ const updatePhoto = async () => await UpdateUsers.UpdatePhoto(UpdateUsers.filena
            </g>
           </svg>
          </span>
-         <input v-model="UpdateUsers.formData.fullName"
+         <input v-model="formData.fullName"
           class="rounded border border-stroke bg-gray py-3 pl-11.5 w-full pr-4.5 font-normal text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
           type="text" name="fullName" id="fullName" placeholder="Jhon Doe" />
         </div>
@@ -134,7 +134,7 @@ const updatePhoto = async () => await UpdateUsers.UpdatePhoto(UpdateUsers.filena
       </div>
       <!-- File Upload Section -->
       <figure>
-       <img :src="UpdateUsers.filename?.value || ''" class="w-full h-auto" />
+       <img :src="UpdateUsers.filename?.value" class="w-full h-auto" />
       </figure>
       <button
        class="block  relative mb-5.5  w-full cursor-pointer appearance-none rounded border-2 border-dashed border-primary bg-gray py-4 px-4 dark:bg-meta-4 sm:py-7.5 "
