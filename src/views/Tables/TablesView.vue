@@ -1,5 +1,5 @@
 <script setup>
-import { useRouteStore } from '@/stores/route';
+import { useRouteStore } from '@/stores/utility/route';
 </script>
 
 <template>
