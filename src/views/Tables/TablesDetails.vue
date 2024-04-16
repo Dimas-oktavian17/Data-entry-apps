@@ -1,5 +1,5 @@
 <script setup>
-import { useRouteStore } from '@/stores/route';
+import { useRouteStore } from '@/stores/utility/route';
 import { onMounted, } from 'vue';
 import { TableStore } from "@/stores/tables/tableStore"
 import { storeToRefs } from 'pinia';

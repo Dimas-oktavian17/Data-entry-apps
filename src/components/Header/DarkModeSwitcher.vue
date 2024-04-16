@@ -1,5 +1,5 @@
-<script setup lang="ts">
-import { useDarkModeStore } from '@/stores/darkMode'
+<script setup>
+import { useDarkModeStore } from '@/stores/utility/darkMode'
 const darkModeStore = useDarkModeStore()
 </script>
 

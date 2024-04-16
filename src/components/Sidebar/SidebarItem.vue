@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useSidebarStore } from '@/stores/sidebar'
+import { useSidebarStore } from '@/stores/utility/sidebar'
 import { useRoute } from 'vue-router'
 import SidebarDropdown from './SidebarDropdown.vue'
 

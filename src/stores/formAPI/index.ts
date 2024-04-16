@@ -5,12 +5,11 @@ import { karyawanRef } from '@/firebase'
 import { useCollection } from 'vuefire'
 import { formUsers } from '@/stores/users/formUsers';
 import { City, District, LocationAPI, Provinsi, StringOrNull, Villages } from '@/interfaces/InterfacesFormApi';
-import { DataUsers } from '@/interfaces/InterfacesDataUsers';
 
 export const formPinia = defineStore('formPinia', () => {
  //  State
  const FormUsers = formUsers()
- const dataKaryawan = useCollection(karyawanRef)
+ const dataKaryawan: any = useCollection(karyawanRef)
  const provinces = ref<LocationAPI[]>([])
  const cities = ref<LocationAPI[] | null>(null)
  const kecamatan = ref<LocationAPI[] | null>(null)
@@ -23,10 +22,10 @@ export const formPinia = defineStore('formPinia', () => {
  const filterUsers = computed(() => {
   let copyItems = [...dataKaryawan.value]
   copyItems = copyItems
-   .filter((item: DataUsers) => provincesID.value ? item.provinsi.id === provincesID.value : true)
-   .filter((item: DataUsers) => citiesID.value ? item.kota.id === citiesID.value : true)
-   .filter((item: DataUsers) => kecamatanID.value ? item.kecamatan.id === kecamatanID.value : true)
-   .filter((item: DataUsers) => FormUsers.selectedVillages?.id || null ? item.kelurahan?.id === FormUsers.selectedVillages?.id : true)
+   .filter(({ provinsi }: { provinsi: Provinsi }) => provincesID.value ? provinsi.id === provincesID.value : true)
+   .filter(({ kota }: { kota: City }) => citiesID.value ? kota.id === citiesID.value : true)
+   .filter(({ kecamatan }: { kecamatan: District }) => kecamatanID.value ? kecamatan.id === kecamatanID.value : true)
+   .filter(({ kelurahan }: { kelurahan: Villages }) => FormUsers.selectedVillages?.id || null ? kelurahan?.id === FormUsers.selectedVillages?.id : true)
   return copyItems
  })
 
