@@ -2,6 +2,7 @@ import { ref } from 'vue';
 import { defineStore } from 'pinia';
 import { FlattenedFields } from '@/interfaces/InterfacesExcel';
 import { PagginationStore } from '../utility/PagginationStore';
+import { DataUsers } from '@/interfaces/InterfacesDataUsers';
 
 export const excelStore = defineStore('excelStore', () => {
  // state
@@ -22,7 +23,7 @@ export const excelStore = defineStore('excelStore', () => {
  // actions
  // excel example
  const generateFlattenedData = () => {
-  flattenedData.value = StorePaggination.RealData.map(item => ({
+  flattenedData.value = StorePaggination.RealData.map((item: DataUsers) => ({
    ...item,
    // Data User
    email: item.author[0].email,

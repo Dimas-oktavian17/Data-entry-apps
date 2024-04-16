@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useRouteStore } from '@/stores/route'
+import { useRouteStore } from '@/stores/utility/route'
 </script>
 
 <template>

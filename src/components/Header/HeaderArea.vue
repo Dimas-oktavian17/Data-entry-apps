@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useSidebarStore } from '@/stores/sidebar'
+import { useSidebarStore } from '@/stores/utility/sidebar'
 const { toggleSidebar } = useSidebarStore()
 </script>
 

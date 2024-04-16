@@ -1,6 +1,6 @@
-<script setup lang="ts">
+<script setup>
 const props = defineProps(['pageTitle'])
-import { useRouteStore } from '@/stores/route'
+import { useRouteStore } from '@/stores/utility/route'
 const RouteStore = useRouteStore()
 const GoBack = () => RouteStore.GoBack()
 </script>
