@@ -8,6 +8,7 @@ import { createApp } from 'vue'
 // Library dependencies
 import { VueFire, VueFireAuth } from 'vuefire'
 import { createPinia } from 'pinia'
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import { Icon } from '@iconify/vue'
 import router from './router'
 import { plugin, defaultConfig } from '@formkit/vue'
@@ -85,7 +86,7 @@ app.component('IconVue', Icon)
   .component('TableFilterLocation', TableFilterLocation)
   .component('downloadExcel', JsonExcel)
   .component('ButtonPagination', buttonPaggination)
-  .use(createPinia())
+  .use(createPinia().use(piniaPluginPersistedstate))
   .use(plugin, defaultConfig)
   .use(router)
   .use(VueFire, {

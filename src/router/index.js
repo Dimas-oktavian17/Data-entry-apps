@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import SignedIn from '@/views/Authentication/signIn.vue'
+import { AuthSignUp } from '@/stores/auth/authSignup'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -43,7 +44,7 @@ const router = createRouter({
     {
       path: '/calendar',
       name: 'calendar',
-      component: () => import('@/views/CalendarView.vue'),
+      component: () => import('@/views/UiElements/CalendarView.vue'),
       meta: {
         title: 'Calendar'
       }
@@ -132,15 +133,35 @@ const router = createRouter({
     { path: '/:pathMatch(.*)*', name: 'NotFound', component: () => import('@/views/NotFound/NotFound.vue'), },
   ]
 })
-// router.beforeEach((to, from, next) => {
-//   const login = authPinia()
-//   if (!login.user && to.name !== 'sign-in' && to.name !== 'sign-up') {
-//     // If user is not logged in and trying to access a restricted route (not sign-in or sign-up), redirect to sign-in
-//     next({ name: 'sign-in' })
+
+// let redirectToDashboard = false;
+
+// router.afterEach((to, from) => {
+//   if (to.name === 'Dashboard') {
+//     redirectToDashboard = true;
+//   } else {
+//     redirectToDashboard = false;
 //   }
-//   else {
-//     // Otherwise, allow navigation
-//     next()
+// });
+
+
+// router.beforeEach((to, from, next) => {
+//   const login = AuthSignUp()
+//   // Check if the user is logged in and their email is verified
+//   if (!login.user || !login.user.emailVerified) {
+//     // If user is not logged in or email is not verified, redirect to sign-in or sign-up page
+//     if (to.name !== 'sign-in' && to.name !== 'sign-up') {
+//       next({ name: 'sign-in' }); // Redirect to sign-in page
+//     } else {
+//       next(); // Allow navigation to sign-in or sign-up page
+//     }
+//   } else {
+//     // If the user is logged in and their email is verified
+//     if (redirectToDashboard) {
+//       next(false); // Prevent further navigation
+//     } else {
+//       next(); // Allow navigation
+//     }
 //   }
 // })
 

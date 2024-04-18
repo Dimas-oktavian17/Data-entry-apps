@@ -3,22 +3,20 @@ import { RouterLink } from 'vue-router';
 import NotifError from '@/components/base/NotifError.vue';
 import { AuthSigin } from '@/stores/auth/authSignin';
 import { AuthSignUp } from '@/stores/auth/authSignup';
+import { authPinia } from '@/stores/auth/authReset';
 import { storeToRefs } from 'pinia'
 const authSigin = AuthSigin()
-const { email, pw, notif, notifStatus } = storeToRefs(authSigin)
 const authSignup = AuthSignUp()
+const NotificationStore = authPinia()
+const { email, pw } = storeToRefs(authSigin)
 
-const handleSignup = async () => {
- const { notif: newNotif, notifStatus: newNotifStatus } = await authSignup.submitHandler(email.value, pw.value, notif.value, notifStatus.value)
- notif.value = `${newNotif}`
- notifStatus.value = newNotifStatus
-}
+const handleSignup = async () => await authSignup.submitHandler(email.value, pw.value)
 const signInPopup = async () => await authSignup.signInPopu()
 </script>
 
 <template>
  <DefaultAuthCard subtitle="Sign-up now" title="Sign Up to TailAdmin">
-  <NotifError v-if="notifStatus" :notif="notif" />
+  <NotifError v-if="NotificationStore.notifStatus" :notif="NotificationStore.notif" />
   <FormKit @submit="handleSignup" ref="form" type="form" submit-label="Sign Up" :classes="{
    outer: 'mb-2',
    inner: 'w-72 lg:w-1/2 max-w-xs space-y-6',
