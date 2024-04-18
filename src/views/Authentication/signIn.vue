@@ -3,15 +3,13 @@ import { onMounted, watch } from 'vue'
 import { RouterLink } from 'vue-router';
 import NotifError from '@/components/base/NotifError.vue';
 import { AuthSigin } from '@/stores/auth/authSignin';
+import { authPinia } from '@/stores/auth/authReset'
 import { storeToRefs } from 'pinia'
 const authSigin = AuthSigin()
-const { email, pw, notif, notifStatus } = storeToRefs(authSigin)
+const { email, pw } = storeToRefs(authSigin)
+const NotificationStore = authPinia()
 const submitHandler = async () => authSigin.submitHandler(email.value, pw.value)
-
-const signInPopup = async () => {
- const { notif: newNotif } = await authSigin.signInPopu()
- notif.value = newNotif
-}
+const signInPopup = async () => authSigin.signInPopu()
 
 onMounted(() => watch(() => authSigin.user && authSigin.user.value !== null, () => authSigin.checkUser()))
 </script>
@@ -19,7 +17,7 @@ onMounted(() => watch(() => authSigin.user && authSigin.user.value !== null, () 
 
 <template>
  <DefaultAuthCard subtitle="Sign in your account" title="Sign In to TailAdmin">
-  <NotifError v-if="notifStatus" :notif="notif" />
+  <NotifError v-if="NotificationStore.notifStatus" :notif="NotificationStore.notif" />
   <FormKit type="form" @submit="submitHandler" submit-label="Sign In" :classes="{
    outer: 'mb-2',
    inner: 'w-72 lg:w-1/2 max-w-xs space-y-6 ',

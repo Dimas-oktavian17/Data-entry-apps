@@ -4,13 +4,14 @@ import { useRouter } from 'vue-router';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { defineStore } from 'pinia'
 import { AuthSigin } from '@/stores/auth/authSignin'
+import { AuthSignin } from '@/interfaces/InterfacesAuthReset';
 
 export const authPinia = defineStore('AuthPinia', () => {
  const auth: any = useFirebaseAuth()
  const router = useRouter()
  const notif = ref<string>('')
  const notifStatus = ref<boolean>(false)
- const UsersLoginInput = AuthSigin()
+ const UsersLoginInput: AuthSignin = AuthSigin()
 
  async function submitHandler(emailUser: string) {
   try {

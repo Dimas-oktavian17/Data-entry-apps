@@ -3,41 +3,42 @@ import { useRouter } from 'vue-router';
 import { createUserWithEmailAndPassword, sendEmailVerification, signInWithPopup, } from 'firebase/auth';
 import { googleAuthProvider } from '@/firebase';
 import { defineStore } from 'pinia'
-import { AuthSigin } from './authSignin';
+import { authPinia } from '@/stores/auth/authReset';
+import { AuthSigin } from '@/stores/auth/authSignin';
+
 
 export const AuthSignUp = defineStore('AuthSignUp', () => {
  const user: any = useCurrentUser()
  const auth: any = useFirebaseAuth()
  const router = useRouter()
- const authSigin = AuthSigin()
- async function submitHandler(email: string, password: string, notif: any, notifStatus: boolean): Promise<object> {
-  notif = ''
-  notifStatus = false
+ const NotificationStore = authPinia()
+ const AuthSigninStore = AuthSigin()
+
+ const submitHandler = async (email: string, password: string): Promise<void> => {
   try {
    const { user } = await createUserWithEmailAndPassword(auth, email, password)
    if (user && !user.emailVerified) {
     sendEmailVerification(user)
-    notif = 'Please verify your email!'
-    notifStatus = true
+    NotificationStore.notif = `Check your email, & verification`
+    NotificationStore.notifStatus = true
+    setTimeout(() => {
+     NotificationStore.notif = ""
+     NotificationStore.notifStatus = false
+     AuthSigninStore.email = null;
+     AuthSigninStore.pw = null
+     router.push('/')
+    }, 5000);
    }
   } catch (error) {
-   notif = `${error}`
-   notifStatus = true
+   NotificationStore.notif = `${error}`
+   NotificationStore.notifStatus = true
    setTimeout(() => {
-    notif = ''
-    notifStatus = false
-    router.push('/')
-   }, 10000);
-  } finally {
-   setTimeout(() => {
-    authSigin.notif = ''
-    authSigin.notifStatus = false
-    authSigin.router.push('/')
-    authSigin.email = ''
-    authSigin.pw = ''
+    NotificationStore.notif = ""
+    NotificationStore.notifStatus = false
+    AuthSigninStore.email = null;
+    AuthSigninStore.pw = null
    }, 5000);
   }
-  return { notif, notifStatus }
  }
  function signInPopu() {
   signInWithPopup(auth, googleAuthProvider).then(() => router.push('/')).catch(error => console.error(error))
@@ -46,12 +47,13 @@ export const AuthSignUp = defineStore('AuthSignUp', () => {
   user.value === null ? router.push('/register') : user.value.emailVerified === true ? router.push('/') : router.push('/register')
  }
  return {
-  auth,
-  user,
-  router,
   submitHandler,
   signInPopu,
   checkUser,
-  authSigin
+  NotificationStore,
+  AuthSigninStore,
+  auth,
+  user,
+  router,
  }
 })

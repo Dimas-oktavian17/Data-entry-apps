@@ -5,10 +5,8 @@ import { authPinia } from '@/stores/auth/authReset'
 import { AuthSigin } from '@/stores/auth/authSignin'
 import { storeToRefs } from 'pinia';
 const authResetPassword = authPinia()
-const { notif, notifStatus } = storeToRefs(authPinia())
 const { email } = storeToRefs(AuthSigin())
 const submitHandler = async () => await authResetPassword.submitHandler(email.value)
-
 </script>
 
 <template>
