@@ -39,7 +39,6 @@ export const AuthSigin = defineStore('AuthSigin', () => {
   }
  }
  function signInPopu() {
-
   signInWithPopup(auth, googleAuthProvider).then(() => router.push('/Dashboard')).catch(error => console.error(error))
  }
  function checkUser() {

@@ -12,7 +12,7 @@ export const excelStore = defineStore('excelStore', () => {
  const dataKaryawan = useCollection(karyawanRef)
  const users = ref<any>(useCurrentUser())
  const formData = ref<Author>({
-  fullName: users.value?.displayName || 'N/A',
+  fullName: users?.value?.displayName || '',
   phoneNumber: users.value?.phoneNumber || 'N/A',
   emailAddress: users.value?.email || 'N/A',
   photoUsers: users.value?.photoURL || 'N/A',
@@ -22,6 +22,7 @@ export const excelStore = defineStore('excelStore', () => {
  const filename = ref<any>('')
  const filePath = ref<any>('')
  // getters
+ const nameUser = computed<string>(() => users.value?.displayName || 'N/A')
  const emailUser = computed<string>(() => users.value?.email || 'N/A')
  const phoneUser = computed<string>(() => users.value?.phoneNumber || 'N/A')
  const photoUser = computed<string>(() => users.value?.photoURL || 'N/A')
@@ -136,6 +137,7 @@ export const excelStore = defineStore('excelStore', () => {
   HandlePhotoCancel,
   UsersInput,
   UpdatePhotoAction,
-  UpdateNameAction
+  UpdateNameAction,
+  nameUser
  };
 });

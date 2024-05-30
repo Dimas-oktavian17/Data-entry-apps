@@ -134,7 +134,7 @@ const router = createRouter({
   ]
 })
 
-// let redirectToDashboard = false;
+// export let redirectToDashboard = false;
 
 // router.afterEach((to, from) => {
 //   if (to.name === 'Dashboard') {
@@ -164,6 +164,5 @@ const router = createRouter({
 //     }
 //   }
 // })
-
-
+// Router file
 export default router

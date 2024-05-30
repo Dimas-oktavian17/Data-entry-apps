@@ -11,7 +11,7 @@ const formStore = formPinia()
 const FormUsers = formUsers()
 const StorePaggination = PagginationStore()
 const { filterUsers } = storeToRefs(formStore)
-const { RealData, page, pageSize } = storeToRefs(StorePaggination)
+const { RealData, page, pageSize, SearchInput } = storeToRefs(StorePaggination)
 // end State Management
 const handleDelete = (index) => FormUsers.HandleDelete(index)
 // Fetching data 
@@ -68,10 +68,19 @@ watchEffect(() => {
 <template>
  <div
   class="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-  <header class="grid grid-cols-1 place-items-end">
+  <header class="grid grid-cols-2 place-items-start place-content-center">
    <!-- {{ testUser }} -->
+   <FormKit v-model="SearchInput" type="text" name="name" label="Search name" placeholder="Abu Na'im"
+    validation="required|length:5,15" :classes="{
+     outer: 'mb-4.5 w-full xl:w-1/2',
+     label:
+      'mb-2.5 block text-black dark:text-white',
+     inner: ' focus:outline-1',
+     input:
+      'w-full rounded border-[1.5px] text-black border-stroke bg-transparent py-3 px-5 font-normal outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:text-white dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary',
+    }" />
    <download-excel
-    class="flex flex-row-reverse justify-center px-6 py-2 my-4 text-white transition-all rounded-md cursor-pointer hover:transition-all align-items-center bg-primary hover:opacity-80"
+    class="flex flex-row-reverse justify-center px-6 py-2 mt-10 text-white transition-all rounded-md cursor-pointer hover:transition-all align-items-center bg-primary hover:opacity-80"
     @click="excelStore().generateFlattenedData()" :data="excelStore().flattenedData"
     :fields="excelStore().flattenedFields" worksheet="Data Karyawan" name="Data_Karyawan.xls">
     <IconVue icon="material-symbols:download" class="w-6 h-auto" />

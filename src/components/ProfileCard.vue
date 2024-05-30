@@ -2,8 +2,13 @@
 import { UsersPinia } from '@/stores/users/users.ts';
 import { ProfileStore } from '@/stores/profile/ProfileStore'
 import { storeToRefs } from 'pinia';
+import { watchEffect } from 'vue';
 const { name, email, uid, photo, users } = storeToRefs(UsersPinia())
 const { LoginDate, CreateDate } = storeToRefs(ProfileStore())
+watchEffect(() => {
+ LoginDate.value,
+  CreateDate.value
+})
 </script>
 
 <template>
@@ -36,7 +41,7 @@ const { LoginDate, CreateDate } = storeToRefs(ProfileStore())
       <span class="font-semibold text-black dark:text-white">{{ CreateDate }}</span>
       <span class="text-sm">Create At</span>
      </div>
-     <div v-if="users.emailVerified" class="flex flex-col items-center justify-center gap-1 px-4 xsm:flex-row">
+     <div v-if="users?.emailVerified" class="flex flex-col items-center justify-center gap-1 px-4 xsm:flex-row">
       <span class="font-semibold text-black dark:text-white">
        <IconVue icon="bitcoin-icons:verify-filled" class="text-green-400 size-8" />
       </span>
