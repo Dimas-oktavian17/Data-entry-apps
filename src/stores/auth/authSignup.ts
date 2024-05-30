@@ -8,7 +8,7 @@ import { AuthSigin } from '@/stores/auth/authSignin';
 
 
 export const AuthSignUp = defineStore('AuthSignUp', () => {
- const user: any = useCurrentUser()
+ const CurrentUser: any = useCurrentUser()
  const auth: any = useFirebaseAuth()
  const router = useRouter()
  const NotificationStore = authPinia()
@@ -17,11 +17,13 @@ export const AuthSignUp = defineStore('AuthSignUp', () => {
  const submitHandler = async (email: string, password: string): Promise<void> => {
   try {
    const { user } = await createUserWithEmailAndPassword(auth, email, password)
+   CurrentUser.value
    if (user && !user.emailVerified) {
     sendEmailVerification(user)
     NotificationStore.notif = `Check your email, & verification`
     NotificationStore.notifStatus = true
     setTimeout(() => {
+     CurrentUser.value = null
      NotificationStore.notif = ""
      NotificationStore.notifStatus = false
      AuthSigninStore.email = null;
@@ -44,7 +46,7 @@ export const AuthSignUp = defineStore('AuthSignUp', () => {
   signInWithPopup(auth, googleAuthProvider).then(() => router.push('/')).catch(error => console.error(error))
  }
  function checkUser() {
-  user.value === null ? router.push('/register') : user.value.emailVerified === true ? router.push('/') : router.push('/register')
+  CurrentUser.value === null ? router.push('/register') : CurrentUser.value.emailVerified === true ? router.push('/') : router.push('/register')
  }
  return {
   submitHandler,
@@ -53,7 +55,7 @@ export const AuthSignUp = defineStore('AuthSignUp', () => {
   NotificationStore,
   AuthSigninStore,
   auth,
-  user,
+  CurrentUser,
   router,
  }
 })

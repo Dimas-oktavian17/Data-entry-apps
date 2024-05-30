@@ -1,11 +1,13 @@
 <script setup>
+import { watch, watchEffect } from 'vue';
 // firebase
 import { useFileDialog } from '@vueuse/core'
 // pinia
 import { excelStore } from '@/stores/users/updateUsers';
 import { storeToRefs } from 'pinia';
 const UpdateUsers = excelStore()
-const { phoneUser, emailUser, photoUser, formData } = storeToRefs(UpdateUsers);
+const { phoneUser, emailUser, photoUser, formData, nameUser } = storeToRefs(UpdateUsers);
+watchEffect(() => formData)
 // import userPhoto from '@/assets/images/user/user-03.png'
 // Handle form submission for personal information
 const handleSubmit = async () => await UpdateUsers.HandleSubmit(UpdateUsers.formData.fullName)
@@ -52,9 +54,9 @@ const updatePhoto = async () => await UpdateUsers.UpdatePhoto(UpdateUsers.filena
            </g>
           </svg>
          </span>
-         <input v-model="formData.fullName"
+         <input v-model="UpdateUsers.formData.fullName"
           class="rounded border border-stroke bg-gray py-3 pl-11.5 w-full pr-4.5 font-normal text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-          type="text" name="fullName" id="fullName" placeholder="Jhon Doe" />
+          type="text" name="fullName" id="fullName" :placeholder="nameUser" />
         </div>
        </div>
        <!-- Phone Number Section -->
