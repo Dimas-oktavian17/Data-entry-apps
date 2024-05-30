@@ -8,8 +8,11 @@ export const PagginationStore = defineStore('PagginationStore', () => {
  const page = ref<number>(1)
  const pageSize = ref<number>(10)
  const data = ref<any>([])
+ const SearchInput = ref<string>('')
  // getters
- const RealData = computed(() => data.value)
+ const RealData = computed(() => {
+  return data.value.filter((i: any) => i.name.toLowerCase().includes(SearchInput.value.toLowerCase()))
+ })
  // Actions
  function fetch(page: number, pageSize: number) {
   return new Promise((resolve) => {
@@ -39,7 +42,8 @@ export const PagginationStore = defineStore('PagginationStore', () => {
   data,
   RealData,
   fetch,
-  fetchData
+  fetchData,
+  SearchInput
  }
 })
 
