@@ -9,9 +9,12 @@ export const PagginationStore = defineStore('PagginationStore', () => {
  const pageSize = ref<number>(10)
  const data = ref<any>([])
  const SearchInput = ref<string>('')
+ const StatusEmployes = ref([])
  // getters
  const RealData = computed(() => {
-  return data.value.filter((i: any) => i.name.toLowerCase().includes(SearchInput.value.toLowerCase()))
+  return data.value
+   .filter((i: any) => i.name.toLowerCase().includes(SearchInput.value.toLowerCase()))
+   .filter((i: any) => StatusEmployes.value.length === 0 || StatusEmployes.value.includes(i.status_karyawan));
  })
  // Actions
  function fetch(page: number, pageSize: number) {
@@ -35,6 +38,8 @@ export const PagginationStore = defineStore('PagginationStore', () => {
  function fetchData({ currentPage, currentPageSize }: { currentPage: number, currentPageSize: number }) {
   fetch(currentPage, currentPageSize).then((responseData) => data.value = responseData);
  }
+ const StatusEmploye = (status_karyawan: never) => !StatusEmployes.value.includes(status_karyawan) && StatusEmployes.value.push(status_karyawan);
+ const DeleteStatusEmploye = () => StatusEmployes.value.splice(0, 1)
  return {
   DataUsers,
   page,
@@ -43,7 +48,10 @@ export const PagginationStore = defineStore('PagginationStore', () => {
   RealData,
   fetch,
   fetchData,
-  SearchInput
+  SearchInput,
+  StatusEmployes,
+  StatusEmploye,
+  DeleteStatusEmploye
  }
 })
 

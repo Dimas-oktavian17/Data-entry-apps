@@ -11,7 +11,7 @@ const formStore = formPinia()
 const FormUsers = formUsers()
 const StorePaggination = PagginationStore()
 const { filterUsers } = storeToRefs(formStore)
-const { RealData, page, pageSize, SearchInput } = storeToRefs(StorePaggination)
+const { RealData, page, pageSize, SearchInput, StatusEmployes } = storeToRefs(StorePaggination)
 // end State Management
 const handleDelete = (index) => FormUsers.HandleDelete(index)
 // Fetching data 
@@ -63,13 +63,15 @@ watchEffect(() => {
   prev,
   next
 })
+const AddEmployeFilter = (status_karyawan) => StorePaggination.StatusEmploye(status_karyawan)
+const DeleteEmployeFilter = () => StorePaggination.DeleteStatusEmploye()
 </script>
 
 <template>
  <div
   class="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-  <header class="grid grid-cols-2 place-items-start place-content-center">
-   <!-- {{ testUser }} -->
+  <header
+   class="grid grid-flow-col grid-cols-3 md:grid-cols-1 place-items-center md:place-items-start place-content-center">
    <FormKit v-model="SearchInput" type="text" name="name" label="Search name" placeholder="Abu Na'im"
     validation="required|length:5,15" :classes="{
      outer: 'mb-4.5 w-full xl:w-1/2',
@@ -79,13 +81,24 @@ watchEffect(() => {
      input:
       'w-full rounded border-[1.5px] text-black border-stroke bg-transparent py-3 px-5 font-normal outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:text-white dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary',
     }" />
+   <div class="flex items-center justify-center md:mt-6">
+    <button v-for="(data, index) in StatusEmployes" :key="index" @click="DeleteEmployeFilter"
+     class="inline-flex px-3 py-1 text-sm font-medium rounded-full bg-opacity-10" :class="{
+      'bg-warning text-warning': data === 'kontrak',
+      'bg-danger text-danger': data === 'magang',
+      'bg-success text-success': data === 'kartap'
+     }">
+     {{ data }}
+    </button>
+   </div>
    <download-excel
-    class="flex flex-row-reverse justify-center px-6 py-2 mt-10 text-white transition-all rounded-md cursor-pointer hover:transition-all align-items-center bg-primary hover:opacity-80"
+    class="flex flex-row-reverse justify-center px-6 py-2 text-white transition-all rounded-md cursor-pointer md:mt-5 hover:transition-all align-items-center bg-primary hover:opacity-80"
     @click="excelStore().generateFlattenedData()" :data="excelStore().flattenedData"
     :fields="excelStore().flattenedFields" worksheet="Data Karyawan" name="Data_Karyawan.xls">
     <IconVue icon="material-symbols:download" class="w-6 h-auto" />
     Download
    </download-excel>
+
   </header>
   <TableFilterLocation />
   <div class="max-w-full overflow-x-auto">
@@ -113,13 +126,14 @@ watchEffect(() => {
        <p class="text-black dark:text-white">{{ jabatan }}</p>
       </td>
       <td class="px-4 py-5">
-       <p class="inline-flex px-3 py-1 text-sm font-medium rounded-full bg-opacity-10" :class="{
-        'bg-warning text-warning': status_karyawan === 'kontrak',
-        'bg-danger text-danger': status_karyawan === 'magang',
-        'bg-success text-success': status_karyawan === 'kartap'
-       }">
+       <button @click="AddEmployeFilter(status_karyawan)"
+        class="inline-flex px-3 py-1 text-sm font-medium rounded-full bg-opacity-10" :class="{
+         'bg-warning text-warning': status_karyawan === 'kontrak',
+         'bg-danger text-danger': status_karyawan === 'magang',
+         'bg-success text-success': status_karyawan === 'kartap'
+        }">
         {{ status_karyawan }}
-       </p>
+       </button>
       </td>
       <td class="px-4 py-5">
        <div class="flex items-center space-x-3.5">
