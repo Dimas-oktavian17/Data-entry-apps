@@ -1,7 +1,7 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 import { formPinia } from '@/stores/formAPI/index';
-
+import { refDebounced } from '@vueuse/core';
 export const PagginationStore = defineStore('PagginationStore', () => {
  // state
  const DataUsers = formPinia()
@@ -9,11 +9,12 @@ export const PagginationStore = defineStore('PagginationStore', () => {
  const pageSize = ref<number>(10)
  const data = ref<any>([])
  const SearchInput = ref<string>('')
+ const SearchDebounced = refDebounced<string>(SearchInput, 5000)
  const StatusEmployes = ref([])
  // getters
  const RealData = computed(() => {
   return data.value
-   .filter((i: any) => i.name.toLowerCase().includes(SearchInput.value.toLowerCase()))
+   .filter((i: any) => i.name.toLowerCase().includes(SearchDebounced.value.toLowerCase()))
    .filter((i: any) => StatusEmployes.value.length === 0 || StatusEmployes.value.includes(i.status_karyawan));
  })
  // Actions
