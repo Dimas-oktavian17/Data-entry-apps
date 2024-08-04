@@ -5,6 +5,7 @@ import { googleAuthProvider } from '@/firebase';
 import { defineStore } from 'pinia'
 import { authPinia } from '@/stores/auth/authReset';
 import { AuthSigin } from '@/stores/auth/authSignin';
+import { computed } from 'vue';
 
 
 export const AuthSignUp = defineStore('AuthSignUp', () => {
@@ -14,6 +15,7 @@ export const AuthSignUp = defineStore('AuthSignUp', () => {
  const NotificationStore = authPinia()
  const AuthSigninStore = AuthSigin()
 
+ const userActive = computed(() => CurrentUser.value)
  const submitHandler = async (email: string, password: string): Promise<void> => {
   try {
    const { user } = await createUserWithEmailAndPassword(auth, email, password)
@@ -57,5 +59,6 @@ export const AuthSignUp = defineStore('AuthSignUp', () => {
   auth,
   CurrentUser,
   router,
+  userActive
  }
 })

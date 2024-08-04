@@ -38,7 +38,8 @@ const router = createRouter({
       name: 'Dashboard',
       component: () => import('@/views/Dashboard/ECommerceView.vue'),
       meta: {
-        title: 'Dashboard'
+        title: 'Dashboard',
+        requiresAuth: true // Protect the Dashboard route
       }
     },
     {
@@ -46,7 +47,8 @@ const router = createRouter({
       name: 'calendar',
       component: () => import('@/views/UiElements/CalendarView.vue'),
       meta: {
-        title: 'Calendar'
+        title: 'Calendar',
+        requiresAuth: true // Protect the Calendar route
       }
     },
     {
@@ -54,7 +56,8 @@ const router = createRouter({
       name: 'Profile',
       component: () => import('@/views/Profile/ProfileView.vue'),
       meta: {
-        title: 'Profile'
+        title: 'Profile',
+        requiresAuth: true // Protect the Profile route
       }
     },
     {
@@ -62,7 +65,8 @@ const router = createRouter({
       name: 'formElements',
       component: () => import('@/views/Forms/FormElementsView.vue'),
       meta: {
-        title: 'Form Elements'
+        title: 'Form Elements',
+        requiresAuth: true // Protect the Form Elements route
       }
     },
     {
@@ -70,7 +74,8 @@ const router = createRouter({
       name: 'Form Employe',
       component: () => import('@/views/Forms/FormLayoutView.vue'),
       meta: {
-        title: 'Form Layout'
+        title: 'Form Layout',
+        requiresAuth: true // Protect the Form Layout route
       }
     },
     {
@@ -78,7 +83,8 @@ const router = createRouter({
       name: 'tables',
       component: () => import('@/views/Tables/TablesView.vue'),
       meta: {
-        title: 'Tables'
+        title: 'Tables',
+        requiresAuth: true // Protect the Tables route
       }
     },
     {
@@ -86,7 +92,8 @@ const router = createRouter({
       name: 'Page Settings',
       component: () => import('@/views/Pages/SettingsView.vue'),
       meta: {
-        title: 'Settings'
+        title: 'Settings',
+        requiresAuth: true // Protect the Settings route
       }
     },
     {
@@ -94,7 +101,8 @@ const router = createRouter({
       name: 'basicChart',
       component: () => import('@/views/Charts/BasicChartView.vue'),
       meta: {
-        title: 'Basic Chart'
+        title: 'Basic Chart',
+        requiresAuth: true // Protect the Basic Chart route
       }
     },
     {
@@ -102,7 +110,8 @@ const router = createRouter({
       name: 'alerts',
       component: () => import('@/views/UiElements/AlertsView.vue'),
       meta: {
-        title: 'Alerts'
+        title: 'Alerts',
+        requiresAuth: true // Protect the Alerts route
       }
     },
     {
@@ -110,7 +119,8 @@ const router = createRouter({
       name: 'buttons',
       component: () => import('@/views/UiElements/ButtonsView.vue'),
       meta: {
-        title: 'Buttons'
+        title: 'Buttons',
+        requiresAuth: true // Protect the Buttons route
       }
     },
     {
@@ -130,39 +140,24 @@ const router = createRouter({
       }
     },
     // will match everything and put it under `route.params.pathMatch`
-    { path: '/:pathMatch(.*)*', name: 'NotFound', component: () => import('@/views/NotFound/NotFound.vue'), },
+    { path: '/:pathMatch(.*)*', name: 'NotFound', component: () => import('@/views/NotFound/NotFound.vue') },
   ]
 })
 
-// export let redirectToDashboard = false;
+// Global navigation guard
+router.beforeEach((to, from, next) => {
+  const authStore = AuthSignUp();
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!authStore.userActive) {
+      next({ name: 'sign-in' });
+    } else {
+      next();
+    }
+  } else if ((to.name === 'sign-in' || to.name === 'sign-up') && authStore.userActive) {
+    next({ name: 'Dashboard' });
+  } else {
+    next();
+  }
+});
 
-// router.afterEach((to, from) => {
-//   if (to.name === 'Dashboard') {
-//     redirectToDashboard = true;
-//   } else {
-//     redirectToDashboard = false;
-//   }
-// });
-
-
-// router.beforeEach((to, from, next) => {
-//   const login = AuthSignUp()
-//   // Check if the user is logged in and their email is verified
-//   if (!login.user || !login.user.emailVerified) {
-//     // If user is not logged in or email is not verified, redirect to sign-in or sign-up page
-//     if (to.name !== 'sign-in' && to.name !== 'sign-up') {
-//       next({ name: 'sign-in' }); // Redirect to sign-in page
-//     } else {
-//       next(); // Allow navigation to sign-in or sign-up page
-//     }
-//   } else {
-//     // If the user is logged in and their email is verified
-//     if (redirectToDashboard) {
-//       next(false); // Prevent further navigation
-//     } else {
-//       next(); // Allow navigation
-//     }
-//   }
-// })
-// Router file
 export default router
